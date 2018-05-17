@@ -23,7 +23,7 @@
 ### Helm
 쿠버네티스 패키지 매니저
 
-### Jenkins-x
+### Jenkins X
 쿠버네티스에서 Application 을 쉽게 빌드/배포 할수 있도록 도와주는 툴
 
 ## Prerequisites
@@ -199,7 +199,7 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
 
 ## Pipeline
 
-### Jenkins-X
+### Jenkins X
 ```
 jx install --provider=aws
 
@@ -208,3 +208,5 @@ jx create spring -d web -d actuator
 * https://jenkins-x.io/
 * https://github.com/jenkins-x/jx
 * https://jenkins-x.io/getting-started/install-on-cluster/
+
+![Jenkins X Pipeline](https://jenkins-x.io/images/overview.png)
