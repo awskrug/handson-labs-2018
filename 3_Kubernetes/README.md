@@ -1,18 +1,30 @@
 # Kubernetes Hands-on
 
-* Moved: https://github.com/awskrug/handson-labs-2018
-
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 **Index**
 
+* [Info](#info)
 * [Prerequisites](#prerequisites)
 * [Kubernetes Cluster](#kubernetes-cluster)
 * [Addons](#addons)
 * [Pipeline](#pipeline)
-* [Build](#build) 
 
 <!-- /TOC -->
+
+## Info
+
+### Kubernetes
+컨테이너 작업을 자동화하는 오픈소스 플랫폼 (컨테이너 오케스트레이션)
+
+### Kops
+쿠버네티스 클러스터를 쉽게 설치 운영 할수 있도록 도와주는 툴
+
+### Helm
+쿠버네티스 패키지 매니저
+
+### Jenkins-x
+쿠버네티스에서 Application 을 쉽게 빌드/배포 할수 있도록 도와주는 툴
 
 ## Prerequisites
 
@@ -139,15 +151,15 @@ kubectl get deploy,pod,svc,job -n default
 
 ### sample
 ```
-git clone https://github.com/nalbam/kubernetes
+git clone https://github.com/awskrug/handson-labs-2018
 
-kubectl apply -f kubernetes/hands-on-201806/sample-node.yml
-kubectl apply -f kubernetes/hands-on-201806/sample-spring.yml
-kubectl apply -f kubernetes/hands-on-201806/sample-web.yml
+kubectl apply -f handson-labs-2018/3_Kubernetes/sample-node.yml
+kubectl apply -f handson-labs-2018/3_Kubernetes/sample-spring.yml
+kubectl apply -f handson-labs-2018/3_Kubernetes/sample-web.yml
 
-kubectl delete -f kubernetes/hands-on-201806/sample-node.yml
-kubectl delete -f kubernetes/hands-on-201806/sample-spring.yml
-kubectl delete -f kubernetes/hands-on-201806/sample-web.yml
+kubectl delete -f handson-labs-2018/3_Kubernetes/sample-node.yml
+kubectl delete -f handson-labs-2018/3_Kubernetes/sample-spring.yml
+kubectl delete -f handson-labs-2018/3_Kubernetes/sample-web.yml
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers:sort=loadBalancerName
 
@@ -156,7 +168,7 @@ kubectl delete -f kubernetes/hands-on-201806/sample-web.yml
 ### Dashboard
 Kubernetes Dashboard is a general purpose, web-based UI for Kubernetes clusters.
 ```
-kubectl apply -f kubernetes/hands-on-201806/dashboard.yml
+kubectl apply -f handson-labs-2018/3_Kubernetes/dashboard.yml
 
 # create role binding for kube-system:kubernetes-dashboard
 kubectl create clusterrolebinding cluster-admin:kube-system:kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
@@ -165,7 +177,7 @@ kubectl get clusterrolebindings | grep cluster-admin
 # get dashboard token
 kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep kubernetes-dashboard-token | awk '{print $1}')
 
-kubectl delete -f kubernetes/hands-on-201806/dashboard.yml
+kubectl delete -f handson-labs-2018/3_Kubernetes/dashboard.yml
 ```
 * https://github.com/kubernetes/dashboard/
 * https://github.com/kubernetes/kops/blob/master/docs/addons.md
@@ -174,16 +186,18 @@ kubectl delete -f kubernetes/hands-on-201806/dashboard.yml
 ### Heapster
 Heapster enables Container Cluster Monitoring and Performance Analysis for Kubernetes
 ```
-kubectl apply -f kubernetes/hands-on-201806/heapster.yml
+kubectl apply -f handson-labs-2018/3_Kubernetes/heapster.yml
 
 kubectl top pod --all-namespaces
 kubectl top pod -n kube-system
 
-kubectl delete -f kubernetes/hands-on-201806/heapster.yml
+kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
 ```
 * https://github.com/kubernetes/heapster/
 * https://github.com/kubernetes/kops/blob/master/docs/addons.md
 * https://github.com/kubernetes/kops/blob/master/addons/monitoring-standalone/
+
+## Pipeline
 
 ### Jenkins-X
 ```
@@ -194,10 +208,3 @@ jx create spring -d web -d actuator
 * https://jenkins-x.io/
 * https://github.com/jenkins-x/jx
 * https://jenkins-x.io/getting-started/install-on-cluster/
-
-## Clear
-```
-kops delete cluster --name=${KOPS_CLUSTER_NAME} --yes
-rm -rf ~/.kube
-rm -rf ~/.jx
-```
