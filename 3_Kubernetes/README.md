@@ -203,10 +203,20 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
 ```
 jx install --provider=aws
 
+jx console
+
+jx import
 jx create spring -d web -d actuator
+
+jx get applications
+jx get pipelines
+
+jx get activity -f jx-demo -w
+jx get build logs nalbam/jx-demo/master
+jx get build logs nalbam/jx-demo/dev
+jx promote jx-demo --env production
 ```
 * https://jenkins-x.io/
 * https://github.com/jenkins-x/jx
-* https://jenkins-x.io/getting-started/install-on-cluster/
 
 ![Jenkins X Pipeline](https://jenkins-x.io/images/overview.png)
