@@ -112,8 +112,8 @@ kops create cluster \
     --cloud=aws \
     --name=${KOPS_CLUSTER_NAME} \
     --state=${KOPS_STATE_STORE} \
-    --master-size=t2.medium \
-    --node-size=t2.large \
+    --master-size=m4.large \
+    --node-size=m4.xlarge \
     --node-count=2 \
     --zones=ap-northeast-2a,ap-northeast-2c \
     --network-cidr=10.10.0.0/16 \
@@ -214,6 +214,7 @@ jx get pipelines
 jx get activity -f jx-demo -w
 jx get build logs nalbam/jx-demo/master
 jx get build logs nalbam/jx-demo/dev
+
 jx promote jx-demo --env production
 ```
 * https://jenkins-x.io/
