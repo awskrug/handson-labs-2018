@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 개발용 환경 구축
+Resources:
+  DevServer:
+    Type: "AWS::Cloud9::EnvironmentEC2"
+    Properties:
+      OwnerArn: !Sub 'arn:aws:iam::${AWS::AccountId}:user/datalake_2018'
+      Description: "헨드온 실습진행에 사용할 cloud9"
+      AutomaticStopTimeMinutes: 20
+      InstanceType: t2.micro
+      Name: HandsOnCloud9
