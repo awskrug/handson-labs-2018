@@ -35,3 +35,9 @@ Default output format [None]: json
 
 - 실습 완료후 cloud9 삭제시
 `aws cloudformation delete-stack --stack-name sls-datalake-init --region ap-southeast-1 --profile datalake`
+
+4. Cloud9 설정
+
+- python3.6 설정 : 설정 > Project Settings > Python Suppoert > Python Version -> python3.6으로 변경
+- 서울 리전 설정 : 설정 > AWS Settings > AWS > Region -> Asia Pacific(Seoul)로 변경
+- git clone : `git clone https://github.com/wesky93/handson-labs-2018.git && cd handson-labs-2018/serverless_datalake`
