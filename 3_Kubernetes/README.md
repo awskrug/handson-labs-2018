@@ -1,8 +1,10 @@
 # Kubernetes Hands-on
 
-<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+---
 
-**Index**
+## Index
+
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 * [Information](#information)
 * [Prerequisites](#prerequisites)
@@ -43,8 +45,8 @@
 ---
 
 ### Jenkins X
-- Jenkins Pipeline
-- Jenkins + Kubernetes Plugins
+- Jenkins Pipeline Tool
+- Jenkins + Kubernetes Plugins + CLI
 - Jenkins 를 제외한 UI 는 제공되지 않음
 
 <img src="images/jenkins-x.png" height="300">
