@@ -18,14 +18,14 @@
 - 컨테이너 작업을 자동화하는 오픈소스 플랫폼 (컨테이너 오케스트레이션)
 - Cluster 는 Master 와 Nodes 로 구성 
 
-<img src="https://kubernetesbootcamp.github.io/kubernetes-bootcamp/public/images/module_01_cluster.svg" width="800">
+<img src="https://kubernetesbootcamp.github.io/kubernetes-bootcamp/public/images/module_01_cluster.svg" width="500">
 
 ### Kops
 - Kubernetes Cluster 를 쉽게 설치/운영 할수 있도록 도와주는 툴
 - AWS, GCE, DigitalOcean 을 지원
 - 기본 설정으로 AWS 에서 1 Master, 2 Nodes 로 구성
 
-<img src="https://images.contentstack.io/v3/assets/blt300387d93dabf50e/bltec54ae56e6302d11/5a21ccde473ff3867b91653f/download" width="800">
+<img src="https://images.contentstack.io/v3/assets/blt300387d93dabf50e/bltec54ae56e6302d11/5a21ccde473ff3867b91653f/download" width="500">
 
 ### Helm
 - Kubernetes 패키지 매니저
@@ -37,7 +37,7 @@
 - Jenkins 를 제외한 UI 는 제공되지 않음
 - cli 를 통하여 실행 
 
-<img src="https://jenkins-x.io/images/overview.png" width="800">
+<img src="https://jenkins-x.io/images/overview.png" width="500">
 
 ## Prerequisites
 
