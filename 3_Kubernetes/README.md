@@ -1,8 +1,10 @@
 # Kubernetes Hands-on
 
-<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+---
 
-**Index**
+## Index
+
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 * [Information](#information)
 * [Prerequisites](#prerequisites)
@@ -43,8 +45,8 @@
 ---
 
 ### Jenkins X
-- Jenkins Pipeline
-- Jenkins + Kubernetes Plugins
+- Jenkins Pipeline Tool
+- Jenkins + Kubernetes Plugins + CLI
 - Jenkins 를 제외한 UI 는 제공되지 않음
 
 <img src="images/jenkins-x.png" height="300">
@@ -53,7 +55,7 @@
 
 ### Helm
 - Kubernetes Package Manager
-- Use in Jenkins X
+- Used in Jenkins X
 
 ---
 
@@ -71,11 +73,28 @@
 ---
 
 ### AWS EC2 - Key Pairs
+```bash
+# create key pair
+aws ec2 create-key-pair \
+    --key-name hands-on \
+    | grep "BEGIN RSA PRIVATE KEY" \
+    | cut -d'"' -f4 \
+    | sed 's/\\n/\n/g' \
+    > ~/.ssh/hands-on.pem
+chmod 600 ~/.ssh/hands-on.pem
+```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
 
 ---
 
 ### AWS EC2 - Ubuntu Instance
+```bash
+# create Ubuntu Server 16.04 LTS
+aws ec2 run-instances \
+    --image-id ami-191cb577 \
+    --instance-type t2.micro \
+    --key-name hands-on
+```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
 
 ---
