@@ -12,13 +12,19 @@
 
 <!-- /TOC -->
 
+---
+
 ## Info
+
+---
 
 ### Kubernetes
 - 컨테이너 작업을 자동화하는 오픈소스 플랫폼 (컨테이너 오케스트레이션)
 - Cluster 는 Master 와 Nodes 로 구성 
 
 <img src="https://kubernetesbootcamp.github.io/kubernetes-bootcamp/public/images/module_01_cluster.svg" width="500">
+
+---
 
 ### Kops
 - Kubernetes Cluster 를 쉽게 설치/운영 할수 있도록 도와주는 툴
@@ -27,9 +33,13 @@
 
 <img src="https://images.contentstack.io/v3/assets/blt300387d93dabf50e/bltec54ae56e6302d11/5a21ccde473ff3867b91653f/download" width="500">
 
+---
+
 ### Helm
 - Kubernetes 패키지 매니저
 - 핸즈온에서 직접적으로 사용 하지는 않지만, Jenkins X 에서 패키지를 배포 하기 위하여 사용
+
+---
 
 ### Jenkins X
 - Kubernetes 에서 Application 을 쉽게 빌드/배포 할수 있도록 도와주는 툴
@@ -39,13 +49,21 @@
 
 <img src="https://jenkins-x.io/images/overview.png" width="500">
 
+---
+
 ## Prerequisites
+
+---
 
 ### Amazon AccessKey
 * https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/home
 
+---
+
 ### Amazon KeyPairs
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs:sort=keyName
+
+---
 
 ### OSX (5m)
 ```bash
@@ -53,6 +71,8 @@ brew tap jenkins-x/jx
 brew install awscli kubectl kops jx jq
 ```
 * https://brew.sh/index_ko
+
+---
 
 ### Ubuntu (5m)
 ```bash
@@ -88,6 +108,8 @@ sudo apt install -y awscli jq
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances:search=running;sort=tag:Name
 
+---
+
 ### Amazon AccessKeys
 ```bash
 # ssh key
@@ -111,6 +133,8 @@ aws ec2 describe-instances | jq '.Reservations[].Instances[] | select(.State.Nam
 # aws elb list
 aws elb describe-load-balancers | jq '.LoadBalancerDescriptions[] | {DNSName: .DNSName, Count: .Instances | length}'
 ```
+
+---
 
 ## Kubernetes Cluster
 ```bash
@@ -143,6 +167,8 @@ kops validate cluster --name=${KOPS_CLUSTER_NAME}
 kops delete cluster --name=${KOPS_CLUSTER_NAME} --yes
 ```
 
+---
+
 ### Modify for Jenkins-x
 ```yaml
 spec:
@@ -150,6 +176,8 @@ spec:
     insecureRegistry: 100.64.0.0/10
     logDriver: ""
 ```
+
+---
 
 ### kubectl
 ```bash
@@ -161,6 +189,8 @@ kubectl get deploy,pod,svc,job --all-namespaces
 kubectl get deploy,pod,svc,job -n kube-system
 kubectl get deploy,pod,svc,job -n default
 ```
+
+---
 
 ### sample
 ```bash
@@ -176,7 +206,11 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/sample-web.yml
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers:sort=loadBalancerName
 
+---
+
 ## Addons
+
+---
 
 ### Dashboard
 Kubernetes Dashboard is a general purpose, web-based UI for Kubernetes clusters.
@@ -196,6 +230,8 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/dashboard.yml
 * https://github.com/kubernetes/kops/blob/master/docs/addons.md
 * https://github.com/kubernetes/kops/tree/master/addons/kubernetes-dashboard
 
+---
+
 ### Heapster
 Heapster enables Container Cluster Monitoring and Performance Analysis for Kubernetes - DEPRECATED
 ```bash
@@ -210,7 +246,11 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
 * https://github.com/kubernetes/kops/blob/master/docs/addons.md
 * https://github.com/kubernetes/kops/blob/master/addons/monitoring-standalone/
 
+---
+
 ## Pipeline
+
+---
 
 ### Jenkins X
 ```bash
@@ -232,3 +272,7 @@ jx promote jx-demo --env production
 ```
 * https://jenkins-x.io/
 * https://github.com/jenkins-x/jx
+
+---
+
+## Thank You
