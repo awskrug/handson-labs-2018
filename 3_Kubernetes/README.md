@@ -4,7 +4,7 @@
 
 **Index**
 
-* [Info](#info)
+* [Information](#information)
 * [Prerequisites](#prerequisites)
 * [Kubernetes Cluster](#kubernetes-cluster)
 * [Addons](#addons)
@@ -14,54 +14,69 @@
 
 ---
 
-## Info
+## Information
+
+* Kubernetes
+* Kops
+* Helm
+* Jenkins X
 
 ---
 
 ### Kubernetes
-- 컨테이너 작업을 자동화하는 오픈소스 플랫폼 (컨테이너 오케스트레이션)
-- Cluster 는 Master 와 Nodes 로 구성 
+- 컨테이너 작업을 자동화하는 오픈소스 플랫폼
+- Container Orchestration
+- Cluster 는 Master 와 Node 로 구성 
 
-<img src="https://kubernetesbootcamp.github.io/kubernetes-bootcamp/public/images/module_01_cluster.svg" width="500">
+<img src="images/kubernetes_cluster.png" height="300">
 
 ---
 
 ### Kops
-- Kubernetes Cluster 를 쉽게 설치/운영 할수 있도록 도와주는 툴
-- AWS, GCE, DigitalOcean 을 지원
-- 기본 설정으로 AWS 에서 1 Master, 2 Nodes 로 구성
+- Kubernetes cluster up and running
+- AWS is officially supported
+- GCE is beta supported
+- 1 Master, 2 Nodes in AWS
 
-<img src="https://images.contentstack.io/v3/assets/blt300387d93dabf50e/bltec54ae56e6302d11/5a21ccde473ff3867b91653f/download" width="500">
-
----
-
-### Helm
-- Kubernetes 패키지 매니저
-- 핸즈온에서 직접적으로 사용 하지는 않지만, Jenkins X 에서 패키지를 배포 하기 위하여 사용
+<img src="images/kops.png" height="300">
 
 ---
 
 ### Jenkins X
-- Kubernetes 에서 Application 을 쉽게 빌드/배포 할수 있도록 도와주는 툴
-- Jenkins 에 Kubernetes 관련 플러그인을 설치하여 사용
+- Jenkins Pipeline
+- Jenkins + Kubernetes Plugins
 - Jenkins 를 제외한 UI 는 제공되지 않음
-- cli 를 통하여 실행 
 
-<img src="https://jenkins-x.io/images/overview.png" width="500">
+<img src="images/jenkins-x.png" height="300">
+
+---
+
+### Helm
+- Kubernetes Package Manager
+- Use in Jenkins X
 
 ---
 
 ## Prerequisites
 
+* AWS IAM - Access keys
+* AWS EC2 - Key Pairs
+* AWS EC2 - Ubuntu Instance
+
 ---
 
-### Amazon AccessKey
+### AWS IAM - Access keys
 * https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/home
 
 ---
 
-### Amazon KeyPairs
+### AWS EC2 - Key Pairs
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs:sort=keyName
+
+---
+
+### AWS EC2 - Ubuntu Instance
+* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances:sort=tag:Name
 
 ---
 
@@ -110,7 +125,7 @@ sudo apt install -y awscli jq
 
 ---
 
-### Amazon AccessKeys
+### Access Keys
 ```bash
 # ssh key
 pushd ~/.ssh
@@ -194,12 +209,15 @@ kubectl get deploy,pod,svc,job -n default
 
 ### sample
 ```bash
+# sample source
 git clone https://github.com/awskrug/handson-labs-2018
 
+# install
 kubectl apply -f handson-labs-2018/3_Kubernetes/sample-node.yml
 kubectl apply -f handson-labs-2018/3_Kubernetes/sample-spring.yml
 kubectl apply -f handson-labs-2018/3_Kubernetes/sample-web.yml
 
+# delete
 kubectl delete -f handson-labs-2018/3_Kubernetes/sample-node.yml
 kubectl delete -f handson-labs-2018/3_Kubernetes/sample-spring.yml
 kubectl delete -f handson-labs-2018/3_Kubernetes/sample-web.yml
@@ -210,11 +228,15 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/sample-web.yml
 
 ## Addons
 
+* Dashboard
+* Heapster
+
 ---
 
 ### Dashboard
 Kubernetes Dashboard is a general purpose, web-based UI for Kubernetes clusters.
 ```bash
+# install
 kubectl apply -f handson-labs-2018/3_Kubernetes/dashboard.yml
 
 # create role binding for kube-system:kubernetes-dashboard
@@ -224,6 +246,7 @@ kubectl get clusterrolebindings | grep cluster-admin
 # get dashboard token
 kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep kubernetes-dashboard-token | awk '{print $1}')
 
+# delete
 kubectl delete -f handson-labs-2018/3_Kubernetes/dashboard.yml
 ```
 * https://github.com/kubernetes/dashboard/
@@ -235,11 +258,14 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/dashboard.yml
 ### Heapster
 Heapster enables Container Cluster Monitoring and Performance Analysis for Kubernetes - DEPRECATED
 ```bash
+# install
 kubectl apply -f handson-labs-2018/3_Kubernetes/heapster.yml
 
+# monitoring
 kubectl top pod --all-namespaces
 kubectl top pod -n kube-system
 
+# delete
 kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
 ```
 * https://github.com/kubernetes/heapster/
@@ -249,6 +275,8 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
 ---
 
 ## Pipeline
+
+* Jenkins X
 
 ---
 
