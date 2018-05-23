@@ -115,7 +115,7 @@ aws elb describe-load-balancers | jq '.LoadBalancerDescriptions[] | {DNSName: .D
 ## Kubernetes Cluster
 ```bash
 export KOPS_STATE_STORE=s3://kops-state-store-nalbam-seoul
-export KOPS_CLUSTER_NAME=nalbam-seoul.k8s.local
+export KOPS_CLUSTER_NAME=awskrug-handson.k8s.local
 
 # aws s3 bucket for state store
 aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
