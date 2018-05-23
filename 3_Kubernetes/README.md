@@ -18,8 +18,8 @@
 
 * Kubernetes
 * Kops
-* Helm
 * Jenkins X
+* Helm
 
 ---
 
@@ -28,7 +28,7 @@
 - Container Orchestration
 - Cluster 는 Master 와 Node 로 구성 
 
-<img src="images/kubernetes_cluster.png" height="300">
+<img src="images/kubernetes.png" height="300">
 
 ---
 
@@ -36,7 +36,7 @@
 - Kubernetes cluster up and running
 - AWS is officially supported
 - GCE is beta supported
-- 1 Master, 2 Nodes in AWS
+- 1 Master, 2 Nodes
 
 <img src="images/kops.png" height="300">
 
@@ -250,8 +250,6 @@ kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | gre
 kubectl delete -f handson-labs-2018/3_Kubernetes/dashboard.yml
 ```
 * https://github.com/kubernetes/dashboard/
-* https://github.com/kubernetes/kops/blob/master/docs/addons.md
-* https://github.com/kubernetes/kops/tree/master/addons/kubernetes-dashboard
 
 ---
 
@@ -269,8 +267,6 @@ kubectl top pod -n kube-system
 kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
 ```
 * https://github.com/kubernetes/heapster/
-* https://github.com/kubernetes/kops/blob/master/docs/addons.md
-* https://github.com/kubernetes/kops/blob/master/addons/monitoring-standalone/
 
 ---
 
@@ -299,7 +295,6 @@ jx get build logs nalbam/jx-demo/dev
 jx promote jx-demo --env production
 ```
 * https://jenkins-x.io/
-* https://github.com/jenkins-x/jx
 
 ---
 
