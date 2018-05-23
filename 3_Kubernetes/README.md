@@ -21,15 +21,23 @@
 ![Kubernetes Cluster](https://kubernetesbootcamp.github.io/kubernetes-bootcamp/public/images/module_01_cluster.svg)
 
 ### Kops
-Kubernetes 클러스터를 쉽게 설치 운영 할수 있도록 도와주는 툴
+- Kubernetes Cluster 를 쉽게 설치/운영 할수 있도록 도와주는 툴
+- AWS, GCE, DigitalOcean 을 지원
+- 기본 설정으로 AWS 에서 1 Master, 2 Nodes 로 구성
 
 ![Basic Kubernetes with AWS](https://images.contentstack.io/v3/assets/blt300387d93dabf50e/bltec54ae56e6302d11/5a21ccde473ff3867b91653f/download)
 
 ### Helm
-Kubernetes 패키지 매니저
+- Kubernetes 패키지 매니저
+- 핸즈온에서 직접적으로 사용 하지는 않지만, Jenkins X 에서 패키지를 배포 하기 위하여 사용
 
 ### Jenkins X
-Kubernetes 에서 Application 을 쉽게 빌드/배포 할수 있도록 도와주는 툴
+- Kubernetes 에서 Application 을 쉽게 빌드/배포 할수 있도록 도와주는 툴
+- Jenkins 에 Kubernetes 관련 플러그인을 설치하여 사용
+- Jenkins 를 제외한 UI 는 제공되지 않음
+- cli 를 통하여 실행 
+
+![Jenkins X Pipeline](https://jenkins-x.io/images/overview.png)
 
 ## Prerequisites
 
@@ -224,5 +232,3 @@ jx promote jx-demo --env production
 ```
 * https://jenkins-x.io/
 * https://github.com/jenkins-x/jx
-
-![Jenkins X Pipeline](https://jenkins-x.io/images/overview.png)
