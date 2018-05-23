@@ -73,11 +73,28 @@
 ---
 
 ### AWS EC2 - Key Pairs
+```bash
+# create key pair
+aws ec2 create-key-pair \
+    --key-name hands-on \
+    | grep "BEGIN RSA PRIVATE KEY" \
+    | cut -d'"' -f4 \
+    | sed 's/\\n/\n/g' \
+    > ~/.ssh/hands-on.pem
+chmod 600 ~/.ssh/hands-on.pem
+```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
 
 ---
 
 ### AWS EC2 - Ubuntu Instance
+```bash
+# create Ubuntu Server 16.04 LTS
+aws ec2 run-instances \
+    --image-id ami-191cb577 \
+    --instance-type t2.micro \
+    --key-name hands-on
+```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
 
 ---
