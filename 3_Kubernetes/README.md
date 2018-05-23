@@ -55,7 +55,7 @@
 
 ### Helm
 - Kubernetes Package Manager
-- Use in Jenkins X
+- Used in Jenkins X
 
 ---
 
