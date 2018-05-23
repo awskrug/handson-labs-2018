@@ -71,12 +71,12 @@
 ---
 
 ### AWS EC2 - Key Pairs
-* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs:sort=keyName
+* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
 
 ---
 
 ### AWS EC2 - Ubuntu Instance
-* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances:sort=tag:Name
+* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
 
 ---
 
@@ -121,7 +121,6 @@ sudo mv jx /usr/local/bin/jx
 # awscli (1m)
 sudo apt install -y awscli jq
 ```
-* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances:search=running;sort=tag:Name
 
 ---
 
@@ -222,7 +221,7 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/sample-node.yml
 kubectl delete -f handson-labs-2018/3_Kubernetes/sample-spring.yml
 kubectl delete -f handson-labs-2018/3_Kubernetes/sample-web.yml
 ```
-* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers:sort=loadBalancerName
+* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers
 
 ---
 
