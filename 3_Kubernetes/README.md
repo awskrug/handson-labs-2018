@@ -14,18 +14,12 @@
 
 ---
 
-<<<<<<< HEAD
 ## Information
 
 * Kubernetes
 * Kops
 * Helm
 * Jenkins X
-
----
-=======
-## Info
->>>>>>> 5863536ce85956a9c9e33c66a4c3da3dd9dd00ec
 
 ---
 
@@ -38,8 +32,6 @@
 
 ---
 
----
-
 ### Kops
 - Kubernetes cluster up and running
 - AWS is officially supported
@@ -47,15 +39,6 @@
 - 1 Master, 2 Nodes in AWS
 
 <img src="images/kops.png" height="300">
-
----
-<<<<<<< HEAD
-=======
-
-### Helm
-- Kubernetes 패키지 매니저
-- 핸즈온에서 직접적으로 사용 하지는 않지만, Jenkins X 에서 패키지를 배포 하기 위하여 사용
->>>>>>> 5863536ce85956a9c9e33c66a4c3da3dd9dd00ec
 
 ---
 
@@ -74,11 +57,8 @@
 
 ---
 
----
-
 ## Prerequisites
 
-<<<<<<< HEAD
 * AWS IAM - Access keys
 * AWS EC2 - Key Pairs
 * AWS EC2 - Ubuntu Instance
@@ -86,32 +66,20 @@
 ---
 
 ### AWS IAM - Access keys
-=======
----
-
-### Amazon AccessKey
->>>>>>> 5863536ce85956a9c9e33c66a4c3da3dd9dd00ec
 * https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/home
 
 ---
 
-<<<<<<< HEAD
 ### AWS EC2 - Key Pairs
-=======
-### Amazon KeyPairs
->>>>>>> 5863536ce85956a9c9e33c66a4c3da3dd9dd00ec
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs:sort=keyName
 
 ---
 
-<<<<<<< HEAD
 ### AWS EC2 - Ubuntu Instance
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances:sort=tag:Name
 
 ---
 
-=======
->>>>>>> 5863536ce85956a9c9e33c66a4c3da3dd9dd00ec
 ### OSX (5m)
 ```bash
 brew tap jenkins-x/jx
@@ -157,11 +125,7 @@ sudo apt install -y awscli jq
 
 ---
 
-<<<<<<< HEAD
 ### Access Keys
-=======
-### Amazon AccessKeys
->>>>>>> 5863536ce85956a9c9e33c66a4c3da3dd9dd00ec
 ```bash
 # ssh key
 pushd ~/.ssh
@@ -190,11 +154,7 @@ aws elb describe-load-balancers | jq '.LoadBalancerDescriptions[] | {DNSName: .D
 ## Kubernetes Cluster
 ```bash
 export KOPS_STATE_STORE=s3://kops-state-store-nalbam-seoul
-<<<<<<< HEAD
 export KOPS_CLUSTER_NAME=hands-on.k8s.local
-=======
-export KOPS_CLUSTER_NAME=awskrug-handson.k8s.local
->>>>>>> 5863536ce85956a9c9e33c66a4c3da3dd9dd00ec
 
 # aws s3 bucket for state store
 aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
@@ -268,12 +228,9 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/sample-web.yml
 
 ## Addons
 
-<<<<<<< HEAD
 * Dashboard
 * Heapster
 
-=======
->>>>>>> 5863536ce85956a9c9e33c66a4c3da3dd9dd00ec
 ---
 
 ### Dashboard
@@ -319,11 +276,8 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
 
 ## Pipeline
 
-<<<<<<< HEAD
 * Jenkins X
 
-=======
->>>>>>> 5863536ce85956a9c9e33c66a4c3da3dd9dd00ec
 ---
 
 ### Jenkins X
