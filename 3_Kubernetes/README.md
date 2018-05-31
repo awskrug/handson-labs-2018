@@ -170,9 +170,7 @@ kubectl, kops, helm, jenkins-x, awscli 를 설치 합니다.
 ### Access Keys
 ```bash
 # ssh key
-pushd ~/.ssh
-ssh-keygen -f id_rsa -N ''
-popd
+ssh-keygen -q -f ~/.ssh/id_rsa -N ''
 
 # aws region
 aws configure set default.region ap-northeast-2
