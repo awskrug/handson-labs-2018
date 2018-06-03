@@ -6,7 +6,7 @@
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-* [Information](#information)
+* [Topic](#topic)
 * [Prerequisites](#prerequisites)
 * [Kubernetes Cluster](#kubernetes-cluster)
 * [Addons](#addons)
@@ -16,12 +16,21 @@
 
 ---
 
-## Information
+## Topic
 
 * Kubernetes
 * Kops
 * Jenkins X
 * Helm
+
+---
+
+### Basic Knowledge
+
+* Kubernetes 를 들어봤다.
+* AWS 에 인스턴스를 만들어 봤다.
+* SSH 로 접속을 할수 있다.
+* 필요 계정 : AWS, Github
 
 ---
 
@@ -82,14 +91,13 @@ Note:
 
 ### AWS EC2 - Key Pairs
 ```bash
-# create key pair
-aws ec2 create-key-pair \
-    --key-name hands-on \
-    | grep "BEGIN RSA PRIVATE KEY" \
-    | cut -d'"' -f4 \
-    | sed 's/\\n/\n/g' \
-    > ~/.ssh/hands-on.pem
-chmod 600 ~/.ssh/hands-on.pem
+# create key-pair
+ssh-keygen -q -f ~/.ssh/id_rsa -N ''
+
+# import key-pair
+aws ec2 import-key-pair \
+    --key-name 'hands-on' \
+    --public-key-material file://~/.ssh/id_rsa.pub
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
 
@@ -103,9 +111,9 @@ Note:
 ```bash
 # create Ubuntu Server 16.04 LTS
 aws ec2 run-instances \
-    --image-id ami-191cb577 \
-    --instance-type t2.micro \
-    --key-name hands-on
+    --image-id 'ami-191cb577' \
+    --instance-type 't2.micro' \
+    --key-name 'hands-on'
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
 
@@ -130,8 +138,8 @@ Note:
 ### Ubuntu (5m)
 ```bash
 # connect
-BASTION=
-ssh -i ~/.ssh/hands-on.pem ubuntu@${BASTION}
+BASTION="<PUBLIC-IP>"
+ssh ubuntu@${BASTION}
 
 # kubectl (1m)
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
