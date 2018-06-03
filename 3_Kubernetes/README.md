@@ -6,7 +6,7 @@
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-* [Information](#information)
+* [Topic](#topic)
 * [Prerequisites](#prerequisites)
 * [Kubernetes Cluster](#kubernetes-cluster)
 * [Addons](#addons)
@@ -16,12 +16,21 @@
 
 ---
 
-## Information
+## Topic
 
 * Kubernetes
 * Kops
 * Jenkins X
 * Helm
+
+---
+
+### Basic Knowledge
+
+* Kubernetes 를 들어봤다.
+* AWS 에 인스턴스를 만들어 봤다.
+* SSH 로 접속을 할수 있다.
+* 필요 계정 : AWS, Github
 
 ---
 
@@ -58,7 +67,7 @@
 - Used in Jenkins X
 
 Note:
-- Jenkins X 에서 빌드된 이미지릐 버전 관리를 위하여 사용 됩니다.
+- Jenkins X 에서 빌드된 이미지의 버전 관리를 위하여 사용 됩니다.
 - 우리가 직접 하용하지는 않지만 우선 설치 해 줍니다.
 
 ---
@@ -82,14 +91,13 @@ Note:
 
 ### AWS EC2 - Key Pairs
 ```bash
-# create key pair
-aws ec2 create-key-pair \
-    --key-name hands-on \
-    | grep "BEGIN RSA PRIVATE KEY" \
-    | cut -d'"' -f4 \
-    | sed 's/\\n/\n/g' \
-    > ~/.ssh/hands-on.pem
-chmod 600 ~/.ssh/hands-on.pem
+# create key-pair
+ssh-keygen -q -f ~/.ssh/hands-on -C 'hands-on' -N ''
+
+# import key-pair
+aws ec2 import-key-pair \
+    --key-name 'hands-on' \
+    --public-key-material file://~/.ssh/hands-on.pub
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
 
@@ -101,11 +109,16 @@ Note:
 
 ### AWS EC2 - Ubuntu Instance
 ```bash
+aws ec2 create-security-group --group-name 'ssh' --description 'hands-on'
+
+aws ec2 authorize-security-group-ingress --group-name 'ssh' --protocol tcp --port 22 --cidr 0.0.0.0/0
+
 # create Ubuntu Server 16.04 LTS
 aws ec2 run-instances \
-    --image-id ami-191cb577 \
-    --instance-type t2.micro \
-    --key-name hands-on
+    --image-id 'ami-f030989e' \
+    --instance-type 't2.micro' \
+    --key-name 'hands-on' \
+    --security-groups 'ssh' 'default'
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
 
@@ -130,8 +143,8 @@ Note:
 ### Ubuntu (5m)
 ```bash
 # connect
-BASTION=
-ssh -i ~/.ssh/hands-on.pem ubuntu@${BASTION}
+export BASTION=$(aws ec2 describe-instances | jq '.Reservations[].Instances[] | select(.KeyName == "hands-on")' | grep PublicIpAddress | cut -d'"' -f4)
+ssh -i ~/.ssh/hands-on ubuntu@${BASTION}
 
 # kubectl (1m)
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -199,8 +212,8 @@ Note:
 
 ## Kubernetes Cluster
 ```bash
-export KOPS_STATE_STORE=s3://terraform-nalbam-seoul
 export KOPS_CLUSTER_NAME=hands-on.k8s.local
+export KOPS_STATE_STORE=s3://terraform-awskrug-nalbam-seoul
 
 # aws s3 bucket for state store
 aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
@@ -221,7 +234,7 @@ kops create cluster \
 Note:
 - 클러스터 이름을 세팅하고, 클러스터 상태를 저장할 S3 Bucket 을 만들어 줍니다.
 - 마스터 1대, 노드 2대로 구성된 클러스터를 생성합니다.
-- 이때 아직 실제 클러스터는 만들어지지 않습니다.
+- 위 명령을 실행하면 실제 클러스터는 만들어지지 않습니다.
 
 ---
 
@@ -234,7 +247,7 @@ kops edit cluster --name=${KOPS_CLUSTER_NAME}
 
 Note:
 - 클러스터 정보를 조회 합니다.
-- Jenkins X 를 위하여 설정을 수정 합니다.
+- 나중에 사용할 Jenkins X 를 위하여 설정을 수정 합니다.
 
 ---
 
@@ -247,7 +260,7 @@ spec:
 ```
 
 Note:
-- Jenkins X 에서 사용할 Docker Registry 를 허용하도록 설정을 수정합니다.
+- Jenkins X 에서 사용할 내부 Docker Registry 를 허용하도록 보안설정을 입력합니다.
 
 ---
 
@@ -263,7 +276,7 @@ kops delete cluster --name=${KOPS_CLUSTER_NAME} --yes
 Note:
 - update 명력에 --yes 를 하면 실제 클러스터가 생성 됩니다.
 - validate 로 생성이 완료 되었는지 확인 할수 있습니다.
-- 대략 10여분이 소요 됩니다.
+- 클러스터 생성까지 대략 10여분이 소요 됩니다.
 
 ---
 
@@ -330,7 +343,7 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/dashboard.yml
 
 Note:
 - 대시보드를 생성합니다. 생성된 ELB 로 접속 할수 있습니다.
-- 로그인을 휘애 토큰을 조회 해서 붙여 넣습니다.
+- 로그인을 위해 Secret 에서 토큰을 조회 해서 붙여 넣습니다.
 - 접속해보면 권한 때문에 정상적으로 보이지 않을 겁니다. 권한 부여를 합니다.
 
 ---
