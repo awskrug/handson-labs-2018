@@ -58,7 +58,7 @@
 - Used in Jenkins X
 
 Note:
-- Jenkins X 에서 빌드된 이미지릐 버전 관리를 위하여 사용 됩니다.
+- Jenkins X 에서 빌드된 이미지의 버전 관리를 위하여 사용 됩니다.
 - 우리가 직접 하용하지는 않지만 우선 설치 해 줍니다.
 
 ---
@@ -199,8 +199,8 @@ Note:
 
 ## Kubernetes Cluster
 ```bash
-export KOPS_STATE_STORE=s3://terraform-nalbam-seoul
 export KOPS_CLUSTER_NAME=hands-on.k8s.local
+export KOPS_STATE_STORE=s3://terraform-awskrug-nalbam-seoul
 
 # aws s3 bucket for state store
 aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
@@ -221,7 +221,7 @@ kops create cluster \
 Note:
 - 클러스터 이름을 세팅하고, 클러스터 상태를 저장할 S3 Bucket 을 만들어 줍니다.
 - 마스터 1대, 노드 2대로 구성된 클러스터를 생성합니다.
-- 이때 아직 실제 클러스터는 만들어지지 않습니다.
+- 위 명령을 실행하면 실제 클러스터는 만들어지지 않습니다.
 
 ---
 
@@ -234,7 +234,7 @@ kops edit cluster --name=${KOPS_CLUSTER_NAME}
 
 Note:
 - 클러스터 정보를 조회 합니다.
-- Jenkins X 를 위하여 설정을 수정 합니다.
+- 나중에 사용할 Jenkins X 를 위하여 설정을 수정 합니다.
 
 ---
 
@@ -247,7 +247,7 @@ spec:
 ```
 
 Note:
-- Jenkins X 에서 사용할 Docker Registry 를 허용하도록 설정을 수정합니다.
+- Jenkins X 에서 사용할 내부 Docker Registry 를 허용하도록 보안설정을 입력합니다.
 
 ---
 
@@ -263,7 +263,7 @@ kops delete cluster --name=${KOPS_CLUSTER_NAME} --yes
 Note:
 - update 명력에 --yes 를 하면 실제 클러스터가 생성 됩니다.
 - validate 로 생성이 완료 되었는지 확인 할수 있습니다.
-- 대략 10여분이 소요 됩니다.
+- 클러스터 생성까지 대략 10여분이 소요 됩니다.
 
 ---
 
@@ -330,7 +330,7 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/dashboard.yml
 
 Note:
 - 대시보드를 생성합니다. 생성된 ELB 로 접속 할수 있습니다.
-- 로그인을 휘애 토큰을 조회 해서 붙여 넣습니다.
+- 로그인을 위해 Secret 에서 토큰을 조회 해서 붙여 넣습니다.
 - 접속해보면 권한 때문에 정상적으로 보이지 않을 겁니다. 권한 부여를 합니다.
 
 ---
