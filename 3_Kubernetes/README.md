@@ -58,8 +58,8 @@
 - Used in Jenkins X
 
 Note:
-Jenkins X 에서 빌드된 이미지릐 버전 관리를 위하여 사용 됩니다.
-우리가 직접 하용하지는 않지만 우선 설치 해 줍니다.
+- Jenkins X 에서 빌드된 이미지릐 버전 관리를 위하여 사용 됩니다.
+- 우리가 직접 하용하지는 않지만 우선 설치 해 줍니다.
 
 ---
 
@@ -75,8 +75,8 @@ Jenkins X 에서 빌드된 이미지릐 버전 관리를 위하여 사용 됩니
 * https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/home
 
 Note:
-CLI 를 이용하여 AWS 객체들을 사용하기 위하여 발급 받습니다.
-발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.
+- CLI 를 이용하여 AWS 객체들을 사용하기 위하여 발급 받습니다.
+- 발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.
 
 ---
 
@@ -94,8 +94,8 @@ chmod 600 ~/.ssh/hands-on.pem
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
 
 Note:
-생성된 Instance 에 접속하기 위하여 필요 합니다.
-쉘이 가능하신 분은 위의 명령어로 만들수 있습니다.
+- 생성된 Instance 에 접속하기 위하여 필요 합니다.
+- 쉘이 가능하신 분은 위의 명령어로 만들수 있습니다.
 
 ---
 
@@ -110,8 +110,8 @@ aws ec2 run-instances \
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
 
 Note:
-모두가 같은 환경에서 진행 할수 있도록 우분투 인스턴스를 생성 합니다.
-쉘이 가능하신 분은 위의 명령어로 만들수 있습니다.
+- 모두가 같은 환경에서 진행 할수 있도록 우분투 인스턴스를 생성 합니다.
+- 쉘이 가능하신 분은 위의 명령어로 만들수 있습니다.
 
 ---
 
@@ -123,7 +123,7 @@ brew install awscli kubectl kops jx jq
 * https://brew.sh/index_ko
 
 Note:
-맥 이라면 홈브루를 이용하여 쉽게 설치/실행 할수 있으나, 우리는 우분투에서 진행 하기로 합니다.
+- 맥 이라면 홈브루를 이용하여 쉽게 설치/실행 할수 있으나, 우리는 우분투에서 진행 하기로 합니다.
 
 ---
 
@@ -161,18 +161,16 @@ sudo apt install -y awscli jq
 ```
 
 Note:
-생성한 우분투에 접속 합니다.
-kubectl, kops, helm, jenkins-x, awscli 를 설치 합니다.
-추가적으로 jq 를 설치 합니다. json 을 쉽게 파싱 할수 있도록 도와 줍니다.
+- 생성한 우분투에 접속 합니다.
+- kubectl, kops, helm, jenkins-x, awscli 를 설치 합니다.
+- 추가적으로 jq 를 설치 합니다. json 을 쉽게 파싱 할수 있도록 도와 줍니다.
 
 ---
 
 ### Access Keys
 ```bash
 # ssh key
-pushd ~/.ssh
-ssh-keygen -f id_rsa -N ''
-popd
+ssh-keygen -q -f ~/.ssh/id_rsa -N ''
 
 # aws region
 aws configure set default.region ap-northeast-2
@@ -192,10 +190,10 @@ aws elb describe-load-balancers | jq '.LoadBalancerDescriptions[] | {DNSName: .D
 ```
 
 Note:
-ssh 키를 생성합니다. 클러스터 내에서 서로 접속 하기 위하여 필요 합니다.
-aws cli 를 사용하여 리전을 서울로 설정 합니다.
-그리고 위에서 발급된 access key 를 넣어줍니다.
-아래 두개의 쉘은 인스턴스 목록과 ELB 목록을 조회 하여 필요한 정보만 보여줍니다.
+- ssh 키를 생성합니다. 클러스터 내에서 서로 접속 하기 위하여 필요 합니다.
+- aws cli 를 사용하여 리전을 서울로 설정 합니다.
+- 그리고 위에서 발급된 access key 를 넣어줍니다.
+- 아래 두개의 쉘은 인스턴스 목록과 ELB 목록을 조회 하여 필요한 정보만 보여줍니다.
 
 ---
 
@@ -221,9 +219,9 @@ kops create cluster \
 ```
 
 Note:
-클러스터 이름을 세팅하고, 클러스터 상태를 저장할 S3 Bucket 을 만들어 줍니다.
-마스터 1대, 노드 2대로 구성된 클러스터를 생성합니다.
-이때 아직 실제 클러스터는 만들어지지 않습니다.
+- 클러스터 이름을 세팅하고, 클러스터 상태를 저장할 S3 Bucket 을 만들어 줍니다.
+- 마스터 1대, 노드 2대로 구성된 클러스터를 생성합니다.
+- 이때 아직 실제 클러스터는 만들어지지 않습니다.
 
 ---
 
@@ -235,8 +233,8 @@ kops edit cluster --name=${KOPS_CLUSTER_NAME}
 ```
 
 Note:
-클러스터 정보를 조회 합니다.
-Jenkins X 를 위하여 설정을 수정 합니다.
+- 클러스터 정보를 조회 합니다.
+- Jenkins X 를 위하여 설정을 수정 합니다.
 
 ---
 
@@ -249,7 +247,7 @@ spec:
 ```
 
 Note:
-Jenkins X 에서 사용할 Docker Registry 를 허용하도록 설정을 수정합니다.
+- Jenkins X 에서 사용할 Docker Registry 를 허용하도록 설정을 수정합니다.
 
 ---
 
@@ -263,9 +261,9 @@ kops delete cluster --name=${KOPS_CLUSTER_NAME} --yes
 ```
 
 Note:
-update 명력에 --yes 를 하면 실제 클러스터가 생성 됩니다.
-validate 로 생성이 완료 되었는지 확인 할수 있습니다.
-대략 10여분이 소요 됩니다.
+- update 명력에 --yes 를 하면 실제 클러스터가 생성 됩니다.
+- validate 로 생성이 완료 되었는지 확인 할수 있습니다.
+- 대략 10여분이 소요 됩니다.
 
 ---
 
@@ -281,8 +279,8 @@ kubectl get deploy,pod,svc,job -n default
 ```
 
 Note:
-클러스터 정보와 만들어진 객체들을 조회 할수 있습니다.
--w 옵션으로 2초마다 리로드 하도록 할수 있습니다.
+- 클러스터 정보와 만들어진 객체들을 조회 할수 있습니다.
+- -w 옵션으로 2초마다 리로드 하도록 할수 있습니다.
 
 ---
 
@@ -300,8 +298,8 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/sample-web.yml
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers
 
 Note:
-샘플 깃을 클론하고, 샘플 웹을 하나 생성해 봅니다.
-Pod 와 Service 가 만들어졌고, AWS 에서 만들었으므로 ELB 도 생겼습니다.
+- 샘플 깃을 클론하고, 샘플 웹을 하나 생성해 봅니다.
+- Pod 와 Service 가 만들어졌고, AWS 에서 만들었으므로 ELB 도 생겼습니다.
 
 ---
 
@@ -331,9 +329,9 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/dashboard.yml
 * https://github.com/kubernetes/dashboard/
 
 Note:
-대시보드를 생성합니다. 생성된 ELB 로 접속 할수 있습니다.
-로그인을 휘애 토큰을 조회 해서 붙여 넣습니다.
-접속해보면 권한 때문에 정상적으로 보이지 않을 겁니다. 권한 부여를 합니다.
+- 대시보드를 생성합니다. 생성된 ELB 로 접속 할수 있습니다.
+- 로그인을 휘애 토큰을 조회 해서 붙여 넣습니다.
+- 접속해보면 권한 때문에 정상적으로 보이지 않을 겁니다. 권한 부여를 합니다.
 
 ---
 
@@ -353,9 +351,9 @@ kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
 * https://github.com/kubernetes/heapster/
 
 Note:
-대시보드 로는 충분한 정보를 볼수 잆습니다. 예를 들면 CPU, Memory 사용량 같은것들...
-힙스터를 설치하고 잠시 기다리면 정보가 수집되고, 대시보드에 보여집니다.
-참고로 힙스터는 현재 DEPRECATED 되었습니다.
+- 대시보드 로는 충분한 정보를 볼수 잆습니다. 예를 들면 CPU, Memory 사용량 같은것들...
+- 힙스터를 설치하고 잠시 기다리면 정보가 수집되고, 대시보드에 보여집니다.
+- 참고로 힙스터는 현재 DEPRECATED 되었습니다.
 
 ---
 
