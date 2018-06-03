@@ -92,12 +92,12 @@ Note:
 ### AWS EC2 - Key Pairs
 ```bash
 # create key-pair
-ssh-keygen -q -f ~/.ssh/id_rsa -N ''
+ssh-keygen -q -f ~/.ssh/hands-on -C 'hands-on' -N ''
 
 # import key-pair
 aws ec2 import-key-pair \
     --key-name 'hands-on' \
-    --public-key-material file://~/.ssh/id_rsa.pub
+    --public-key-material file://~/.ssh/hands-on.pub
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
 
@@ -109,11 +109,16 @@ Note:
 
 ### AWS EC2 - Ubuntu Instance
 ```bash
+aws ec2 create-security-group --group-name 'ssh' --description 'hands-on'
+
+aws ec2 authorize-security-group-ingress --group-name 'ssh' --protocol tcp --port 22 --cidr 0.0.0.0/0
+
 # create Ubuntu Server 16.04 LTS
 aws ec2 run-instances \
-    --image-id 'ami-191cb577' \
+    --image-id 'ami-f030989e' \
     --instance-type 't2.micro' \
-    --key-name 'hands-on'
+    --key-name 'hands-on' \
+    --security-groups 'ssh' 'default'
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
 
@@ -138,8 +143,8 @@ Note:
 ### Ubuntu (5m)
 ```bash
 # connect
-BASTION="<PUBLIC-IP>"
-ssh ubuntu@${BASTION}
+export BASTION=$(aws ec2 describe-instances | jq '.Reservations[].Instances[] | select(.KeyName == "hands-on")' | grep PublicIpAddress | cut -d'"' -f4)
+ssh -i ~/.ssh/hands-on ubuntu@${BASTION}
 
 # kubectl (1m)
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
