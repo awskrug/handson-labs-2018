@@ -41,3 +41,8 @@ Default output format [None]: json
 - python3.6 설정 : 설정 > Project Settings > Python Suppoert > Python Version -> python3.6으로 변경
 - 서울 리전 설정 : 설정 > AWS Settings > AWS > Region -> Asia Pacific(Seoul)로 변경
 - git clone : `git clone https://github.com/wesky93/handson-labs-2018.git && cd handson-labs-2018/serverless_datalake`
+
+5. 개발환경 구축
+- `python3 -m venv .venv`
+- `.venv/bin/activate`
+- `pip install -r requierments.txt`
