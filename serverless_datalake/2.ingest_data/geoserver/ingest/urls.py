@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.urls import path
 
-from .views import CsvUploadView, reset_csv_s3, reset_shp_s3
+from .views import CsvUploadView, ShpUploadView, reset_csv_s3, reset_shp_s3
 
 urlpatterns = [
     path('csv/reset', reset_csv_s3, name="s3_csv_reset"),
     path('shp/reset', reset_shp_s3, name="s3_shp_reset"),
-    path('csv/', CsvUploadView.as_view(),name="csv_upload"),
-    
+    path('csv/', CsvUploadView.as_view(), name="csv_upload"),
+    path('shp/', ShpUploadView.as_view(), name="shp_upload"),
 ]

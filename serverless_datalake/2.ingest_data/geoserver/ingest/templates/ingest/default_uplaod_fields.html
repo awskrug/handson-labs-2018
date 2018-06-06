@@ -1,0 +1,57 @@
+<div class="ui attached segment">
+    <div class="required field">
+        <label>업로더 이름</label>
+        <input type="text" name="uploader" maxlength="10" required="" id="id_uploader"
+               placeholder="{{ form.uploader.help_text }}">
+        {% if form.uploader.errors %}
+            <div class="ui negative message">
+                {{ form.uploader.errors }}
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div class="ui attached segment">
+    <div class="required field">
+        <label>자료 설명</label>
+        <input type="text" name="description" maxlength="50" required="" id="id_description"
+               placeholder="{{ form.description.help_text }}">
+        {% if form.description.errors %}
+            <div class="ui negative message">
+                {{ form.description.errors }}
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div class="ui attached segment">
+
+    <div class="required calendar field">
+        <label>조사 날짜</label>
+        <div class="ui calendar" id="dateselect">
+            <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" name="research_date" required="" id="id_research_date">
+            </div>
+        </div>
+
+        {% if form.research_date.errors %}
+            <div class="ui negative message">
+                {{ form.research_date.errors }}
+            </div>
+        {% endif %}
+    </div>
+</div>
+<script type="text/javascript">
+    $('#dateselect').calendar({
+        monthFirst: false,
+        type: 'date',
+        formatter: {
+            date: function (date, settings) {
+                if (!date) return '';
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                return year + '/' + month + '/' + day;
+            }
+        }
+    });
+</script>

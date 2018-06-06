@@ -2,21 +2,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
-</head>
-<body>
-
-
-<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
-</body>
-</html>
-<html lang="kr">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
     <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css"
+          rel="stylesheet" type="text/css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dropzone@5.4.0/dist/dropzone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
     <style type="text/css">
         h1 {
             text-align: center;
@@ -26,7 +20,7 @@
             padding: 0px !important;
         }
 
-        input.upload_file {
+        input[type="file"] {
             padding-bottom: 30px !important;
             padding-top: 30px !important;
             padding-left: 30px !important;
@@ -42,11 +36,11 @@
              width=450 height=75>
 
         <div class="right  menu">
-            <a class="item" href="#">
+            <a class="item" href="{% url "csv_upload" %}">
                 <i class="file archive icon"></i>
                 csv 업로드
             </a>
-            <a class="item" href="#">
+            <a class="item" href="{% url "shp_upload" %}">
                 <i class="archive icon"></i>
                 shp 업로드
             </a>
@@ -68,7 +62,5 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/dropzone@5.4.0/dist/dropzone.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
 </body>
 </html>
