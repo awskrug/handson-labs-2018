@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block body %}
+    <form class="ui form" enctype="multipart/form-data" action="/ingest/csv/" method="post">
+        {% csrf_token %}
+        <div class="ui top attached header">
+            <h1>탐방로 수목 조사자료 업로드(csv)</h1>
+
+        </div>
+        <div class="ui three top attached steps">
+            <div class="active step">
+                <i class="truck icon"></i>
+                <div class="content">
+                    <div class="title">geoserver</div>
+                    <div class="description">형식 확인후 csv폴더에 자료 업로드</div>
+                </div>
+            </div>
+            <div class="step">
+                <i class="payment icon"></i>
+                <div class="content">
+                    <div class="title">s3</div>
+                    <div class="description">파일 추가시 람다 트리거 발생</div>
+                </div>
+            </div>
+            <div class="step">
+                <i class="info icon"></i>
+                <div class="content">
+                    <div class="title">람다</div>
+                    <div class="description">
+                        자료를 shp로 변환후 shp폴더 저장<br>
+                        및 DDB에 csv 파일 색인 추가
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui attached segment">
+            <div class="field">
+                <label>업로더 이름</label>
+                <input type="text" name="uploader" maxlength="10" required="" id="id_uploader"
+                       placeholder="{{ form.uploader.help_text }}">
+                {% if form.uploader.errors %}
+                    <div class="ui error message">
+                        {{ form.uploader.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="ui attached segment">
+            <div class="field">
+                <label>자료 설명</label>
+                <input type="text" name="description" maxlength="50" required="" id="id_description"
+                       placeholder="{{ form.description.help_text }}">
+                {% if form.description.errors %}
+                    <div class="ui error message">
+                        {{ form.description.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="ui attached segment">
+            <a class="ui teal ribbon label">gps 좌표 csv</a>
+            <span>아래에 파일을 드래그 엔 드롭 하세요</span>
+            {% if form.point_csv.errors %}
+                <div class="ui error message">
+                    <div class="header">올바른 파일을 선택하세요</div>
+                    {{ form.point_csv.errors }}
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="ui attached file_input segment">
+
+            <input class="upload_file" type="file" name="point_csv" required id="id_point_csv"/>
+        </div>
+
+        <div class="ui attached segment">
+            <a class="ui blue ribbon label">수목정보 csv</a>
+            <span>아래에 파일을 드래그 엔 드롭 하세요</span>
+            {% if form.info_csv.errors %}
+                <div class="ui error message">
+                    <div class="header">올바른 파일을 선택하세요</div>
+                    {{ form.info_csv.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="ui attached file_input segment">
+            <input class="upload_file" type="file" name="info_csv" required id="id_info_csv"/>
+        </div>
+        <div class="ui bottom attached clearing segment">
+            {% if sucess %}
+                <div class="ui success message">
+                    <div class="header">gis datalake에 성공적으로 저장 되었습니다</div>
+                </div>
+            {% endif %}
+            {% if reset_sucess %}
+                <div class="ui success message">
+                    <div class="header">{{ reset_sucess }} </div>
+                    <li><a href="{{ s3_console_url }}">s3 확인해보기</a></li>
+                    <li><a href="{{ ddb_console_url }}">DDB 확인해보기</a></li>
+                </div>
+            {% endif %}
+
+            <div class="ui right floated buttons">
+                <button class="ui button" type="reset">
+                    <i class="undo icon"></i>다시하기
+                </button>
+                <div class="or"></div>
+                <button class="ui primary button" type="submit">
+                    <i class="cloud upload icon"></i>업로드
+                </button>
+
+            </div>
+            <a href="{% url 's3_csv_reset' %}" class="ui button">s3 초기화</a>
+        </div>
+    </form>
+{% endblock %}

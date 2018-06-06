@@ -1,0 +1,74 @@
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+</head>
+<body>
+
+
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+</body>
+</html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+    <style type="text/css">
+        h1 {
+            text-align: center;
+        }
+
+        .segment.file_input {
+            padding: 0px !important;
+        }
+
+        input.upload_file {
+            padding-bottom: 30px !important;
+            padding-top: 30px !important;
+            padding-left: 30px !important;
+            width: 100% !important;
+        }
+
+    </style>
+</head>
+<body>
+{% block navi %}
+    <div class="ui labeled icon menu">
+        <img src="https://d1.awsstatic.com/International/ko_KR/banners/Hands-on%20Labs%20LP%20Banner.04c83ecb7c16f458e5723909ee1301e43453ee6b.png"
+             width=450 height=75>
+
+        <div class="right  menu">
+            <a class="item" href="#">
+                <i class="file archive icon"></i>
+                csv 업로드
+            </a>
+            <a class="item" href="#">
+                <i class="archive icon"></i>
+                shp 업로드
+            </a>
+            <a class="item" href="#">
+                <i class="cloud upload icon"></i>
+                스트리밍
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+
+<div class="ui centered grid">
+    <div class="one wide column"></div>
+    <div class="twelve wide column">
+        {% block body %}{% endblock %}
+    </div>
+    <div class="one wide column"></div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/dropzone@5.4.0/dist/dropzone.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+</body>
+</html>
