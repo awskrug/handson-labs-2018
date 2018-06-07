@@ -1,5 +1,7 @@
 # Kubernetes Hands-on
 
+* https://github.com/nalbam/demo/blob/master/201806/Kubernetes/README.md
+
 ---
 
 ## Index
