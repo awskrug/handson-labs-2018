@@ -22,7 +22,7 @@
 
 ## 실습 시작
 
-우선 개발환경(`petclinic dev` ec2 인스턴스 - `/home/ec2-user/workspace`)에 fork한 petclinic-rest, petclinic-front를 clone한다. 
+우선 개발환경(`petclinic dev` ec2 인스턴 - `/home/ec2-user/workspace`)에 fork한 petclinic-rest, petclinic-front를 clone한다. 
 
 
 ### EC2 배포하기
@@ -62,22 +62,34 @@
     
 
 ### 프론트앤드 S3에 배포하기
-working dir : petclinic-front 
+1. vs code로 개발환경 접속
+    ![](./images/ftp-simple-1.png)
+    ![](./images/ftp-simple-2.png)
+    ![](./images/ftp-simple-3.png)
+
 
 1. 배포스크립트 수정
 
-    package.json에 deploy:s3 스크립트에서 bucket 명을 자신의 버켓명으로 수정한다.
+    package.json에 deploy:s3 스크립트에서 bucket 명을 prerequisites에서 만든 자신의 버켓명으로 수정한다.
+    ```json
+    ...
+    "deploy:s3": "npm run build && aws s3 cp dist/ s3://{your-bucket-name} --recursive"
+    ...
+    ```
 1. api host 수정
     src/services/restService.js 에서 서비스 호스트를 배포된 호스트로 변경한다.
     ```js
     const serviceHost = 'http://your-public-ip:9460'
     ```
-1. npm install
-1. npm run deploy:s3
+1. ssh로 개발환경 접속
+1. 배포
+    ```bash
+    cd /home/ec2-user/workspace/petclinic-front/
+    npm install
+    npm run deploy:s3
+    ```
 1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com 에 접속하여 확인한다.
 1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com/#/staff 에 접속하여 수의사 리스트가 나오는지 확인한다.
-
-
 
 ### :coffee: coffee break
 ec2에 백앤드 서비스를 배포해 보았다. 간단하지만 단점들이 존재한다.
@@ -85,6 +97,7 @@ ec2에 백앤드 서비스를 배포해 보았다. 간단하지만 단점들이 
 #### 단점
 - 인스턴스를 매번 띄우고 멈추는 관리가 필요하다.
 - 인스턴스에 내가 원하는 배포환경으로 설치해주어야 한다.
+- 롤링 업데이트는 어떻게 해야하나...
 
 
 ### ecs cli를 이용하여 배포하기
