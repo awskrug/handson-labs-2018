@@ -10,7 +10,7 @@
     원할한 실습을 위해서 키페어 이름은 petclinic으로 통일합니다.
     ![](./images/ec2-keypair.png)
     
-1. java8 업그레이드, git 설치, node js 설치
+1. java8 업그레이드, git 설치, node js, jq 설치
     ```bash
     # upgrade java8
     sudo yum install -y java-1.8.0-openjdk-devel.x86_64
@@ -24,7 +24,24 @@
     #install nodejs
     curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
     sudo yum -y install nodejs
+
+    # install jq 
+    sudo yum -y install jq
     ```
+    
+1. docker 설치
+    ```bash
+    sudo yum update -y
+    sudo yum install -y docker
+    sudo usermod -a -G docker $USER
+    exit
+    ```
+    다시 ssh 접속
+    ```bash
+    sudo service docker start
+    docker ps
+    ```
+ 
 1. ecs-cli 설치
     ```bash
     sudo curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest
