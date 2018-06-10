@@ -22,10 +22,44 @@
 
 ## 실습 시작
 
-우선 개발환경에 fork한 petclinic-rest, petclinic-front를 clone한다. 
+우선 개발환경(`petclinic dev` ec2 인스턴스 - `/home/ec2-user/workspace`)에 fork한 petclinic-rest, petclinic-front를 clone한다. 
+
 
 ### EC2 배포하기
-TBL
+
+1. Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - t2.micro 인스턴스를 하나 실행시킵니다. 이 인스턴스의 이름은 `petclinic ec2` 입니다. 
+    
+    ***보안 그룹***
+    ![](./images/ec2-sg.png)
+    ***키페어 이름 - petclinic***
+    ![](./images/ec2-keypair.png)
+1. `petclinc ec2` 인스턴스의 java 버전을 8로 업그레이드 합니다. (관련 링크 : http://jojoldu.tistory.com/261)
+    ```bash
+    sudo yum install -y java-1.8.0-openjdk-devel.x86_64
+    sudo /usr/sbin/alternatives --config java
+    sudo yum remove java-1.7.0-openjdk
+    javac -version
+    ```
+1. `petclinic ec2` 인스턴스에 git을 설치합니다.
+    ```bash
+    sudo yum install git
+    ```
+
+1. 배포 
+    ```bash 
+    git clone https://github.com/{your-github-name}/petclinic-rest
+    cd petclinic-rest
+    ./mvnw spring-boot:run
+    ```
+
+1. 확인 하기
+
+     - 브라우저에서 `http://your-public-ip:9460/actuator/health` 접속하여 확인
+     - 브라우저에서 `http://your-public-ip:9460/vets`(수의사 리스트 API) 접속하여 확인
+     
+     ![](./images/ec2-deploy-check.png)
+    
+    
 
 ### 프론트앤드 S3에 배포하기
 working dir : petclinic-front 
@@ -36,17 +70,27 @@ working dir : petclinic-front
 1. api host 수정
     src/services/restService.js 에서 서비스 호스트를 배포된 호스트로 변경한다.
     ```js
-    const serviceHost = 'http://13.12.1.42:9460'
+    const serviceHost = 'http://your-public-ip:9460'
     ```
 1. npm install
 1. npm run deploy:s3
-1. http://{버켓명}.s3-website.ap-northeast-2.amazonaws.com 에 들어가서 확인한다.
+1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com 에 접속하여 확인한다.
+1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com/#/staff 에 접속하여 수의사 리스트가 나오는지 확인한다.
+
+
+
+### :coffee: coffee break
+ec2에 백앤드 서비스를 배포해 보았다. 간단하지만 단점들이 존재한다.
+
+#### 단점
+- 인스턴스를 매번 띄우고 멈추는 관리가 필요하다.
+- 인스턴스에 내가 원하는 배포환경으로 설치해주어야 한다.
+
 
 ### ecs cli를 이용하여 배포하기
 working dir : petclinic-rest
 
 1. create and push ecr
-
     ```bash
     ./1_create_and_push_ecr.sh
     ```
