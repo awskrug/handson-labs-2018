@@ -1,7 +1,5 @@
 # Kubernetes Hands-on
 
-* See: https://github.com/nalbam/docs/blob/master/201806/Kubernetes/README.md
-
 ---
 
 ## Index
@@ -9,21 +7,12 @@
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 * [Topic](#topic)
-* [Prerequisites](#prerequisites)
-* [Kubernetes Cluster](#kubernetes-cluster)
+* [Bastion](#bastion)
+* [Cluster](#cluster)
 * [Addons](#addons)
 * [Pipeline](#pipeline)
 
 <!-- /TOC -->
-
----
-
-## Topic
-
-* Kubernetes
-* Kops
-* Jenkins X
-* Helm
 
 ---
 
@@ -33,6 +22,15 @@
 * AWS 에 인스턴스를 만들어 봤다.
 * SSH 로 접속을 할수 있다.
 * 필요 계정 : AWS, Github
+
+---
+
+## Topic
+
+* Kubernetes
+* Kops
+* Jenkins X
+* Helm
 
 ---
 
@@ -74,7 +72,7 @@ Note:
 
 ---
 
-## Prerequisites
+## Bastion
 
 * AWS IAM - Access keys
 * AWS EC2 - Key Pairs
@@ -171,8 +169,11 @@ export VERSION=$(curl -s https://api.github.com/repos/jenkins-x/jx/releases/late
 curl -L https://github.com/jenkins-x/jx/releases/download/${VERSION}/jx-linux-amd64.tar.gz | tar xzv 
 sudo mv jx /usr/local/bin/jx
 
-# awscli (1m)
-sudo apt install -y awscli jq
+# pip & jq
+sudo apt install -y python-pip jq
+
+# awscli
+pip install --upgrade --user awscli
 ```
 
 Note:
@@ -214,7 +215,7 @@ Note:
 
 ## Kubernetes Cluster
 ```bash
-export KOPS_CLUSTER_NAME=hands-on.k8s.local
+export KOPS_CLUSTER_NAME=awskrug.k8s.local
 export KOPS_STATE_STORE=s3://terraform-awskrug-nalbam-seoul
 
 # aws s3 bucket for state store
@@ -240,8 +241,10 @@ Note:
 
 ---
 
-## Kubernetes Cluster
+## Cluster
 ```bash
+export KOPS_CLUSTER_NAME=awskrug.k8s.local
+
 kops get cluster --name=${KOPS_CLUSTER_NAME}
 
 kops edit cluster --name=${KOPS_CLUSTER_NAME}
@@ -268,6 +271,8 @@ Note:
 
 ## Create Cluster
 ```bash
+export KOPS_CLUSTER_NAME=awskrug.k8s.local
+
 kops update cluster --name=${KOPS_CLUSTER_NAME} --yes
 
 kops validate cluster --name=${KOPS_CLUSTER_NAME}
@@ -301,14 +306,11 @@ Note:
 
 ### sample
 ```bash
-# get source
-git clone https://github.com/awskrug/handson-labs-2018
-
 # install
-kubectl apply -f handson-labs-2018/3_Kubernetes/sample-web.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-web.yml
 
 # delete
-kubectl delete -f handson-labs-2018/3_Kubernetes/sample-web.yml
+kubectl delete -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-web.yml
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers
 
@@ -329,7 +331,7 @@ Note:
 Kubernetes Dashboard is a general purpose, web-based UI for Kubernetes clusters.
 ```bash
 # install
-kubectl apply -f handson-labs-2018/3_Kubernetes/dashboard.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/template/dashboard.yml
 
 # get dashboard token
 kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep kubernetes-dashboard-token | awk '{print $1}')
@@ -339,7 +341,7 @@ kubectl create clusterrolebinding cluster-admin:kube-system:kubernetes-dashboard
 kubectl get clusterrolebindings | grep cluster-admin
 
 # delete
-kubectl delete -f handson-labs-2018/3_Kubernetes/dashboard.yml
+kubectl delete -f https://raw.githubusercontent.com/nalbam/kubernetes/master/template/dashboard.yml
 ```
 * https://github.com/kubernetes/dashboard/
 
@@ -354,14 +356,14 @@ Note:
 Heapster enables Container Cluster Monitoring and Performance Analysis for Kubernetes - DEPRECATED
 ```bash
 # install
-kubectl apply -f handson-labs-2018/3_Kubernetes/heapster.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/template/heapster.yml
 
 # monitoring
 kubectl top pod --all-namespaces
 kubectl top pod -n kube-system
 
 # delete
-kubectl delete -f handson-labs-2018/3_Kubernetes/heapster.yml
+kubectl delete -f https://raw.githubusercontent.com/nalbam/kubernetes/master/template/heapster.yml
 ```
 * https://github.com/kubernetes/heapster/
 
