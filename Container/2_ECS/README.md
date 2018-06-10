@@ -8,22 +8,21 @@
 
 ## Index
 
-1. EC2 배포하기
-1. 프론트앤드 S3에 배포하기
+1. Prerequisites
+1. EC2 + S3로 서비스 배포하기
 1. ecs web console을 이용하여 배포하기
 1. ecs cli를 이용하여 배포하기
 1. CI / CD 파이프라인 구축하기
 1. spring config server 배포하기
 
 ## Prerequisites
-실습전에 준비해야할 사항들입니다. 아래 링크에서 꼭 확인해주세요!
+실습전에 준비해야할 사항들입니다
 
-[링크](./prerequisites.md)
+1. `github` 계정, `aws` 계정
+1. 개발환경 설정 : [링크 DEV_ENV.md](DEV_ENV.md)
+1. 우선 개발환경에 fork한 petclinic-rest, petclinic-front를 clone
 
-## 실습 시작
-
-우선 개발환경(`petclinic dev` ec2 인스턴 - `/home/ec2-user/workspace`)에 fork한 petclinic-rest, petclinic-front를 clone한다. 
-
+## EC2 + S3로 서비스 배포하기
 
 ### EC2 배포하기
 
@@ -62,34 +61,47 @@
     
 
 ### 프론트앤드 S3에 배포하기
+
+1. 버켓 만들기 
+    
+    이름은 중복되지 않도록 `${자신의 아이디}-petclinc-www` 로 짓는다. 
+    ![](./images/s3-bucket-www-1.png)
+    정적 웹사이트 호스팅 설정     
+    ![](./images/s3-bucket-www-2.png)
+    버켓 퍼블릭으로 설정
+    ![](./images/s3-bucket-www-3.png)
+
 1. vs code로 개발환경 접속
     ![](./images/ftp-simple-1.png)
     ![](./images/ftp-simple-2.png)
     ![](./images/ftp-simple-3.png)
 
-
-1. 배포스크립트 수정
-
-    package.json에 deploy:s3 스크립트에서 bucket 명을 prerequisites에서 만든 자신의 버켓명으로 수정한다.
-    ```json
-    ...
-    "deploy:s3": "npm run build && aws s3 cp dist/ s3://{your-bucket-name} --recursive"
-    ...
-    ```
-1. api host 수정
-    src/services/restService.js 에서 서비스 호스트를 배포된 호스트로 변경한다.
-    ```js
-    const serviceHost = 'http://your-public-ip:9460'
-    ```
-1. ssh로 개발환경 접속
+1. 코드 수정
+    1. 배포스크립트 수정
+    
+        package.json에 deploy:s3 스크립트에서 bucket 명을 prerequisites에서 만든 자신의 버켓명으로 수정한다.
+        ```json
+        ...
+        "deploy:s3": "npm run build && aws s3 cp dist/ s3://{your-bucket-name} --recursive"
+        ...
+        ```
+    1. api host 수정
+    
+        src/services/restService.js 에서 서비스 호스트를 배포된 호스트로 변경한다.
+        ```js
+        const serviceHost = 'http://your-public-ip:9460'
+        ```
 1. 배포
+    1. ssh로 개발환경 접속
+    1. 배포 스크립트 실행
     ```bash
     cd /home/ec2-user/workspace/petclinic-front/
     npm install
     npm run deploy:s3
     ```
-1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com 에 접속하여 확인한다.
-1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com/#/staff 에 접속하여 수의사 리스트가 나오는지 확인한다.
+1. 확인
+    1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com 에 접속하여 확인한다.
+    1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com/#/staff 에 접속하여 수의사 리스트가 나오는지 확인한다.
 
 ### :coffee: coffee break
 ec2에 백앤드 서비스를 배포해 보았다. 간단하지만 단점들이 존재한다.
@@ -99,6 +111,7 @@ ec2에 백앤드 서비스를 배포해 보았다. 간단하지만 단점들이 
 - 인스턴스에 내가 원하는 배포환경으로 설치해주어야 한다.
 - 롤링 업데이트는 어떻게 해야하나...
 
+## ECS를 이용하여 백앤드 배포하기
 
 ### ecs cli를 이용하여 배포하기
 working dir : petclinic-rest

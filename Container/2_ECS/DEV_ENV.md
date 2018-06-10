@@ -1,6 +1,4 @@
-# Prerequisites
-
-미리 필요한 것 : `github` 계정, `aws` 계정
+# 개발환경 구축
 
 ## ec2 + vscode 개발환경 구축
 개발환경을 통일하기 위해서 ec2 인스턴스를 실행하고 vscode로 구축합니다. 
@@ -56,17 +54,6 @@
     	}
     ]    
     ```
-
-## web hosting용 s3 bucket 만들기
-1. 버켓 만들기 
-    
-    이름은 중복되지 않도록 `${자신의 아이디}-petclinc-www` 로 짓는다. 
-    ![](./images/s3-bucket-www-1.png)
-1. 정적 웹사이트 호스팅 설정     
-    ![](./images/s3-bucket-www-2.png)
-1. 버켓 퍼블릭으로 설정
-    ![](./images/s3-bucket-www-3.png)
-
 
 ## 참고: cloud9으로 개발환경을 세팅하지 않은 이유
 
