@@ -7,9 +7,9 @@
     인스턴스 이름 : `petclinic ec2`
     
     ***보안 그룹***
-    ![](01_DEPLOY_EC2/ec2-sg.png)
+    ![](./images/ec2-sg.png)
     ***키페어 이름 - petclinic***
-    ![](01_DEPLOY_EC2/ec2-keypair.png)
+    ![](./images/ec2-keypair.png)
 1. ssh 접속!
 1. `petclinc ec2` 인스턴스의 java 버전을 8로 업그레이드 한다. (관련 링크 : http://jojoldu.tistory.com/261)
     ```bash
@@ -36,7 +36,7 @@
      - 브라우저에서 `http://your-public-ip:9460/actuator/health` 접속하여 확인
      - 브라우저에서 `http://your-public-ip:9460/vets`(수의사 리스트 API) 접속하여 확인
      
-     ![](01_DEPLOY_EC2/ec2-deploy-check.png)
+     ![](./images/ec2-deploy-check.png)
     
     
 
@@ -45,16 +45,16 @@
 1. 버켓 만들기 
     
     이름은 중복되지 않도록 `${자신의 아이디}-petclinc-www` 로 짓는다. 
-    ![](01_DEPLOY_EC2/s3-bucket-www-1.png)
+    ![](./images/s3-bucket-www-1.png)
     정적 웹사이트 호스팅 설정     
-    ![](01_DEPLOY_EC2/s3-bucket-www-2.png)
+    ![](./images/s3-bucket-www-2.png)
     버켓 퍼블릭으로 설정
-    ![](01_DEPLOY_EC2/s3-bucket-www-3.png)
+    ![](./images/s3-bucket-www-3.png)
 
 1. vs code로 개발환경 접속
-    ![](01_DEPLOY_EC2/ftp-simple-1.png)
-    ![](01_DEPLOY_EC2/ftp-simple-2.png)
-    ![](01_DEPLOY_EC2/ftp-simple-3.png)
+    ![](./images/ftp-simple-1.png)
+    ![](./images/ftp-simple-2.png)
+    ![](./images/ftp-simple-3.png)
 
 1. 코드 수정
     1. 배포스크립트 수정
