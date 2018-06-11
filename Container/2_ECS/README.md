@@ -26,3 +26,6 @@
 
 ## ECS web console을 이용하여 백앤드 배포하기
 [Deploy_ECS_web_console.md](Deploy_ECS_web_console.md)
+
+## ECS CLI를 이용하여 백앤드 배포하기
+[Deploy_ECS_CLI.md](Deploy_ECS_CLI.md)
