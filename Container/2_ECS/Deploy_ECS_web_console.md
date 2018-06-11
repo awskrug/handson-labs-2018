@@ -1,7 +1,7 @@
 # ECS web console을 이용하여 백앤드 배포하기
 
-## pet clinic 배포하기
-###  ecr 만들기
+## ECS 인프라 만들고 배포하기
+### ECR 만들기
     
 이름 : petclinic-rest
 ![](./images/ecr.png)
@@ -72,7 +72,7 @@ ecs cluster를 만들기 전에 클러스터의 로드발라서와 로드발란�
     ![](./images/ecs-task-3.png)
 1. 작업 생성 완료
 
-### 서비스 생성
+### 서비스 생성 및 배포
 1. [서비스 생성](https://ap-northeast-2.console.aws.amazon.com/ecs/home?region=ap-northeast-2#/clusters/petclinic-cluster/createService) 접속
     
     최소 정상 상태 백분율가 50% 라는 것은 현재 인스턴스 2중에 1대만 살아있어도 정상이라는 의미이다. 
@@ -103,7 +103,7 @@ ecs cluster를 만들기 전에 클러스터의 로드발라서와 로드발란�
     
 코드를 수정하고 docker image를 다시 ecr에 푸시한 다음 service update를 해본다.
 
-### frontend 연결
+### Frontend 연결
  frontend serviceHost를 elb domain으로 수정하고 다시 배포한 다음 잘 되는지 확인해본다.
  
 ## CodeBuild & CodePipeline
@@ -227,4 +227,12 @@ EC2 대시보드에서 대상 그룹을 확인해보면 알 수 있다.
 코드를 수정하고 푸시하고 자동으로 서비스에 반영되는지 확인해본다.
 
 ### frontend 연결
+
+## 모두 삭제
+ECS cluster 삭제
+ECR 삭제
+(CloudFormation 의 스택이 지워지지 않았다면 삭제)
+Load Balancer 삭제
+Target Group 삭제
+Security Group 삭제
 
