@@ -126,9 +126,9 @@ aws elbv2 create-listener --load-balancer-arn ${ALB_ARN} \
 version: '2'
 services:
   petclinic-rest:
-    image: ${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com/petclinic-rest:latest
-    cpu_shares: 100
-    mem_reservation: 512000000
+    image: 957582603404.dkr.ecr.ap-northeast-2.amazonaws.com/petclinic-rest:latest
+    mem_limit: 1024m
+    mem_reservation: 512m
     ports:
       - "0:9460"
     logging:
