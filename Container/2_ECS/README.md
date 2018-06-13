@@ -29,3 +29,6 @@
 
 ## ECS CLI를 이용하여 백앤드 배포하기
 [Deploy_ECS_CLI.md](Deploy_ECS_CLI.md)
+
+## Spring config server ECS로 배포하기
+[Deploy_spring_config.md](Deploy_spring_config.md)
