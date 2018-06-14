@@ -48,6 +48,14 @@
   
     ```
 
+1. aws profile 설정
+    ```bash  
+    aws configure --profile petclinic
+    ```
+    루트 권한으로 설정
+    
+    [IAM credentials 확인](https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users/master?section=security_credentials) 
+
 1. fork repository
 
 - backend repository : https://github.com/voyagerwoo/petclinic-rest

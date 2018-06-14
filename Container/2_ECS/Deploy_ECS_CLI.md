@@ -9,19 +9,26 @@ cd /home/ec2-user/workspace/petclinic-rest
 
 
 ### 환경 변수 설정
-```bash
-export AWS_ACCESS_KEY_ID=`aws configure get aws_access_key_id`
-export AWS_SECRET_ACCESS_KEY=`aws configure get aws_secret_access_key`
-export CLUSTER_NAME=petclinic-rest
 
-export VPC_ID=`aws ec2 describe-vpcs | jq -r '.Vpcs[0].VpcId'`
-export SUBNET_ID_1=`aws ec2 describe-subnets | jq -r '.Subnets[0].SubnetId'`
-export SUBNET_ID_2=`aws ec2 describe-subnets | jq -r '.Subnets[1].SubnetId'`
+- ECS-CLI config
+        
+    `AWS Access Key ID`, `AWS Secret Access Key` 가 필요함
+    
+    ```yaml
+    source ./ecs-cli-configure.sh
+    ```
+    ![](./images/ecs-cli-configure.png)
 
-echo "VPC_ID : ${VPC_ID}"
-echo "SUBNET_ID_1 : ${SUBNET_ID_1}"
-echo "SUBNET_ID_2 : ${SUBNET_ID_2}"
-```
+- 기타 환경 변수
+    ```bash
+    export VPC_ID=`aws ec2 describe-vpcs | jq -r '.Vpcs[0].VpcId'`
+    export SUBNET_ID_1=`aws ec2 describe-subnets | jq -r '.Subnets[0].SubnetId'`
+    export SUBNET_ID_2=`aws ec2 describe-subnets | jq -r '.Subnets[1].SubnetId'`
+    
+    echo "VPC_ID : ${VPC_ID}"
+    echo "SUBNET_ID_1 : ${SUBNET_ID_1}"
+    echo "SUBNET_ID_2 : ${SUBNET_ID_2}"
+    ```
 
 ## ECS 인프라 만들고 배포하기
 
