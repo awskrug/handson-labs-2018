@@ -82,12 +82,13 @@ Note:
 
 ### AWS IAM - Access keys
 ```
-awskrug
+User name: awskrug
+Access type: Programmatic access
 ```
 * https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users
 
 Note:
-- CLI 를 이용하여 AWS 객체들을 사용하기 위하여 발급 받습니다.
+- AWS 객체들을 관리하기 위하여 발급 받습니다.
 - 발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.
 
 ---
@@ -99,8 +100,10 @@ awskrug
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
 
 Note:
-- 생성된 Instance 에 접속하기 위하여 필요 합니다.
+- pem 파일을 잘 저장 해둡니다.
+- 생성할 Instance 에 접속하기 위하여 필요 합니다.
 - Windows 사용자의 경우 PuTTY-gen 으로 프라이빗 키를 변환 해야 합니다.
+- https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/putty.html
 
 ---
 
@@ -122,21 +125,20 @@ Note:
 sudo yum update -y
 
 # git, jq
-sudo yum install -y git jq
+sudo yum install -y git vim jq
 
 # aws-cli
 pip install --upgrade --user awscli
 ```
-* https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/putty.html
 
 Note:
 - 인스턴스를 최신 버전으로 업데이트 합니다.
-- git 과 jq 를 설치 합니다.
+- git, vim, jq 를 설치 합니다.
 - aws cli 를 최신 버전으로 업데이트 합니다.
 
 ---
 
-### kubectl - 1m
+### kubectl
 ```bash
 cat <<EOF > kubernetes.repo
 [kubernetes]
@@ -154,7 +156,7 @@ sudo yum install -y kubectl
 
 ---
 
-### kops - 2m
+### kops
 ```bash
 export VERSION=$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d'"' -f4)
 curl -LO https://github.com/kubernetes/kops/releases/download/${VERSION}/kops-linux-amd64
@@ -164,7 +166,7 @@ chmod +x kops-linux-amd64 && sudo mv kops-linux-amd64 /usr/local/bin/kops
 
 ---
 
-### helm - 1m
+### helm
 ```bash
 export VERSION=$(curl -s https://api.github.com/repos/kubernetes/helm/releases/latest | grep tag_name | cut -d'"' -f4)
 curl -L https://storage.googleapis.com/kubernetes-helm/helm-${VERSION}-linux-amd64.tar.gz | tar xzv
@@ -202,12 +204,12 @@ EOF
 
 Note:
 - ssh 키를 생성합니다. 클러스터 내에서 서로 접속 하기 위하여 필요 합니다.
-- aws cli 를 사용하여 리전을 서울로 설정 합니다.
-- 그리고 위에서 발급된 access key 를 넣어줍니다.
+- aws cli 를 사용하여 리전을 `ap-northeast-2` 로 설정 합니다.
+- 그리고 위에서 발급된 `credentials` 을 넣어줍니다.
 
 ---
 
-## Cluster Name
+## Cluster
 ```bash
 export KOPS_CLUSTER_NAME=awskrug.k8s.local
 export KOPS_STATE_STORE=s3://terraform-awskrug-nalbam-seoul
@@ -218,10 +220,11 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 
 Note:
 - 클러스터 이름을 세팅하고, 클러스터 상태를 저장할 S3 Bucket 을 만들어 줍니다.
+- S3 Bucket 은 유니크 해야 합니다. 각자 아이디를 넣어서 만들어 주세요.
 
 ---
 
-## Cluster Create
+## Create Cluster
 ```bash
 kops create cluster \
     --cloud=aws \
@@ -237,14 +240,12 @@ kops create cluster \
 
 Note:
 - 마스터 1대, 노드 2대로 구성된 클러스터를 생성합니다.
-- 위 명령을 실행하면 실제 클러스터는 만들어지지 않습니다.
+- 위 명령을 실행해도 실제 클러스터는 만들어지지 않습니다.
 
 ---
 
-## Cluster Edit
+## Edit Cluster
 ```bash
-kops get cluster --name=${KOPS_CLUSTER_NAME}
-
 kops edit cluster --name=${KOPS_CLUSTER_NAME}
 ```
 
@@ -267,24 +268,29 @@ Note:
 
 ---
 
-## Cluster Update
+## Update Cluster
 ```bash
 kops update cluster --name=${KOPS_CLUSTER_NAME} --yes
 ```
 
 Note:
-- update 명령에 --yes 를 하면 실제 클러스터가 생성 됩니다.
+- `update` 명령에 `--yes` 를 하면 실제 클러스터가 생성 됩니다.
+- VPC, ELB, Route53, Instance 에 객체들이 생성됩니다.
 - 클러스터 생성까지 10여분이 소요 됩니다.
 
 ---
 
-## Cluster Validate
+## 쉬는시간
+
+---
+
+## Validate Cluster
 ```bash
 kops validate cluster --name=${KOPS_CLUSTER_NAME}
 ```
 
 Note:
-- validate 명령으로 생성이 완료 되었는지 확인 할수 있습니다.
+- `validate` 명령으로 생성이 완료 되었는지 확인 할수 있습니다.
 
 ---
 
@@ -294,9 +300,9 @@ Note:
 kubectl config view
 
 # kubectl get
-kubectl get deploy,pod,svc,job --all-namespaces
-kubectl get deploy,pod,svc,job -n kube-system
-kubectl get deploy,pod,svc,job -n default
+kubectl get node,deploy,pod,svc --all-namespaces
+kubectl get node,deploy,pod,svc -n kube-system
+kubectl get node,deploy,pod,svc -n default
 ```
 
 Note:
@@ -305,13 +311,13 @@ Note:
 
 ---
 
-### sample
+### Sample
 ```bash
 # apply
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-web.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/sample-web.yml
 
 # delete
-kubectl delete -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-web.yml
+kubectl delete -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/sample-web.yml
 ```
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers
 
@@ -331,7 +337,7 @@ Note:
 ### Dashboard
 ```bash
 # install
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/dashboard-v1.8.3.yml
 
 # get dashboard token
 kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep kubernetes-dashboard-token | awk '{print $1}')
@@ -341,13 +347,13 @@ kubectl create clusterrolebinding cluster-admin:kube-system:kubernetes-dashboard
 kubectl get clusterrolebindings | grep cluster-admin
 
 # delete
-kubectl delete -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3.yml
+kubectl delete -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/dashboard-v1.8.3.yml
 ```
 * https://github.com/kubernetes/dashboard/
 
 Note:
 - 대시보드를 생성합니다. 생성된 ELB 로 접속 할수 있습니다.
-- 로그인을 위해 Secret 에서 토큰을 조회 해서 붙여 넣습니다.
+- 로그인을 위해 `Secret` 에서 토큰을 조회 해서 붙여 넣습니다.
 - 접속해보면 권한 때문에 정상적으로 보이지 않을 겁니다. 권한 부여를 합니다.
 
 ---
@@ -355,21 +361,21 @@ Note:
 ### Heapster
 ```bash
 # install
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/heapster-v1.7.0.yml
 
 # monitoring
 kubectl top pod --all-namespaces
 kubectl top pod -n kube-system
 
 # delete
-kubectl delete -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
+kubectl delete -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/heapster-v1.7.0.yml
 ```
 * https://github.com/kubernetes/heapster/
 
 Note:
 - 대시보드 로는 충분한 정보를 볼수 잆습니다. 예를 들면 CPU, Memory 사용량 같은것들...
 - 힙스터를 설치하고 잠시 기다리면 정보가 수집되고, 대시보드에 보여집니다.
-- 참고로 힙스터는 현재 DEPRECATED 되었습니다.
+- 참고로 힙스터는 현재 `DEPRECATED` 되었습니다.
 
 ---
 
@@ -385,19 +391,72 @@ jx install --provider=aws
 
 jx console
 
-jx import
-jx create spring -d web -d actuator
-
-jx get applications
-jx get pipelines
-
 jx get activity -f jx-demo -w
 jx get build logs nalbam/jx-demo/master
 jx get build logs nalbam/jx-demo/dev
 
-jx promote jx-demo --env production
 ```
 * https://jenkins-x.io/
+
+Note:
+- ELB 의 도메인을 사용하겠냐는 질문에 `Y` 를 입력 합니다.
+- ELB 의 IP 를 이용한 nio.io 에 `엔터` 를 입력 합니다.
+- Github user name 에 본인의 계정을 입력합니다.
+- API Token 입력을 위하여 제시된 주소로 갑니다. 토큰을 만들어서 붙여 넣습니다.
+- `이때 토큰문자열 앞의 공백에 주의해서 붙여 넣어 주세요.`
+- Jenkins 를 생성하고, Jenkins 주소가 나타날 것입니다.
+- 아이디 `admin` 과 제시된 비밀번호를 입력해 주세요.
+- Show API Token 버튼을 클릭하여 키를 붙여 넣습니다.
+- `stageing` 과 `production` 관리 repo 를 저장할 계정을 선택 합니다.
+
+---
+
+### Create Project
+```bash
+jx create spring -d web -d actuator
+
+jx get applications
+jx get pipelines
+```
+
+Note:
+- Spring Boot 프로젝트를 생성합니다.
+- Github 에 프로젝트가 생성됩니다.
+
+---
+
+### Create Branch
+
+---
+
+### Pull Request
+
+---
+
+### Merge
+
+---
+
+### Production
+```bash
+jx promote jx-demo --env production
+```
+
+---
+
+## Clean Up
+```bash
+jx uninstall
+rm -rf ~/.jx
+
+kops delete cluster --name=${KOPS_CLUSTER_NAME} --yes
+```
+
+Note:
+- 지금까지 만들었던 클러스터를 지웁니다.
+- 접속용으로 만들었던 인스턴스를 지웁니다.
+- Access Key 를 지웁니다.
+- Github 토큰을 지웁니다. https://github.com/settings/tokens
 
 ---
 
