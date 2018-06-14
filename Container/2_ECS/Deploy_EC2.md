@@ -32,7 +32,7 @@ Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - t2.micro 인스턴스를 하
 git clone https://github.com/{your-github-name}/petclinic-rest
 cd petclinic-rest
 # 백그라운드 실행
-nohup ./mvnw spring-boot:run &
+nohup ./mvnw clean compile spring-boot:run &
 ```
 
 ### 배포 확인
@@ -69,6 +69,7 @@ nohup ./mvnw spring-boot:run &
     "deploy:s3": "npm run build && aws s3 cp dist/ s3://{your-bucket-name} --recursive"
     ...
     ```
+    
 1. api host 수정
 
     src/services/restService.js 에서 서비스 호스트를 배포된 호스트로 변경한다.

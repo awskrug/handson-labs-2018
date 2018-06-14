@@ -4,6 +4,8 @@
 
 - backend repository : https://github.com/voyagerwoo/petclinic-rest
 - frontend repository : https://github.com/voyagerwoo/petclinic-front
+- config repository : https://github.com/voyagerwoo/petclinic-config-repo
+- config server repository : https://github.com/voyagerwoo/petclinic-configserver
 
 
 ## Index
@@ -18,8 +20,7 @@
 실습전에 준비해야할 사항
 
 1. `github` 계정, `aws` 계정
-1. 개발환경 설정 : [Develop_Environment.md](Develop_Environment.md)
-1. 우선 개발환경에 fork한 petclinic-rest, petclinic-front를 clone
+1. 개발환경 설정 : [Cloud9_Environment.md](Cloud9_Environment.md)
 
 ## EC2에 배포하기
 [Deploy_EC2.md](Deploy_EC2.md)
