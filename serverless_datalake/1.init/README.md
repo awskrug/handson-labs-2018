@@ -46,3 +46,4 @@ Default output format [None]: json
 - `python3 -m venv .venv`
 - `.venv/bin/activate`
 - `pip install -r requierments.txt`
+- `npm install -g serverless`

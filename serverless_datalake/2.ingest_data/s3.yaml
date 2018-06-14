@@ -1,15 +1,18 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Description:
+AWSTemplateFormatVersion: 2010-09-09
 Resources:
   DataStore:
-    Type: "AWS::S3::Bucket"
+    Type: 'AWS::S3::Bucket'
     Properties:
-      BucketEncryption:
-        BucketEncryption
       BucketName: !Sub gis-datalake-${AWS::AccountId}
 
-
 Outputs:
-  DataLakeS3:
+  DataLakeS3Name:
     Value: !Ref 'DataStore'
-    Description: datalake handson s3 bucket
+    Description: datalake handson s3 bucket name
+    Export:
+        Name: handson-datalake-s3-name
+  DataLakeS3Arn:
+    Value: !GetAtt DataStore.Arn
+    Description: datalake handson s3 bucket arn
+    Export:
+        Name: handson-datalake-s3-arn

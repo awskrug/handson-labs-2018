@@ -7,17 +7,26 @@
 4. csv 폴더 트리거 구성
 5. shp 폴더 트리거 구성
 6. json폴더 트리거 구성
-3. shp 파일 트리거 추가
-4. geoserver 배포(장고)
 5. 업로드 후 결과 확인
 6. 초기화
 
 
+### 참고
+이후 모든 작업은 cloud9에서 진행하시면 됩니다.
+
 1. S3 생성
-s3생성 CFN 실행
+`cd ~/handson-labs-2018/serverless_datalake/2.ingest_data`
+`aws cloudformation create-stack --stack-name sls-datalake-s3 --template-body s3.yml`
 
+2. geoserver 배포
 
-2. ingest_zip 트리거 생성
+3. csv 업로드 해보기
+
+4. csv 트리거 구성
+
+5. shp 트리거 구성
+
+6. json 트리거 구성
 
 
 3.
