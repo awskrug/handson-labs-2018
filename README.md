@@ -9,3 +9,5 @@ AWSKRUG Hands-on Lab 2018 is bi-weekly Saturday HoLs until Sep 8 (8 sessions, 70
 * 11st August – Serverless #3:  Serverless Data Lake  (Coming Soon)
 * 25th August – Data Anlaytics #1: Athena & Data Lake (Coming Soon)
 * 8th  September – Data Anlaytics #2: AWS Glue & Quicksight (Coming Soon)
+
+![AWSKRUG Hands-on Labs on 2nd June, 2018](https://github.com/awskrug/handson-labs-2018/blob/master/awskrug-hols-2018.jpg)
