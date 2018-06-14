@@ -53,6 +53,19 @@ nohup ./mvnw clean compile spring-boot:run &
 정적 웹사이트 호스팅 설정     
 ![](./images/s3-bucket-www-2.png)
 버켓 퍼블릭으로 설정
+```json
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "s3:*",
+     "Effect": "Allow",
+     "Resource": "arn:aws:s3:::{yourname}-petclinc-www/*",
+     "Principal": "*"
+   }
+ ]
+}
+```
 ![](./images/s3-bucket-www-3.png)
 
 ### vs code로 개발환경 접속
