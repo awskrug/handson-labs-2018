@@ -21,7 +21,7 @@
 
 1. `github` 계정, `aws` 계정
 1. 개발환경 설정 : [Cloud9_Environment.md](Cloud9_Environment.md)
-###  :waning: ***중요*** 싱가포르 리전 사용
+###  :warning: ***중요*** 싱가포르 리전 사용
 cloud9으로 원활한 실습을 위해서 싱가포르(ap-southeast-1)에 배포합니다!
 
 ## EC2에 배포하기
