@@ -23,7 +23,8 @@
 
 ### AWS IAM - Access keys
 
-* https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users 를 브라우저에서 엽니다.
+* AWS 객체들을 관리하기 위하여 Access Key 를 발급 받습니다.
+* https://console.aws.amazon.com/iam/home?region=ap-northeast-2 를 브라우저에서 엽니다.
 * `Add user` 버튼으로 새 사용자를 만듭니다.
 * User name 에 `awskrug` 를 입력합니다.
 * `Programmatic access` 를 체크합니다.
@@ -35,11 +36,12 @@
 * `Download .csv` 버튼을 눌러 파일을 저장합니다.
 
 Note:
-- AWS 객체들을 관리하기 위하여 Access Key 를 발급 받습니다.
 - 발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.
+- https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users
 
 ### AWS EC2 - Key Pairs
 
+* 생성할 Instance 에 접속하기 위하여 프라이빗 키를 발급 받습니다.
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
 * 좌측 메뉴에서 `Key Pairs` 를 선택합니다.
 * `Create Key Pair` 버튼으로 새 키페어를 생성합니다.
@@ -47,14 +49,15 @@ Note:
 * 프라이빗 키 파일을 잘 저장해 둡니다.
 
 Note:
-- 생성할 Instance 에 접속하기 위하여 프라이빗 키를 발급 받습니다.
+- https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
 
 ### AWS EC2 - Instance
 
+* 모두가 같은 환경에서 진행 할수 있도록 같은 AMI 로 부터 인스턴스를 생성 합니다.
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
 * 좌측 메뉴에서 `AMIs` 를 선택합니다.
 * `Owned by me` 를 `Public images 로 변경합니다.
-* Add filter 에서 `AMI ID: 를 선택 하고 `ami-3949e357` 를 입력합니다.
+* Add filter 에서 `AMI ID:` 를 선택 하고 `ami-3949e357` 를 입력합니다.
 * 검색된 이미지로 `Launch` 를 선택 합니다.
 * 기본 값인 `t2.micro` 를 사용 하겠습니다.
 * `Review and Launch` 버튼을 눌러 다음 화면으로 이동합니다.
@@ -63,7 +66,6 @@ Note:
 * 체크 박스를 체크 하고, `Launch Instances` 버튼으로 인스턴스를 생섭합니다.
 
 Note:
-- 모두가 같은 환경에서 진행 할수 있도록 같은 AMI 로 부터 인스턴스를 생성 합니다.
 - https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Images:visibility=public-images;imageId=ami-3949e357
 
 ### AWS EC2 - 접속 (Windows 사용자)
@@ -268,8 +270,6 @@ kubectl create clusterrolebinding cluster-admin:kube-system:kubernetes-dashboard
 Note:
 - https://github.com/kubernetes/dashboard/
 
----
-
 ### Heapster
 
 * 대시보드 로는 충분한 정보를 볼수 잆습니다. 예를 들면 CPU, Memory 사용량 같은것들...
@@ -295,25 +295,14 @@ Note:
 
 ## Pipeline
 
-* Jenkins X
-
----
-
-### Jenkins X
-```bash
-jx install --provider=aws
-
-jx console
-
-jx get activity -f jx-demo -w
-jx get build logs nalbam/jx-demo/master
-jx get build logs nalbam/jx-demo/dev
-
-```
 * https://jenkins-x.io/
 
-Note:
-- Github 계정명을 입력 합니다.
+### Jenkins X
+
+```bash
+jx install --provider=aws
+```
+
 - ELB 의 도메인을 사용하겠냐는 질문에 `Y` 를 입력 합니다.
 - ELB 의 IP 를 이용한 nio.io 에 `엔터` 를 입력 합니다.
 - Github user name 에 본인의 계정을 입력합니다.
@@ -324,42 +313,80 @@ Note:
 - Show API Token 버튼을 클릭하여 키를 붙여 넣습니다.
 - `stageing` 과 `production` 관리 repo 를 저장할 계정을 선택 합니다.
 
----
-
-### Create Project
-```bash
-jx create spring -d web -d actuator
-
-jx get applications
-jx get pipelines
+```
+To import existing projects into Jenkins:     jx import
+To create a new Spring Boot microservice:       jx create spring -d web -d actuator
+To create a new microservice from a quickstart: jx create quickstart
 ```
 
-Note:
-- Spring Boot 프로젝트를 생성합니다.
-- Github 에 프로젝트가 생성됩니다.
+### Create Project
 
----
+* Spring Boot 프로젝트를 생성합니다.
+
+```bash
+jx create spring -d web -d actuator
+```
+```
+? Language: java
+? Group: com.example
+? Artifact: demo
+? Do you wish to use nalbam as the git user name: Yes
+? Would you like to initialise git now? Yes
+```
+```
+? Which organisation do you want to use? nalbam
+? Enter the new repository name:  jx-demo
+```
+```
+Pushed git repository to https://github.com/nalbam/jx-demo
+
+Created Jenkins Project: http://jenkins.jx.00.00.00.00.nip.io/job/nalbam/job/jx-demo/
+
+Watch pipeline activity via:    jx get activity -f jx-demo -w
+Browse the pipeline log via:    jx get build logs nalbam/jx-demo/master
+Open the Jenkins console via    jx console
+You can list the pipelines via: jx get pipelines
+When the pipeline is complete:  jx get applications
+```
+
+* Github 에 프로젝트가 생성 되었고, `master` Branch 의 빌드가 진행 중 입니다.
+* Jenkins 의 빌드 로그를 확인 합니다. `Proceed` 를 선택 합니다.
+
+```
+Select Proceed or Abort to terminate the build pod
+Proceed or Abort
+```
+
+* 프로젝트의 Webhook 설정을 확인해 봅니다.
+  * https://github.com/nalbam/jx-demo/settings/hooks
 
 ### Create Branch
 
----
+* `dev` Branch 를 만들어 줍니다.
 
 ### Pull Request
 
----
+* 약간의 소스를 수정 하고, PR 을 보내봅니다.
+* `PR-1` 발드가 시작 되었습니다.
+
+```bash
+jx get pipelines
+
+jx get activity -f jx-demo
+
+jx get build logs nalbam/jx-demo/PR-1
+```
 
 ### Merge
 
----
-
 ### Production
+
 ```bash
 jx promote jx-demo --env production
 ```
 
----
-
 ## Clean Up
+
 ```bash
 jx uninstall
 rm -rf ~/.jx
@@ -372,7 +399,5 @@ Note:
 - 접속용으로 만들었던 인스턴스를 지웁니다.
 - Access Key 를 지웁니다.
 - Github 토큰을 지웁니다. https://github.com/settings/tokens
-
----
 
 ## Thank You
