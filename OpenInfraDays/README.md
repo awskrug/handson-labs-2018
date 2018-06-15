@@ -78,8 +78,8 @@ Note:
 * `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
 * PuTTYgen 으로 프라이빗 키를 변환 해야 합니다.
   * `PuTTYgen` 을 시작합니다.
-  * Type of key to generate 에서 `RSA` 를 선택합니다.
-  * Load 를 선택합니다. `.pem` 파일을 찾으려면 모든 유형의 파일을 표시하는 옵션을 선택합니다.
+  * `Type of key to generate` 에서 `RSA` 를 선택합니다.
+  * `Load` 를 선택합니다. `.pem` 파일을 찾으려면 모든 유형의 파일을 표시하는 옵션을 선택합니다.
   * `awskrug.pem` 을 선택합니다.
   * `Save private key` 버튼을 눌러 저장 합니다.
   * `awskrug.ppk` 가 만들어 졌습니다.
@@ -100,7 +100,7 @@ Note:
 * 좌측 메뉴에서 `Instances` 를 선택합니다.
 * 방금 만들었던 인스턴스를 선택 합니다.
 * `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
-* Terminal 을 통하여 접속 할수 있습니다.
+* Terminal 로 인스턴스에 접속 할수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
@@ -110,7 +110,7 @@ ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
 
 ### SSH Key Gen
 
-* 클러스터를 관히할 ssh-key 를 생성 합니다.
+* 클러스터를 관리할 ssh-key 를 생성 합니다.
 
 ```bash
 ssh-keygen -q -f ~/.ssh/id_rsa -N ''
@@ -149,9 +149,8 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 ### Create Cluster
 
 * Master Node `1`대, Worker Node `2`대 로 하겠습니다. 
-* Instance Type 은 `m4large` 로 하겠습니다.
+* Instance Type 은 `m4.large` 로 하겠습니다.
 * Networking 은 `calico` 로 하겠습니다.
-  * https://github.com/kubernetes/kops/blob/master/docs/networking.md
 
 ```bash
 kops create cluster \
@@ -168,6 +167,7 @@ kops create cluster \
 
 Note:
 - 위 명령을 실행해도 아직 클러스터는 만들어지지 않습니다.
+- calico? https://github.com/kubernetes/kops/blob/master/docs/networking.md
 
 ### Update Cluster
 
@@ -246,6 +246,7 @@ kubectl get deploy,pod,svc -n default
 
 Note:
 - 모든 네임스페이스 혹은 지정한 네임스페이스 객체를 조회 할수 있습니다.
+- https://kubernetes.io/docs/tasks/
 
 ### Sample
 
@@ -264,7 +265,7 @@ service "sample-web" created
   * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers
 
 Note:
-- ELB 가 구분이 되지 않으면, `Tags` 를 확인해 봅니다.
+- ELB 가 구분 되지 않으면, `Tags` 를 확인해 봅니다.
 
 ## Addons
 
@@ -287,6 +288,7 @@ service "kubernetes-dashboard" created
 * 생성된 ELB 로 접속 할수 있습니다.
   * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers
 * ELB 의 `DNS name` 에 `https://` 를 붙여서 접속 해야 합니다.
+
 * 로그인을 위해 `Secret` 에서 `token` 을 조회 해서 붙여 넣습니다.
 
 ```bash
@@ -331,19 +333,21 @@ Note:
 
 ### Jenkins X
 
+* Jenkins X 를 설치 합니다.
+
 ```bash
 jx install --provider=aws
 ```
 
-- ELB 의 도메인을 사용하겠냐는 질문에 `Y` 를 입력 합니다.
-- ELB 의 IP 를 이용한 nio.io 에 `엔터` 를 입력 합니다.
-- Github user name 에 본인의 계정을 입력합니다.
-- API Token 입력을 위하여 제시된 주소로 갑니다. 토큰을 만들어서 붙여 넣습니다.
-- `이때 토큰문자열 앞의 공백에 주의해서 붙여 넣어 주세요.`
-- Jenkins 를 생성하고, Jenkins 주소가 나타날 것입니다.
-- 아이디 `admin` 과 제시된 비밀번호를 입력해 주세요.
-- Show API Token 버튼을 클릭하여 키를 붙여 넣습니다.
-- `stageing` 과 `production` 관리 repo 를 저장할 계정을 선택 합니다.
+* ELB 의 도메인을 사용하겠냐는 질문에 `Y` 를 입력 합니다.
+* ELB 의 IP 를 이용한 nio.io 에 `엔터` 를 입력 합니다.
+* Github user name 에 본인의 계정을 입력합니다.
+* API Token 입력을 위하여 제시된 주소로 갑니다. 토큰을 만들어서 붙여 넣습니다.
+* `이때 토큰 문자열 앞의 공백에 주의해서 붙여 넣어야 합니다.`
+* Jenkins 를 생성하고, Jenkins 주소가 나타날 것입니다.
+* 아이디 `admin` 과 제시된 비밀번호를 입력해 주세요.
+* Show API Token 버튼을 클릭하여 키를 붙여 넣습니다.
+* `stageing` 과 `production` 관리 repo 를 저장할 계정을 선택 합니다.
 
 ```
 To import existing projects into Jenkins:     jx import
@@ -383,8 +387,9 @@ When the pipeline is complete:  jx get applications
 
 * Github 에 프로젝트가 생성 되었고, `master` Branch 의 빌드가 진행 중 입니다.
 
-* 프로젝트의 Webhook 설정을 확인해 봅니다.
-  * https://github.com/nalbam/jx-demo/settings/hooks
+Note:
+- 프로젝트의 Webhook 설정을 확인해 봅니다.
+- https://github.com/nalbam/jx-demo/settings/hooks
 
 ### Create Branch
 
@@ -392,8 +397,8 @@ When the pipeline is complete:  jx get applications
 
 ### Pull Request
 
-* 약간의 소스를 수정 하고, PR 을 보내봅니다.
-* `PR-1` 발드가 시작 되었습니다.
+* 약간의 소스를 수정 하고, `Pull Request` 를 보내봅니다.
+* `PR-1` 빌드가 시작 되었습니다.
 
 ```bash
 jx get pipelines
@@ -403,14 +408,17 @@ jx get activity -f jx-demo
 jx get build logs nalbam/jx-demo/PR-1
 ```
 
-* 빌드가 완료되면, Github Issues 에 이슈가 등록 되고
+* 빌드가 완료되면, Github Issues 에 이슈가 등록 되고,
 * `preview` 링크를 통하여 결과를 확인 할수 있습니다.
+
+Note:
+- https://github.com/nalbam/jx-demo/issues
 
 ### Merge
 
 * PR 을 merge 하면, `master` Branch 의 빌드가 진행 됩니다.
 
-* 빌드가 완료 되면, `staging` 환경에 배포되어 확인 할수 있습니다.
+* 빌드가 완료 되면, `staging` 환경에 배포되어 결과를 확인 할수 있습니다.
 
 ### Production
 
@@ -423,16 +431,16 @@ jx promote jx-demo --env production
 ## Clean Up
 
 ```bash
-jx uninstall
-rm -rf ~/.jx
-
 kops delete cluster --name=${KOPS_CLUSTER_NAME} --yes
 ```
 
 Note:
 - 지금까지 만들었던 클러스터를 지웁니다.
 - 접속용으로 만들었던 인스턴스를 지웁니다.
-- Access Key 를 지웁니다.
-- Github 토큰을 지웁니다. https://github.com/settings/tokens
+  - https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
+- IAM User 를 지웁니다.
+  - https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users
+- Github 토큰을 지웁니다.
+  - https://github.com/settings/tokens
 
 ## Thank You
