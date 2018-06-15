@@ -57,8 +57,8 @@ Cloud9을 이용하여 핸즈온에 들어가기에 앞서, 개발환경을 설�
 
 1. git config
     ```bash
-    git config --global user.name voyagerwoo
-    git config --global user.email voyager.woo@gmail.com
+    git config --global user.name {your-github-name}
+    git config --global user.email {your-github-email}
   
     ```
 
