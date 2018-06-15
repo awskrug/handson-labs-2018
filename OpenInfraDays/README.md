@@ -64,7 +64,7 @@ Note:
 * `Review and Launch` 버튼을 눌러 다음 화면으로 이동합니다.
 * `Launch` 버튼을 눌러 인스턴스를 생성합니다.
 * Select a key pair 에 `awskrug` 가 선택 되었는지 확인합니다.
-* 체크 박스를 체크 하고, `Launch Instances` 버튼으로 인스턴스를 생섭합니다.
+* 체크 박스를 체크 하고, `Launch Instances` 버튼으로 인스턴스를 생성합니다.
 
 Note:
 - 쉽게 찾는 링크
@@ -72,7 +72,24 @@ Note:
 
 ### AWS EC2 - 접속 (Windows 사용자)
 
-* Windows 사용자의 경우 PuTTY-gen 으로 프라이빗 키를 변환 해야 합니다.
+* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
+* 좌측 메뉴에서 `Instances` 를 선택합니다.
+* 방금 만들었던 인스턴스를 선택 합니다.
+* `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
+* PuTTYgen 으로 프라이빗 키를 변환 해야 합니다.
+  * `PuTTYgen` 을 시작합니다.
+  * Type of key to generate 에서 `RSA` 를 선택합니다.
+  * Load 를 선택합니다. `.pem` 파일을 찾으려면 모든 유형의 파일을 표시하는 옵션을 선택합니다.
+  * `awskrug.pem` 을 선택합니다.
+  * `Save private key` 버튼을 눌러 저장 합니다.
+  * `awskrug.ppk` 가 만들어 졌습니다.
+* PuTTY 로 인스턴스에 접속 할수 있습니다.
+  * `PuTTY` 를 시작합니다.
+  * `Category` 창에서 `Session` 을 선택하고 다음 필드를 작성합니다.
+  * `Host Name` 에 `ec2-user@` 과 위에서 확인한 `IP` 를 입력 합니다.
+  * `Category` 창에서 `Connection` `SSH` 를 확장하고, `Auth` 를 선택 합니다.
+  * `Browse` 버튼을 눌러 `awskrug.ppk` 파일을 찾아 선택 합니다.
+  * `Open` 버튼을 눌러 접속 합니다.
 
 Note:
 - https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/putty.html
@@ -82,16 +99,14 @@ Note:
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
 * 좌측 메뉴에서 `Instances` 를 선택합니다.
 * 방금 만들었던 인스턴스를 선택 합니다.
-* `IPv4 Public IP` 에 생성된 IP 를 확인 합니다.
-* `PEM_PATH` 를 다운받은 PEM 파일 경로로 변경 합니다.
-* `PUBLIC_IP` 를 본인의 IP 로 변경하여 접속 합니다.
+* `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
+* Terminal 을 통하여 접속 할수 있습니다.
+  * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
+  * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
 ```bash
 ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
 ```
-
-Note:
-- https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
 
 ### SSH Key Gen
 
