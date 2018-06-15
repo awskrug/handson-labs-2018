@@ -25,6 +25,7 @@
 
 * AWS 객체들을 관리하기 위하여 Access Key 를 발급 받습니다.
 * https://console.aws.amazon.com/iam/home?region=ap-northeast-2 를 브라우저에서 엽니다.
+* 좌측 메뉴에서 `Users` 를 선택합니다.
 * `Add user` 버튼으로 새 사용자를 만듭니다.
 * User name 에 `awskrug` 를 입력합니다.
 * `Programmatic access` 를 체크합니다.
@@ -36,8 +37,8 @@
 * `Download .csv` 버튼을 눌러 파일을 저장합니다.
 
 Note:
+- 파일명은 `awskrug.csv` 일 것 입니다.
 - 발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.
-- https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users
 
 ### AWS EC2 - Key Pairs
 
@@ -49,15 +50,15 @@ Note:
 * 프라이빗 키 파일을 잘 저장해 둡니다.
 
 Note:
-- https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
+- 파일명은 `awskrug.pem` 일 것 입니다.
 
 ### AWS EC2 - Instance
 
 * 모두가 같은 환경에서 진행 할수 있도록 같은 AMI 로 부터 인스턴스를 생성 합니다.
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
 * 좌측 메뉴에서 `AMIs` 를 선택합니다.
-* `Owned by me` 를 `Public images 로 변경합니다.
-* Add filter 에서 `AMI ID:` 를 선택 하고 `ami-3949e357` 를 입력합니다.
+* `Owned by me` 를 `Public images` 로 변경합니다.
+* Add filter 에서 `AMI ID:` 를 선택 하고 `ami-1649e378` 를 입력합니다.
 * 검색된 이미지로 `Launch` 를 선택 합니다.
 * 기본 값인 `t2.micro` 를 사용 하겠습니다.
 * `Review and Launch` 버튼을 눌러 다음 화면으로 이동합니다.
@@ -66,7 +67,8 @@ Note:
 * 체크 박스를 체크 하고, `Launch Instances` 버튼으로 인스턴스를 생섭합니다.
 
 Note:
-- https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Images:visibility=public-images;imageId=ami-3949e357
+- 쉽게 찾는 링크
+- https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Images:visibility=public-images;imageId=ami-1649e378
 
 ### AWS EC2 - 접속 (Windows 사용자)
 
