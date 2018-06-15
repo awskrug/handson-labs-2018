@@ -96,7 +96,6 @@ Note:
 * 클러스터를 관히할 ssh-key 를 생성 합니다.
 
 ```bash
-# ssh key
 ssh-keygen -q -f ~/.ssh/id_rsa -N ''
 ```
 
@@ -110,6 +109,12 @@ Note:
 
 ```bash
 vi ~/.aws/credentials
+```
+
+```
+[default]
+aws_access_key_id=
+aws_secret_access_key=
 ```
 
 ## Cluster
