@@ -32,7 +32,7 @@ Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - t2.micro 인스턴스를 하
 git clone https://github.com/{your-github-name}/petclinic-rest
 cd petclinic-rest
 # 백그라운드 실행
-nohup ./mvnw spring-boot:run &
+nohup ./mvnw clean compile spring-boot:run &
 ```
 
 ### 배포 확인
@@ -53,6 +53,19 @@ nohup ./mvnw spring-boot:run &
 정적 웹사이트 호스팅 설정     
 ![](./images/s3-bucket-www-2.png)
 버켓 퍼블릭으로 설정
+```json
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "s3:*",
+     "Effect": "Allow",
+     "Resource": "arn:aws:s3:::{yourname}-petclinc-www/*",
+     "Principal": "*"
+   }
+ ]
+}
+```
 ![](./images/s3-bucket-www-3.png)
 
 ### vs code로 개발환경 접속
@@ -69,6 +82,7 @@ nohup ./mvnw spring-boot:run &
     "deploy:s3": "npm run build && aws s3 cp dist/ s3://{your-bucket-name} --recursive"
     ...
     ```
+    
 1. api host 수정
 
     src/services/restService.js 에서 서비스 호스트를 배포된 호스트로 변경한다.
