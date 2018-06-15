@@ -33,7 +33,11 @@ git clone https://github.com/{your-github-name}/petclinic-rest
 cd petclinic-rest
 # 백그라운드 실행
 nohup ./mvnw clean compile spring-boot:run &
+# 확인
+tail -f nohup.out
 ```
+
+
 
 ### 배포 확인
 
@@ -68,14 +72,13 @@ nohup ./mvnw clean compile spring-boot:run &
 ```
 ![](./images/s3-bucket-www-3.png)
 
-### vs code로 개발환경 접속
-![](./images/ftp-simple-1.png)
-![](./images/ftp-simple-2.png)
-![](./images/ftp-simple-3.png)
 
 ### 코드 수정
+
 1. 배포스크립트 수정
 
+    petclinic-front > package.json
+    
     package.json에 deploy:s3 스크립트에서 bucket 명을 prerequisites에서 만든 자신의 버켓명으로 수정한다.
     ```json
     ...
@@ -85,15 +88,17 @@ nohup ./mvnw clean compile spring-boot:run &
     
 1. api host 수정
 
-    src/services/restService.js 에서 서비스 호스트를 배포된 호스트로 변경한다.
+    petclinic-front > src/services/restService.js
+
+    restService.js 에서 서비스 호스트를 배포된 호스트로 변경한다.
     ```js
     const serviceHost = 'http://your-public-ip:9460'
     ```
 ### 배포
-1. ssh로 개발환경 접속
+
 1. 배포 스크립트 실행
 ```bash
-cd /home/ec2-user/workspace/petclinic-front/
+cd /home/ec2-user/environment/petclinic-front/
 npm install
 npm run deploy:s3
 ```
@@ -107,5 +112,5 @@ ec2에 백앤드 서비스를 배포해 보았다. 간단하지만 단점들이 
 ### 단점 그리고 생각해볼 점
 
 - 인스턴스를 매번 띄우고 멈추는 관리가 필요하다.
-- 인스턴스에 내가 원하는 배포환경으로 설치해주어야 한다.
+- 인스턴스에 내가 원하는 배포환경으로 설치해주어야 한다. ex) java9 upgrade, git install 등
 - 무중단 배포는 어떻게 해야하나...
