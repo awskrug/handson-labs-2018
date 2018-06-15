@@ -154,6 +154,24 @@ kops create cluster \
 Note:
 - 위 명령을 실행해도 아직 클러스터는 만들어지지 않습니다.
 
+### Update Cluster
+
+* 클러스터를 생성하기 전, 클러스터를 수정 할수 있습니다.
+
+```bash
+kops edit cluster --name=${KOPS_CLUSTER_NAME}
+```
+```yaml
+spec:
+  docker:
+    insecureRegistry: 100.64.0.0/10
+    logDriver: ""
+```
+
+Note:
+- Jenkins X 를 구성한다면, 위 내용을 추가 해야 합니다.
+- 여러분은 하지 않으셔도 상관 없습니다.
+
 ### Create Cluster
 
 * `kops update` 명령에 `--yes` 옵션으로 실제 클러스터가 생성 됩니다.
