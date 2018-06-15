@@ -154,6 +154,24 @@ kops create cluster \
 Note:
 - 위 명령을 실행해도 아직 클러스터는 만들어지지 않습니다.
 
+### Update Cluster
+
+* 클러스터를 생성하기 전, 클러스터를 수정 할수 있습니다.
+
+```bash
+kops edit cluster --name=${KOPS_CLUSTER_NAME}
+```
+```yaml
+spec:
+  docker:
+    insecureRegistry: 100.64.0.0/10
+    logDriver: ""
+```
+
+Note:
+- Jenkins X 를 구성한다면, 위 내용을 추가 해야 합니다.
+- 여러분은 하지 않으셔도 상관 없습니다.
+
 ### Create Cluster
 
 * `kops update` 명령에 `--yes` 옵션으로 실제 클러스터가 생성 됩니다.
@@ -232,7 +250,6 @@ service "sample-web" created
 
 Note:
 - ELB 가 구분이 되지 않으면, `Tags` 를 확인해 봅니다.
-- 
 
 ## Addons
 
@@ -350,12 +367,6 @@ When the pipeline is complete:  jx get applications
 ```
 
 * Github 에 프로젝트가 생성 되었고, `master` Branch 의 빌드가 진행 중 입니다.
-* Jenkins 의 빌드 로그를 확인 합니다. `Proceed` 를 선택 합니다.
-
-```
-Select Proceed or Abort to terminate the build pod
-Proceed or Abort
-```
 
 * 프로젝트의 Webhook 설정을 확인해 봅니다.
   * https://github.com/nalbam/jx-demo/settings/hooks
@@ -377,9 +388,18 @@ jx get activity -f jx-demo
 jx get build logs nalbam/jx-demo/PR-1
 ```
 
+* 빌드가 완료되면, Github Issues 에 이슈가 등록 되고
+* `preview` 링크를 통하여 결과를 확인 할수 있습니다.
+
 ### Merge
 
+* PR 을 merge 하면, `master` Branch 의 빌드가 진행 됩니다.
+
+* 빌드가 완료 되면, `staging` 환경에 배포되어 확인 할수 있습니다.
+
 ### Production
+
+* `production` 환경에 배포하기 위해서는 다음의 명령을 하면 됩니다.
 
 ```bash
 jx promote jx-demo --env production
