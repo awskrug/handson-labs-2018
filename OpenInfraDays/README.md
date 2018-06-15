@@ -41,7 +41,7 @@ Note:
 ### AWS EC2 - Key Pairs
 
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
-* 좌측 메뉴에서 [Key Pairs] 를 선택합니다.
+* 좌측 메뉴에서 `Key Pairs` 를 선택합니다.
 * `Create Key Pair` 버튼으로 새 키페어를 생성합니다.
 * 이름은 `awskrug` 로 하겠습니다.
 * 프라이빗 키 파일을 잘 저장해 둡니다.
@@ -52,9 +52,9 @@ Note:
 ### AWS EC2 - Instance
 
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
-* 좌측 메뉴에서 [AMIs] 를 선택합니다.
-* [Owned by me] 를 [Public images] 로 변경합니다.
-* Add filter 에서 [AMI ID:] 를 선택 하고 `ami-3949e357` 를 입력합니다.
+* 좌측 메뉴에서 `AMIs` 를 선택합니다.
+* `Owned by me` 를 `Public images 로 변경합니다.
+* Add filter 에서 `AMI ID: 를 선택 하고 `ami-3949e357` 를 입력합니다.
 * 검색된 이미지로 `Launch` 를 선택 합니다.
 * 기본 값인 `t2.micro` 를 사용 하겠습니다.
 * `Review and Launch` 버튼을 눌러 다음 화면으로 이동합니다.
@@ -76,7 +76,7 @@ Note:
 ### AWS EC2 - 접속 (Mac 사용자)
 
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
-* 좌측 메뉴에서 [Instances] 를 선택합니다.
+* 좌측 메뉴에서 `Instances` 를 선택합니다.
 * 방금 만들었던 인스턴스를 선택 합니다.
 * `IPv4 Public IP` 에 생성된 IP 를 확인 합니다.
 * `PEM_PATH` 를 다운받은 PEM 파일 경로로 변경 합니다.
