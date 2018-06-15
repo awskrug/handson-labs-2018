@@ -93,8 +93,6 @@ ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
 Note:
 - https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
 
-## Bastion
-
 ### SSH Key Gen
 
 * 클러스터를 관히할 ssh-key 를 생성 합니다.
