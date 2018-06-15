@@ -2,11 +2,11 @@
 
 
 ### 개발환경에 접속하기
-```bash
-ssh -i petclinic.pem petclinic-dev-ip
-cd /home/ec2-user/workspace/petclinic-rest
-```
+cloud9 접속하기
 
+```bash
+cd /home/ec2-user/environment/petclinic-rest
+```
 
 ### 환경 변수 설정
 
@@ -112,17 +112,19 @@ ALB_SG_ID=`aws ec2 describe-security-groups --group-names ${ALB_SG_NAME}| jq -r 
 echo "ALB SECURITY GROUP : ${ALB_SG_NAME} ${ALB_SG_ID}"
 
 
+ALB_NAME=petclinic-alb
+TARGET_NAME=petclinic-targets
 
-aws elbv2 create-load-balancer --name petclinic-alb \
+aws elbv2 create-load-balancer --name ${ALB_NAME} \
   --subnets ${SUBNET_ID_1} ${SUBNET_ID_2} --security-groups ${ALB_SG_ID}
 
-aws elbv2 create-target-group --name petclinic-targets --protocol HTTP --port 80 --vpc-id ${VPC_ID} \
+aws elbv2 create-target-group --name ${TARGET_NAME} --protocol HTTP --port 80 --vpc-id ${VPC_ID} \
   --health-check-protocol HTTP \
   --health-check-path /actuator/health \
   --target-type instance
 
-ALB_ARN=`aws elbv2 describe-load-balancers --names petclinic-alb | jq -r '.LoadBalancers[0].LoadBalancerArn'`
-TARGET_ARN=`aws elbv2 describe-target-groups --names petclinic-targets | jq -r '.TargetGroups[0].TargetGroupArn'`
+ALB_ARN=`aws elbv2 describe-load-balancers --names ${ALB_NAME} | jq -r '.LoadBalancers[0].LoadBalancerArn'`
+TARGET_ARN=`aws elbv2 describe-target-groups --names ${TARGET_NAME} | jq -r '.TargetGroups[0].TargetGroupArn'`
 
 aws elbv2 create-listener --load-balancer-arn ${ALB_ARN} \
   --protocol HTTP --port 80 --default-actions Type=forward,TargetGroupArn=${TARGET_ARN}
@@ -221,9 +223,6 @@ ecs-cli compose --file ecs_task.yml \
 ```bash
 bash ./1_push_to_ecr.sh
 
-
-export AWS_ACCESS_KEY_ID=`aws configure get aws_access_key_id`
-export AWS_SECRET_ACCESS_KEY=`aws configure get aws_secret_access_key`
 export CLUSTER_NAME=petclinic-rest
 
 ecs-cli compose --file ecs_task.yml \
