@@ -11,16 +11,6 @@
     Instance Type : t2.small
     ![](./images/cloud9-2.png)
     
-1. Region 변경
-
-    오른쪽 상단의 톱니바퀴 클릭 또는 맥북 `command` + `,`
-    ![](./images/cloud9-3.png)
-    
-    좌측에 AWS SETTINGS 클릭
-    ![](./images/cloud9-4.png)
-    
-    Asia Pacific (Seoul) 선택
-    ![](./images/cloud9-5.png)
 
 1. java8 업그레이드, jq 설치
     ```bash
