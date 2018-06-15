@@ -64,7 +64,7 @@ Note:
 * `Review and Launch` 버튼을 눌러 다음 화면으로 이동합니다.
 * `Launch` 버튼을 눌러 인스턴스를 생성합니다.
 * Select a key pair 에 `awskrug` 가 선택 되었는지 확인합니다.
-* 체크 박스를 체크 하고, `Launch Instances` 버튼으로 인스턴스를 생섭합니다.
+* 체크 박스를 체크 하고, `Launch Instances` 버튼으로 인스턴스를 생성합니다.
 
 Note:
 - 쉽게 찾는 링크
