@@ -66,22 +66,22 @@ Cloud9을 이용하여 핸즈온에 들어가기에 앞서, 개발환경을 설�
 예제코드가 들어있는 github의 repository를 모두 자신의 github계정으로 fork합니다.
 ![](./images/github-1.png)
 
-- backend repository : https://github.com/voyagerwoo/petclinic-rest
-- frontend repository : https://github.com/voyagerwoo/petclinic-front
-- config repository : https://github.com/voyagerwoo/petclinic-config-repo
-- config server repository : https://github.com/voyagerwoo/petclinic-configserver
+    - backend repository : https://github.com/voyagerwoo/petclinic-rest
+    - frontend repository : https://github.com/voyagerwoo/petclinic-front
+    - config repository : https://github.com/voyagerwoo/petclinic-config-repo
+    - config server repository : https://github.com/voyagerwoo/petclinic-configserver
 
 1. clone your repository
-fork한 repository내용을 cloud9으로 가져옵니다.
-이하 명령어에서 {your-github-name} 에는 자신의 github name을 입력합니다.
+    fork한 repository내용을 cloud9으로 가져옵니다.
+    이하 명령어에서 {your-github-name} 에는 자신의 github name을 입력합니다.
 
-```bash
-git clone https://github.com/{your-github-name}/petclinic-rest
-git clone https://github.com/{your-github-name}/petclinic-front
-git clone https://github.com/{your-github-name}/petclinic-config-repo
-git clone https://github.com/{your-github-name}/petclinic-configserver
+    ```bash
+    git clone https://github.com/{your-github-name}/petclinic-rest
+    git clone https://github.com/{your-github-name}/petclinic-front
+    git clone https://github.com/{your-github-name}/petclinic-config-repo
+    git clone https://github.com/{your-github-name}/petclinic-configserver
 
-```
-![](./images/cloud9-6.png)
+    ```
+    ![](./images/cloud9-6.png)
 
-![](./images/cloud9-7.png)
+    ![](./images/cloud9-7.png)
