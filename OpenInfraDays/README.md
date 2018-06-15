@@ -110,7 +110,6 @@ Note:
 ```bash
 vi ~/.aws/credentials
 ```
-
 ```
 [default]
 aws_access_key_id=
@@ -127,16 +126,15 @@ aws_secret_access_key=
 export KOPS_CLUSTER_NAME=awskrug.k8s.local
 export KOPS_STATE_STORE=s3://terraform-awskrug-MY_UNIQUE_ID
 
-# aws s3 bucket for state store
 aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 ```
 
-Note:
-- S3 Bucket 은 유니크 해야 합니다.
-
 ### Create Cluster
 
-* 마스터 1대, 노드 2대로 구성된 클러스터를 생성합니다.
+* Master Node `1`대, Worker Node `2`대 로 하겠습니다. 
+* Instance Type 은 `m4large` 로 하겠습니다.
+* Networking 은 `calico` 로 하겠습니다.
+  * https://github.com/kubernetes/kops/blob/master/docs/networking.md
 
 ```bash
 kops create cluster \
@@ -144,7 +142,7 @@ kops create cluster \
     --name=${KOPS_CLUSTER_NAME} \
     --state=${KOPS_STATE_STORE} \
     --master-size=m4.large \
-    --node-size=m4.xlarge \
+    --node-size=m4.large \
     --node-count=2 \
     --zones=ap-northeast-2a,ap-northeast-2c \
     --network-cidr=10.10.0.0/16 \
@@ -156,15 +154,23 @@ Note:
 
 ### Create Cluster
 
-* `kops update` 명령에 `--yes` 를 하면 실제 클러스터가 생성 됩니다.
+* `kops update` 명령에 `--yes` 옵션으로 실제 클러스터가 생성 됩니다.
 
 ```bash
 kops update cluster --name=${KOPS_CLUSTER_NAME} --yes
 ```
+```
+Cluster is starting.  It should be ready in a few minutes.
+
+Suggestions:
+ * validate cluster: kops validate cluster
+ * list nodes: kubectl get nodes --show-labels
+ * ssh to the master: ssh -i ~/.ssh/id_rsa admin@api.awskrug.k8s.local
+```
 
 Note:
-- VPC, ELB, Route53, Instance 에 객체들이 생성됩니다.
-- 클러스터 생성까지 10여분이 소요 됩니다.
+- VPC, Instance, ELB, Route53 에 객체들이 생성됩니다.
+- 클러스터 생성 완료까지 `5분` 정도 소요 됩니다.
 
 ### Validate Cluster
 
@@ -173,19 +179,34 @@ Note:
 ```bash
 kops validate cluster --name=${KOPS_CLUSTER_NAME}
 ```
+```
+Validating cluster awskrug.k8s.local
+
+INSTANCE GROUPS
+NAME                   ROLE   MACHINETYPE MIN MAX SUBNETS
+master-ap-northeast-2a Master m4.large    1   1   ap-northeast-2a
+nodes                  Node   m4.large    2   2   ap-northeast-2a,ap-northeast-2c
+
+NODE STATUS
+NAME                                           ROLE   READY
+ip-10-10-10-10.ap-northeast-2.compute.internal master True
+ip-10-10-10-11.ap-northeast-2.compute.internal node   True
+ip-10-10-10-12.ap-northeast-2.compute.internal node   True
+
+Your cluster awskrug.k8s.local is ready
+```
 
 ### kubectl
 
 * 생성이 완료 되었으면, 다음 명령으로 정보를 조회 할수 있습니다.
 
 ```bash
-# kubectl config
-kubectl config view
+kubectl get node
 
-# kubectl get
-kubectl get node,deploy,pod,svc --all-namespaces
-kubectl get node,deploy,pod,svc -n kube-system
-kubectl get node,deploy,pod,svc -n default
+kubectl get deploy,pod,svc --all-namespaces
+
+kubectl get deploy,pod,svc -n kube-system
+kubectl get deploy,pod,svc -n default
 ```
 
 Note:
@@ -196,15 +217,20 @@ Note:
 * 샘플 웹을 하나 생성해 봅니다.
 
 ```bash
-# apply
 kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/sample-web.yml
-
-# delete
-kubectl delete -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/sample-web.yml
+```
+```
+deployment.apps "sample-web" created
+horizontalpodautoscaler.autoscaling "sample-web" created
+service "sample-web" created
 ```
 
 * Pod 와 Service 가 만들어졌고, AWS 에서 만들었으므로 ELB 도 생겼습니다.
   * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers
+
+Note:
+- ELB 가 구분이 되지 않으면, `Tags` 를 확인해 봅니다.
+- 
 
 ## Addons
 
@@ -215,10 +241,19 @@ kubectl delete -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Ku
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/dashboard-v1.8.3.yml
 ```
+```
+secret "kubernetes-dashboard-certs" created
+serviceaccount "kubernetes-dashboard" created
+role.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
+rolebinding.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
+deployment.apps "kubernetes-dashboard" created
+service "kubernetes-dashboard" created
+```
 
 * 생성된 ELB 로 접속 할수 있습니다.
   * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers
-- 로그인을 위해 `Secret` 에서 토큰을 조회 해서 붙여 넣습니다.
+* ELB 의 `DNS name` 에 `https://` 를 붙여서 접속 해야 합니다.
+* 로그인을 위해 `Secret` 에서 `token` 을 조회 해서 붙여 넣습니다.
 
 ```bash
 kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep kubernetes-dashboard-token | awk '{print $1}')
@@ -243,6 +278,14 @@ Note:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/heapster-v1.7.0.yml
+```
+```
+deployment.extensions "heapster" created
+service "heapster" created
+serviceaccount "heapster" created
+clusterrolebinding.rbac.authorization.k8s.io "heapster" created
+role.rbac.authorization.k8s.io "system:pod-nanny" created
+rolebinding.rbac.authorization.k8s.io "heapster-binding" created
 ```
 
 * 잠시후 Heapster 가 정보를 수집하면 Dashboard 에 관련 정보를 추가로 볼수 있습니다.
@@ -270,6 +313,7 @@ jx get build logs nalbam/jx-demo/dev
 * https://jenkins-x.io/
 
 Note:
+- Github 계정명을 입력 합니다.
 - ELB 의 도메인을 사용하겠냐는 질문에 `Y` 를 입력 합니다.
 - ELB 의 IP 를 이용한 nio.io 에 `엔터` 를 입력 합니다.
 - Github user name 에 본인의 계정을 입력합니다.
