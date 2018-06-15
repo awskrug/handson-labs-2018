@@ -9,12 +9,15 @@
 
 
 ## Index
-
+1. Introduction
 1. Prerequisites
 1. EC2 + S3로 서비스 배포하기
-1. ECS web console을 이용하여 배포 + CI/CD
-1. ECS cli를 이용하여 배포하기 + CI/CD
+1. ECS web console을 이용하여 배포 + CodeBuild & CodePipeline
+1. ECS cli를 이용하여 배포하기
 1. spring config server 배포하기
+
+## Introduction
+[Introduction.md](Introduction.md)
 
 ## Prerequisites
 실습전에 준비해야할 사항
