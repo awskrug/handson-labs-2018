@@ -236,10 +236,12 @@ EC2 대시보드에서 대상 그룹을 확인해보면 알 수 있다.
 ### frontend 연결
 
 ## 모두 삭제
-ECS cluster 삭제
-ECR 삭제
-(CloudFormation 의 스택이 지워지지 않았다면 삭제)
-Load Balancer 삭제
-Target Group 삭제
-Security Group 삭제
+1. CodePipeline 삭제
+1. CodeBuild 삭제
+1. ECS cluster 삭제
+1. ECR 삭제
+1. (CloudFormation 의 스택이 지워지지 않았다면 삭제)
+1. Load Balancer 삭제
+1. Target Group 삭제
+1. Security Group 삭제
 
