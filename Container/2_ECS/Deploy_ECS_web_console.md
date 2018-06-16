@@ -23,6 +23,12 @@ docker push ${DOCKER_REGISTRY_HOST}/petclinic-rest:latest
 ```
 
 > 처음에는 필요한 라이브러리를 다운받기 때문에 maven 빌드가 오래걸린다. 
+
+#### ECR 푸시 확인
+
+https://ap-southeast-1.console.aws.amazon.com/ecs/home?region=ap-southeast-1#/repositories/petclinic-rest#images;tagStatus=ALL
+
+
 ### Application Load Balancer 및 관련 Security groups 생성
 
 ecs cluster를 만들기 전에 클러스터의 로드발라서와 로드발란서의 security group, ecs instance의 security group을 미리 만들어 둔다.
