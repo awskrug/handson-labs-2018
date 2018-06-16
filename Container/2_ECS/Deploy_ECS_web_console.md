@@ -117,6 +117,18 @@ ecs cluster를 만들기 전에 클러스터의 로드발라서와 로드발란�
     
 코드를 수정하고 docker image를 다시 ecr에 푸시한 다음 service update를 해본다.
 
+`cloud9` > petclinic-rest > src/main/groovy/vw/demo/petclinic/interfaces/PetClinicController.groovy
+
+```groovy
+    @GetMapping("/developer")
+    ResponseEntity getDeveloper(){
+        return ResponseEntity.ok("자기 이름")
+    }
+```
+
+확인 : http://{elb-domain}/petclinic/developer
+
+
 ### Frontend 연결
  frontend serviceHost를 elb domain으로 수정하고 다시 배포한 다음 잘 되는지 확인해본다.
  
