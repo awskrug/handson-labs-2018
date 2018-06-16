@@ -62,7 +62,7 @@ tail -f nohup.out
  "Version": "2012-10-17",
  "Statement": [
    {
-     "Action": "s3:*",
+     "Action": ["s3:GetObject"],
      "Effect": "Allow",
      "Resource": "arn:aws:s3:::{yourname}-petclinc-www/*",
      "Principal": "*"
