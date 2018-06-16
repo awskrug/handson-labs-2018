@@ -12,8 +12,9 @@ ssh 개발환경 접속
 cd /home/ec2-user/environment/petclinic-rest/
 
 # add env var DOCKER_REGISTRY_HOST
+REGION=`aws configure get region`
 ACCOUNT_ID=`aws sts get-caller-identity | jq -r ".Account"`
-export DOCKER_REGISTRY_HOST="${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com"
+export DOCKER_REGISTRY_HOST="${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
 
 DOCKER_LOGIN=`aws ecr get-login --no-include-email`
 ${DOCKER_LOGIN}

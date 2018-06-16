@@ -40,3 +40,14 @@
 
 ## Spring config server ECS로 배포하기
 [Deploy_spring_config.md](Deploy_spring_config.md)
+
+
+### :warning: 실습이 끝나면 서비스들을 모두 삭제해 주세요
+1. CodePipeline 삭제
+1. CodeBuild 삭제
+1. ECS cluster 삭제
+1. ECR 삭제
+1. (CloudFormation 의 스택이 지워지지 않았다면 삭제)
+1. Load Balancer 삭제
+1. Target Group 삭제
+1. Security Group 삭제
