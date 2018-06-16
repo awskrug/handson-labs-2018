@@ -22,10 +22,18 @@
     인스턴스 타입은 t2.small로 변경합니다.
     ![](./images/cloud9-2.png)
 
-
     Create environment를 클릭하면 Cloud9 인스턴스가 생성되면서 Cloud9이 접속됩니다.
     ![](./images/cloud9-8.png)
 
+1. Cloud9 Security Group 설정
+
+    실행된 서버를 확인하기 위해서 보안그룹을 설정합니다.
+    
+    ![](./images/cloud9-sg-1.png)
+    
+    ![](./images/cloud9-sg-2.png)
+    
+    ![](./images/cloud9-sg-3.png)
 
 ## Cloud9 개발환경 설정
 
