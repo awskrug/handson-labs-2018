@@ -7,7 +7,7 @@
 ![](./images/ecr.png)
 ### docker image push
     
-ssh 개발환경 접속
+`cloud9` > terminal
 ```bash
 cd /home/ec2-user/environment/petclinic-rest/
 
