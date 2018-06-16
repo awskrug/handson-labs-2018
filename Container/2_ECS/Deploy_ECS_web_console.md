@@ -9,7 +9,7 @@
     
 ssh 개발환경 접속
 ```bash
-cd /home/ec2-user/workspace/petclinic-rest/
+cd /home/ec2-user/environment/petclinic-rest/
 
 # add env var DOCKER_REGISTRY_HOST
 ACCOUNT_ID=`aws sts get-caller-identity | jq -r ".Account"`
