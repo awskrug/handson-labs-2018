@@ -54,7 +54,7 @@ tail -f nohup.out
 
 ### 버켓 만들기 
     
-이름은 중복되지 않도록 `${자신의 아이디}-petclinc-www` 로 짓는다. 
+이름은 중복되지 않도록 `${자신의 아이디}-petclinic-www` 로 짓는다. 
 ![](./images/s3-1.png)
 정적 웹사이트 호스팅 설정     
 ![](./images/s3-4.png)
