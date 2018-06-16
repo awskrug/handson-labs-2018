@@ -106,3 +106,5 @@
 ---
 
 ## 실습 시작
+
+<small> https://github.com/awskrug/handson-labs-2018/tree/master/Container/2_ECS </small>

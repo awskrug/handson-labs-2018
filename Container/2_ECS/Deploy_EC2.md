@@ -107,8 +107,8 @@ npm install
 npm run deploy:s3
 ```
 ### 배포 확인
-1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com 에 접속하여 확인한다.
-1. http://{your-bucket-name}.s3-website.ap-northeast-2.amazonaws.com/#/staff 에 접속하여 수의사 리스트가 나오는지 확인한다.
+1. http://{your-bucket-name}.s3-website.ap-southeast-1.amazonaws.com 에 접속하여 확인한다.
+1. http://{your-bucket-name}.s3-website.ap-southeast-1.amazonaws.com/#/staff 에 접속하여 수의사 리스트가 나오는지 확인한다.
 
 ## :coffee: coffee break
 ec2에 백앤드 서비스를 배포해 보았다. 간단하지만 단점들이 존재한다.
