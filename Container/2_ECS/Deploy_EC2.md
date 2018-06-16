@@ -14,6 +14,8 @@ Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - t2.micro 인스턴스를 하
 ![](./images/ec2-keypair.png)
 
 ### ssh 접속 및 배포환경 구축
+`petclinc ec2` > terminal
+
 1. `petclinc ec2` 인스턴스의 java 버전을 8로 업그레이드 한다. (관련 링크 : http://jojoldu.tistory.com/261)
     ```bash
     sudo yum install -y java-1.8.0-openjdk-devel.x86_64
@@ -27,7 +29,7 @@ Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - t2.micro 인스턴스를 하
     ```
 
 ### 배포 
-
+`petclinc ec2` > terminal
 ```bash 
 git clone https://github.com/{your-github-name}/petclinic-rest
 cd petclinic-rest
@@ -79,9 +81,9 @@ tail -f nohup.out
 
 ### 코드 수정
 
-1. 배포스크립트 수정
+1. 배포스크립트 수정 
 
-    petclinic-front > package.json
+    `cloud9` > petclinic-front > package.json
     
     package.json에 deploy:s3 스크립트에서 bucket 명을 prerequisites에서 만든 자신의 버켓명으로 수정한다.
     ```json
@@ -92,7 +94,7 @@ tail -f nohup.out
     
 1. api host 수정
 
-    petclinic-front > src/services/restService.js
+    `cloud9` > petclinic-front > src/services/restService.js
 
     restService.js 에서 서비스 호스트를 배포된 호스트로 변경한다.
     ```js
@@ -101,6 +103,7 @@ tail -f nohup.out
 ### 배포
 
 1. 배포 스크립트 실행
+`cloud9` > terminal
 ```bash
 cd /home/ec2-user/environment/petclinic-front/
 npm install
