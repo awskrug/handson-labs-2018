@@ -59,7 +59,7 @@ Cloud9을 이용하여 핸즈온에 들어가기에 앞서, 개발환경을 설�
     ```bash
     sudo curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest
     sudo chmod +x /usr/local/bin/ecs-cli
-    ecs-cli --
+    ecs-cli --version
     #ecs-cli version 1.6.0
     ```
 
