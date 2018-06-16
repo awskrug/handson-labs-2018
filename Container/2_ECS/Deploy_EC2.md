@@ -53,9 +53,13 @@ tail -f nohup.out
 ### 버켓 만들기 
     
 이름은 중복되지 않도록 `${자신의 아이디}-petclinc-www` 로 짓는다. 
-![](./images/s3-bucket-www-1.png)
+![](./images/s3-1.png)
 정적 웹사이트 호스팅 설정     
-![](./images/s3-bucket-www-2.png)
+![](./images/s3-4.png)
+
+![](./images/s3-5.png)
+
+![](./images/s3-7.png)
 버켓 퍼블릭으로 설정
 ```json
 {
@@ -64,7 +68,7 @@ tail -f nohup.out
    {
      "Action": ["s3:GetObject"],
      "Effect": "Allow",
-     "Resource": "arn:aws:s3:::{yourname}-petclinc-www/*",
+     "Resource": "arn:aws:s3:::{yourname}-petclinic-www/*",
      "Principal": "*"
    }
  ]
