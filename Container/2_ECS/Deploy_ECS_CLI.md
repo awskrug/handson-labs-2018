@@ -51,7 +51,7 @@ fi
 
 ACCOUNT_ID=`aws sts get-caller-identity | jq -r ".Account"`
 
-export DOCKER_REGISTRY_HOST="${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com"
+export DOCKER_REGISTRY_HOST="${ACCOUNT_ID}.dkr.ecr.ap-southeast-1.amazonaws.com"
 echo "[INFO] DOCKER_REGISTRY_HOST : ${DOCKER_REGISTRY_HOST}"
 
 if ./mvnw clean package docker:build -Dmaven.test.skip=true; then
@@ -144,7 +144,7 @@ services:
       driver: awslogs
       options:
         awslogs-group: petclinic-rest
-        awslogs-region: ap-northeast-2
+        awslogs-region: ap-southeast-1
         awslogs-stream-prefix: petclinic
 ```
 
@@ -156,7 +156,7 @@ services:
 ```bash
 # configure
 ecs-cli configure --cluster ${CLUSTER_NAME} \
-  --region ap-northeast-2 \
+  --region ap-southeast-1 \
   --default-launch-type EC2 \
   --config-name ${CLUSTER_NAME}
 

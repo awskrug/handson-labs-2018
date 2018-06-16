@@ -34,7 +34,7 @@ ecs cluster를 만들기 전에 클러스터의 로드발라서와 로드발란�
 [포트 범위 참고 링크](https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/VPC_ACLs.html#VPC_ACLs_Ephemeral_Ports) 
 1. load balancer 생성
 
-    1. [load balancer 생성](https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#SelectCreateELBWizard:) 접속
+    1. [load balancer 생성](https://ap-southeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-southeast-1#SelectCreateELBWizard:) 접속
     1. Application Load balancer 선택
     1. 로드 발란서 구성
         ![](./images/alb-step1.png)    
@@ -49,7 +49,7 @@ ecs cluster를 만들기 전에 클러스터의 로드발라서와 로드발란�
 
 ### ecs 클러스터 생성
 > 클러스터 : 작업 요청을 수행 가능한 컨테이너 인스턴스의 묶음.
-1. [ecs 클러스터 생성](https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#SelectCreateELBWizard:) 접속 
+1. [ecs 클러스터 생성](https://ap-southeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-southeast-1#SelectCreateELBWizard:) 접속 
 1. 클러스터 탬플릿 선택 : EC2 Linux + 네트워킹
 1. ecs 클러스터 구성
 
@@ -68,7 +68,7 @@ ecs cluster를 만들기 전에 클러스터의 로드발라서와 로드발란�
 > 작업(Task) : 1개 이상의 도커 이미지로 정의한 기능의 단위. 
 직접 작업하는 컨테이너와 그 컨테이너와 상호작용하는 컨테이너를 정의한다.  
 
-1. [작업 정의](https://ap-northeast-2.console.aws.amazon.com/ecs/home?region=ap-northeast-2#/taskDefinitions/create) 접속
+1. [작업 정의](https://ap-southeast-1.console.aws.amazon.com/ecs/home?region=ap-southeast-1#/taskDefinitions/create) 접속
     ![](./images/ecs-task-1.png)
     
     컨테이너 소프트 제한을 둔다. 포트 매핑은 ecs가 휘발성 포트를 사용하도록 호스트 포트를 0 으로 설정한다.
@@ -81,7 +81,7 @@ ecs cluster를 만들기 전에 클러스터의 로드발라서와 로드발란�
 > 서비스 : 정의된 작업을 바탕으로 실제 컨테이너를 운영하는 단위. 
 작업 요청을 통해서도 작업만을 배포하고 테스트할 수 있지만 매끄러운 운영을 위해서는 서비스 단위로 배포해야한다.
 
-1. [서비스 생성](https://ap-northeast-2.console.aws.amazon.com/ecs/home?region=ap-northeast-2#/clusters/petclinic-cluster/createService) 접속
+1. [서비스 생성](https://ap-southeast-1.console.aws.amazon.com/ecs/home?region=ap-southeast-1#/clusters/petclinic-cluster/createService) 접속
     
     최소 정상 상태 백분율가 50% 라는 것은 정의된 작업개수 2개 중에서 1대만 살아있어도 정상이라는 의미이다. 
     최대 백분율이 100인것은 2대의 인스턴스에 최대 2개의 작업만 수행할 수 있다는 의미이다. 
@@ -121,7 +121,7 @@ ecs cluster를 만들기 전에 클러스터의 로드발라서와 로드발란�
 
 ### CodeBuild 프로젝트 만들기
     
-[CodeBuild 프로젝트 만들기](https://ap-northeast-2.console.aws.amazon.com/codebuild/home?region=ap-northeast-2#/projects/create) 접속
+[CodeBuild 프로젝트 만들기](https://ap-southeast-1.console.aws.amazon.com/codebuild/home?region=ap-southeast-1#/projects/create) 접속
 
 ![](./images/codebuild-1.png)
 
@@ -185,7 +185,7 @@ codebuild-petclinic-rest-build role을 찾는다.
 
 ### CodePipeline 구축
     
-[CodePipeline 파이프라인 생성](https://ap-northeast-2.console.aws.amazon.com/codepipeline/home?region=ap-northeast-2#/create/Name) 접속
+[CodePipeline 파이프라인 생성](https://ap-southeast-1.console.aws.amazon.com/codepipeline/home?region=ap-southeast-1#/create/Name) 접속
 
 ![](./images/codepipe-1.png)
 

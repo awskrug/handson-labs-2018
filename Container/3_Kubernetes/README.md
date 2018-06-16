@@ -85,7 +85,7 @@ Note:
 User name: awskrug
 Access type: Programmatic access
 ```
-* https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users
+* https://console.aws.amazon.com/iam/home?region=ap-southeast-1#/users
 
 Note:
 - AWS 객체들을 관리하기 위하여 발급 받습니다.
@@ -97,7 +97,7 @@ Note:
 ```
 awskrug
 ```
-* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
+* https://ap-southeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-southeast-1#KeyPairs
 
 Note:
 - pem 파일을 잘 저장 해둡니다.
@@ -111,7 +111,7 @@ Note:
 ```
 Amazon Linux AMI
 ```
-* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
+* https://ap-southeast-1.console.aws.amazon.com/ec2/v2/home?region=ap-southeast-1#Instances
 
 Note:
 - 모두가 같은 환경에서 진행 할수 있도록 인스턴스를 생성 합니다.
