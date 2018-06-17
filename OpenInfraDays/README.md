@@ -54,7 +54,7 @@ Note:
 
 ### AWS EC2 - Instance
 
-* 모두가 같은 환경에서 진행 할수 있도록 같은 AMI 로 부터 인스턴스를 생성 합니다.
+* 빠른 진행을 위하여 필요한 서비스가 미리 설치된 AMI 로 부터 인스턴스를 생성 합니다.
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
 * 좌측 메뉴에서 `AMIs` 를 선택합니다.
 * `Owned by me` 를 `Public images` 로 변경합니다.
@@ -68,7 +68,9 @@ Note:
 
 Note:
 - 쉽게 찾는 링크
-- https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Images:visibility=public-images;imageId=ami-1649e378
+  - https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Images:visibility=public-images;imageId=ami-1649e378
+- AMI 에 설치된 서비스
+  - kops, kubectl, helm, jenkins-x, openjdk8, maven
 
 ### AWS EC2 - 접속 (Windows 사용자)
 
@@ -352,6 +354,7 @@ Note:
 ## Pipeline
 
 * https://jenkins-x.io/
+* https://github.com/jenkins-x/jx
 
 ### Jenkins X
 
@@ -443,50 +446,47 @@ jx create spring -d web -d actuator
 ```
 ```
 ? Which organisation do you want to use? nalbam
-? Enter the new repository name:  jx-demo
+? Enter the new repository name:  demo
 ```
 ```
-Pushed git repository to https://github.com/nalbam/jx-demo
+Pushed git repository to https://github.com/nalbam/demo
 
-Created Jenkins Project: http://jenkins.jx.00.00.00.00.nip.io/job/nalbam/job/jx-demo/
+Created Jenkins Project: http://jenkins.jx.00.00.00.00.nip.io/job/nalbam/job/demo/
 
-Watch pipeline activity via:    jx get activity -f jx-demo -w
-Browse the pipeline log via:    jx get build logs nalbam/jx-demo/master
+Watch pipeline activity via:    jx get activity -f demo -w
+Browse the pipeline log via:    jx get build logs nalbam/demo/master
 Open the Jenkins console via    jx console
 You can list the pipelines via: jx get pipelines
 When the pipeline is complete:  jx get applications
 ```
 
 * Github 에 프로젝트가 생성 되었고, `master` Branch 의 빌드가 진행 중 입니다.
+* Jenkins 에서 로그를 보며 완료 되길 기다립니다.
 
 Note:
-- 프로젝트의 Webhook 설정을 확인해 봅니다.
-- https://github.com/nalbam/jx-demo/settings/hooks
-
-### Create Branch
-
-* `dev` Branch 를 만들어 줍니다.
+- 빌드가 완료 되면, `staging` 환경에 배포되어 결과를 확인 할수 있습니다.
 
 ### Pull Request
 
+* `dev` Branch 를 만들어 줍니다.
 * 약간의 소스를 수정 하고, `Pull Request` 를 보내봅니다.
 * `PR-1` 빌드가 시작 되었습니다.
 
 ```bash
+jx get activity -f demo -w
+
 jx get pipelines
 
-jx get activity -f jx-demo
-
-jx get build logs nalbam/jx-demo/PR-1
+jx get applications
 ```
 
 * 빌드가 완료되면, Github Issues 에 이슈가 등록 되고,
 * `preview` 링크를 통하여 결과를 확인 할수 있습니다.
 
 Note:
-- https://github.com/nalbam/jx-demo/issues
+- https://github.com/nalbam/demo/pull/1
 
-### Merge
+### PR Merge
 
 * PR 을 merge 하면, `master` Branch 의 빌드가 진행 됩니다.
 
@@ -497,22 +497,29 @@ Note:
 * `production` 환경에 배포하기 위해서는 다음의 명령을 하면 됩니다.
 
 ```bash
-jx promote jx-demo --env production
+jx promote demo -v 0.0.1 -e production
 ```
 
+* Github user name 과 password 가 필요 합니다.
+
 ## Clean Up
+
+* Kubernetes Cluster 를 지웁니다.
 
 ```bash
 kops delete cluster --name=${KOPS_CLUSTER_NAME} --yes
 ```
 
-Note:
-- 지금까지 만들었던 클러스터를 지웁니다.
-- 접속용으로 만들었던 인스턴스를 지웁니다.
-  - https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
-- IAM User 를 지웁니다.
-  - https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users
-- Github 토큰을 지웁니다.
-  - https://github.com/settings/tokens
+* EC2 Instance 를 지웁니다.
+  * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Instances
+
+* EC2 Key Pair 를 지웁니다.
+  * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#KeyPairs
+
+* IAM User 를 지웁니다.
+  * https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users
+
+* Github 토큰을 지웁니다.
+  * https://github.com/settings/tokens
 
 ## Thank You
