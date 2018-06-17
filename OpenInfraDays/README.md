@@ -164,6 +164,17 @@ kops create cluster \
     --network-cidr=10.10.0.0/16 \
     --networking=calico
 ```
+```
+Must specify --yes to apply changes
+
+Cluster configuration has been created.
+
+Suggestions:
+ * list clusters with: kops get cluster
+ * edit this cluster with: kops edit cluster awskrug.k8s.local
+ * edit your node instance group: kops edit ig --name=awskrug.k8s.local nodes
+ * edit your master instance group: kops edit ig --name=awskrug.k8s.local master-ap-northeast-2a
+```
 
 Note:
 - 위 명령을 실행해도 아직 클러스터는 만들어지지 않습니다.
@@ -289,7 +300,9 @@ service "kubernetes-dashboard" created
   * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers
 * ELB 의 `DNS name` 에 `https://` 를 붙여서 접속 해야 합니다.
 
-* 로그인을 위해 `Secret` 에서 `token` 을 조회 해서 붙여 넣습니다.
+* 서버인증서가 없어 사이트가 안전하지 않다고 하지만 이동 하도록 하겠습니다.
+
+* 로그인은 `Token` 방식을 사용 하겠습니다. 그리고 `Secret` 에서 `token` 을 조회 해서 붙여 넣습니다.
 
 ```bash
 kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep kubernetes-dashboard-token | awk '{print $1}')
@@ -300,6 +313,8 @@ kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | gre
 ```bash
 kubectl create clusterrolebinding cluster-admin:kube-system:kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
 ```
+
+* 리로드를 하면 정상적인 화면이 보이게 됩니다.
 
 Note:
 - https://github.com/kubernetes/dashboard/
@@ -324,6 +339,13 @@ rolebinding.rbac.authorization.k8s.io "heapster-binding" created
 
 * 잠시후 Heapster 가 정보를 수집하면 Dashboard 에 관련 정보를 추가로 볼수 있습니다.
 
+```bash
+kubectl top pod --all-namespaces
+
+kubectl top pod -n kube-system
+kubectl top pod -n default
+```
+
 Note:
 - https://github.com/kubernetes/heapster/
 
@@ -334,19 +356,67 @@ Note:
 ### Jenkins X
 
 * Jenkins X 를 설치 합니다.
+* 설치중 메세지가 화면에 잘 보이지 않을수 있습니다.
 
 ```bash
 jx install --provider=aws
 ```
 
-* ELB 의 도메인을 사용하겠냐는 질문에 `Y` 를 입력 합니다.
-* ELB 의 IP 를 이용한 nio.io 에 `엔터` 를 입력 합니다.
+* git 에서 사용할 `user name` 을 입력해 줍니다.
+* git 에서 사용할 `email` 을 입력해 줍니다.
+
+```
+? Please enter the name you wish to use with git:
+? Please enter the email you wish to use with git:
+```
+
+* `ingress controller` 를 `kube-system` 에 설치 하겠습니다.
+
+```
+? No existing ingress controller found in the kube-system namespace, shall we install one? [? for help] (Y/n)
+```
+
+* ELB 도메인을 이용하여 IP 를 얻도록 하겠습니다.
+
+```
+? Would you like wait and resolve this address to an IP address and use it for the domain? [? for help] (Y/n)
+```
+
+* ELB 의 IP 를 이용한 nio.io 도메인을 이용 합니다.
+
+```
+? Domain [? for help] (13.0.0.0.nip.io)
+```
+
 * Github user name 에 본인의 계정을 입력합니다.
-* API Token 입력을 위하여 제시된 주소로 갑니다. 토큰을 만들어서 붙여 넣습니다.
-* `이때 토큰 문자열 앞의 공백에 주의해서 붙여 넣어야 합니다.`
+
+```
+? GitHub user name:
+```
+
+* API Token 입력을 위하여 제시된 주소를 브라우저에서 엽니다.
+* `Token description` 에 토큰 이름을 넣습니다.
+* `Generate token` 버튼을 눌러 토큰을 만듭니다.
+* `토큰 복사/붙여넣기 하면서 토큰 문자열 앞의 공백에 주의해 주세요.`
+
+```
+Please click this URL https://github.com/settings/tokens/new?scopes=repo,read:user,user:email,write:repo_hook
+Then COPY the token and enter in into the form below:
+
+? API Token:
+```
+
 * Jenkins 를 생성하고, Jenkins 주소가 나타날 것입니다.
 * 아이디 `admin` 과 제시된 비밀번호를 입력해 주세요.
-* Show API Token 버튼을 클릭하여 키를 붙여 넣습니다.
+* `Show API Token` 버튼을 눌러 키를 합니다. 그리고 화면에 붙여 넣습니다.
+
+```
+Please go to http://jenkins.jx.13.0.0.0.nip.io/me/configure and click Show API Token to get your API Token
+Then COPY the token and enter in into the form below:
+
+? API Token:
+```
+
 * `stageing` 과 `production` 관리 repo 를 저장할 계정을 선택 합니다.
 
 ```
@@ -354,6 +424,8 @@ To import existing projects into Jenkins:     jx import
 To create a new Spring Boot microservice:       jx create spring -d web -d actuator
 To create a new microservice from a quickstart: jx create quickstart
 ```
+
+* 이제 Jenkins X 설치가 완료 되었습니다.
 
 ### Create Project
 
