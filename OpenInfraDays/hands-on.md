@@ -143,7 +143,7 @@ aws_secret_access_key=
 
 ```bash
 export KOPS_CLUSTER_NAME=awskrug.k8s.local
-export KOPS_STATE_STORE=s3://terraform-awskrug-MY_UNIQUE_ID
+export KOPS_STATE_STORE=s3://kops-awskrug-MY_UNIQUE_ID
 
 aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 ```
@@ -266,7 +266,7 @@ Note:
 * 샘플 웹을 하나 생성해 봅니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/sample-web.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/OpenInfraDays/sample/sample-web.yml
 ```
 ```
 deployment.apps "sample-web" created
@@ -287,7 +287,7 @@ Note:
 * 웹 UI 를 통하여 정보와 상태를 볼수 있도록 Dashboard 를 올려 보겠습니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/dashboard-v1.8.3.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/OpenInfraDays/sample/dashboard-v1.8.3.yml
 ```
 ```
 secret "kubernetes-dashboard-certs" created
@@ -328,7 +328,7 @@ Note:
 * 참고로 힙스터는 현재 `DEPRECATED` 되었습니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Kubernetes/sample/heapster-v1.7.0.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/OpenInfraDays/sample/heapster-v1.7.0.yml
 ```
 ```
 deployment.extensions "heapster" created
