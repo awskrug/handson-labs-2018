@@ -514,7 +514,7 @@ Note:
 * `production` 환경에 배포하기 위해서는 다음의 명령을 하면 됩니다.
 
 ```bash
-jx promote demo -v 0.0.1 -e production
+jx promote demo -v 0.0.2 -e production
 ```
 
 * Github user name 과 password 가 필요 합니다.
