@@ -370,7 +370,7 @@ jx install --provider=aws
 
 ```
 ? Please enter the name you wish to use with git:
-? Please enter the email you wish to use with git:
+? Please enter the email address you wish to use with git:
 ```
 
 * `ingress controller` 를 `kube-system` 에 설치 하겠습니다.
