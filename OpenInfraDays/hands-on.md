@@ -251,7 +251,7 @@ Your cluster awskrug.k8s.local is ready
 ```bash
 kubectl get node
 
-kubectl get deploy,pod,svc --all-namespaces
+kubectl get node,deploy,pod,svc --all-namespaces
 
 kubectl get deploy,pod,svc -n kube-system
 kubectl get deploy,pod,svc -n default
@@ -272,6 +272,9 @@ kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/Ope
 deployment.apps "sample-web" created
 horizontalpodautoscaler.autoscaling "sample-web" created
 service "sample-web" created
+```
+```bash
+kubectl get svc -o wide -n default
 ```
 
 * Pod 와 Service 가 만들어졌고, AWS 에서 만들었으므로 ELB 도 생겼습니다.
@@ -296,6 +299,9 @@ role.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
 rolebinding.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
 deployment.apps "kubernetes-dashboard" created
 service "kubernetes-dashboard" created
+```
+```bash
+kubectl get svc -o wide -n kube-system
 ```
 
 * 생성된 ELB 로 접속 할수 있습니다.
@@ -430,12 +436,24 @@ To create a new microservice from a quickstart: jx create quickstart
 
 * 이제 Jenkins X 설치가 완료 되었습니다.
 
-### Create Project
-
-* Spring Boot 프로젝트를 생성합니다.
+* `environment` 빌드가 완료 될때 까지 잠시 기다려 주세요.
 
 ```bash
+jx get pipelines
+```
+
+### Create Project
+
+* 프로젝트를 생성합니다.
+
+```bash
+# spring boot
 jx create spring -d web -d actuator
+
+# or
+
+# quickstart
+jx create quickstart
 ```
 ```
 ? Language: java
@@ -443,15 +461,13 @@ jx create spring -d web -d actuator
 ? Artifact: demo
 ? Do you wish to use nalbam as the git user name: Yes
 ? Would you like to initialise git now? Yes
-```
-```
-? Which organisation do you want to use? nalbam
-? Enter the new repository name:  demo
+
+Initialized empty Git repository in /home/ec2-user/demo/.git/
 ```
 ```
 Pushed git repository to https://github.com/nalbam/demo
 
-Created Jenkins Project: http://jenkins.jx.00.00.00.00.nip.io/job/nalbam/job/demo/
+Created Jenkins Project: http://jenkins.jx.13.0.0.0.nip.io/job/nalbam/job/demo/
 
 Watch pipeline activity via:    jx get activity -f demo -w
 Browse the pipeline log via:    jx get build logs nalbam/demo/master
@@ -461,7 +477,11 @@ When the pipeline is complete:  jx get applications
 ```
 
 * Github 에 프로젝트가 생성 되었고, `master` Branch 의 빌드가 진행 중 입니다.
-* Jenkins 에서 로그를 보며 완료 되길 기다립니다.
+* 로그를 보며 완료 되길 기다립니다.
+
+```bash
+jx get activity -f demo -w
+```
 
 Note:
 - 빌드가 완료 되면, `staging` 환경에 배포되어 결과를 확인 할수 있습니다.
@@ -470,14 +490,11 @@ Note:
 
 * `dev` Branch 를 만들어 줍니다.
 * 약간의 소스를 수정 하고, `Pull Request` 를 보내봅니다.
+
 * `PR-1` 빌드가 시작 되었습니다.
 
 ```bash
 jx get activity -f demo -w
-
-jx get pipelines
-
-jx get applications
 ```
 
 * 빌드가 완료되면, Github Issues 에 이슈가 등록 되고,
