@@ -150,9 +150,8 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 
 ### Create Cluster
 
-* Master Node `1`대, Worker Node `2`대 로 하겠습니다. 
+* Master Node `1`대, Worker Node `3`대 로 하겠습니다. 
 * Instance Type 은 `m4.large` 로 하겠습니다.
-* Networking 은 `calico` 로 하겠습니다.
 
 ```bash
 kops create cluster \
@@ -163,8 +162,7 @@ kops create cluster \
     --node-size=m4.large \
     --node-count=3 \
     --zones=ap-northeast-2a,ap-northeast-2c \
-    --network-cidr=10.10.0.0/16 \
-    --networking=calico
+    --network-cidr=10.10.0.0/16
 ```
 ```
 Must specify --yes to apply changes
@@ -180,7 +178,6 @@ Suggestions:
 
 Note:
 - 위 명령을 실행해도 아직 클러스터는 만들어지지 않습니다.
-- calico? https://github.com/kubernetes/kops/blob/master/docs/networking.md
 
 ### Update Cluster
 
@@ -233,13 +230,14 @@ Validating cluster awskrug.k8s.local
 INSTANCE GROUPS
 NAME                   ROLE   MACHINETYPE MIN MAX SUBNETS
 master-ap-northeast-2a Master m4.large    1   1   ap-northeast-2a
-nodes                  Node   m4.large    2   2   ap-northeast-2a,ap-northeast-2c
+nodes                  Node   m4.large    3   3   ap-northeast-2a,ap-northeast-2c
 
 NODE STATUS
 NAME                                           ROLE   READY
 ip-10-10-10-10.ap-northeast-2.compute.internal master True
 ip-10-10-10-11.ap-northeast-2.compute.internal node   True
 ip-10-10-10-12.ap-northeast-2.compute.internal node   True
+ip-10-10-10-13.ap-northeast-2.compute.internal node   True
 
 Your cluster awskrug.k8s.local is ready
 ```
