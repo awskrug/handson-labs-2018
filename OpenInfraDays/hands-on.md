@@ -150,8 +150,9 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 
 ### Create Cluster
 
-* Master Node `1`대, Worker Node `3`대 로 하겠습니다. 
-* Instance Type 은 `m4.large` 로 하겠습니다.
+* Cloud 는 AWS 를 사용 하겠습니다.
+* Master Node 는 `m4.large` 1대로 하겠습니다. (2/8)
+* Worker Node 는 `m4.xlarge` 2대로 하겠습니다. (4/16)
 
 ```bash
 kops create cluster \
@@ -159,8 +160,8 @@ kops create cluster \
     --name=${KOPS_CLUSTER_NAME} \
     --state=${KOPS_STATE_STORE} \
     --master-size=m4.large \
-    --node-size=m4.large \
-    --node-count=3 \
+    --node-size=m4.xlarge \
+    --node-count=2 \
     --zones=ap-northeast-2a,ap-northeast-2c \
     --network-cidr=10.10.0.0/16
 ```
@@ -178,6 +179,7 @@ Suggestions:
 
 Note:
 - 위 명령을 실행해도 아직 클러스터는 만들어지지 않습니다.
+- https://aws.amazon.com/ko/ec2/pricing/on-demand/
 
 ### Update Cluster
 
@@ -230,14 +232,13 @@ Validating cluster awskrug.k8s.local
 INSTANCE GROUPS
 NAME                   ROLE   MACHINETYPE MIN MAX SUBNETS
 master-ap-northeast-2a Master m4.large    1   1   ap-northeast-2a
-nodes                  Node   m4.large    3   3   ap-northeast-2a,ap-northeast-2c
+nodes                  Node   m4.xlarge   2   2   ap-northeast-2a,ap-northeast-2c
 
 NODE STATUS
 NAME                                           ROLE   READY
 ip-10-10-10-10.ap-northeast-2.compute.internal master True
 ip-10-10-10-11.ap-northeast-2.compute.internal node   True
 ip-10-10-10-12.ap-northeast-2.compute.internal node   True
-ip-10-10-10-13.ap-northeast-2.compute.internal node   True
 
 Your cluster awskrug.k8s.local is ready
 ```
@@ -487,9 +488,23 @@ Note:
 
 ### Pull Request
 
-* `dev` Branch 를 만들어 줍니다.
-* 약간의 소스를 수정 하고, `Pull Request` 를 보내봅니다.
+* Branch 를 만들어 줍니다.
+* 약간의 소스를 수정 하고 commit/push 를 합니다.
 
+```bash
+jx create issue -t "awskrug & cncf"
+
+git branch fixme
+git checkout fixme
+
+git commit -a -m "fix: hands-on
+
+fixes: #1"
+
+git push orign fixme
+```
+
+* `Pull Request` 를 보내봅니다.
 * `PR-1` 빌드가 시작 되었습니다.
 
 ```bash
@@ -517,6 +532,12 @@ jx promote demo -v 0.0.2 -e production
 ```
 
 * Github user name 과 password 가 필요 합니다.
+
+* 배포가 완료 되면, 다음 명령어로 결과를 확인 할수 있습니다.
+
+```bash
+jx get applications
+```
 
 ## Clean Up
 
