@@ -161,7 +161,7 @@ kops create cluster \
     --state=${KOPS_STATE_STORE} \
     --master-size=m4.large \
     --node-size=m4.large \
-    --node-count=2 \
+    --node-count=3 \
     --zones=ap-northeast-2a,ap-northeast-2c \
     --network-cidr=10.10.0.0/16 \
     --networking=calico
@@ -218,7 +218,7 @@ Suggestions:
 
 Note:
 - VPC, Instance, ELB, Route53 에 객체들이 생성됩니다.
-- 클러스터 생성 완료까지 `5분` 정도 소요 됩니다.
+- 클러스터 생성 완료까지 `10분` 정도 소요 됩니다.
 
 ### Validate Cluster
 
@@ -485,6 +485,7 @@ jx get activity -f demo -w
 
 Note:
 - 빌드가 완료 되면, `staging` 환경에 배포되어 결과를 확인 할수 있습니다.
+- 최초 빌드 이므로 `10분` 정도 소요 됩니다.
 
 ### Pull Request
 
