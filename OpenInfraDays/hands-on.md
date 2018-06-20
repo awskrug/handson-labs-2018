@@ -37,7 +37,7 @@
 * `Download .csv` 버튼을 눌러 파일을 저장합니다.
 
 Note:
-- 파일명은 `awskrug.csv` 일 것 입니다.
+- 파일명은 `credentials.csv` 일 것 입니다.
 - 발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.
 
 ### AWS EC2 - Key Pairs
@@ -123,7 +123,7 @@ Note:
 
 ### AWS Credentials
 
-* 다운 받았던 `awskrug.csv` 파일을 열어 Access Key 를 확인 합니다.
+* 다운 받았던 `credentials.csv` 파일을 열어 Access Key 를 확인 합니다.
 * `~/.aws/credentials` 파일에 Access Key 를 넣고 저장 합니다.
 
 ```bash
