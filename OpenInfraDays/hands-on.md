@@ -313,7 +313,7 @@ kubectl get svc -o wide -n kube-system
 * `admin` 을 만들어서, `cluster-admin` 권한을 부여 하겠습니다.
 
 ```bash
-kubectl apply -f role/admin.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/OpenInfraDays/sample/admin.yml
 ```
 
 * 로그인은 `Token` 을 사용 하겠습니다. 그리고 `Secret` 에서 `token` 을 조회 해서 붙여 넣습니다.
