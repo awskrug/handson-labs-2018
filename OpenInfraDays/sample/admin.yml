@@ -1,0 +1,23 @@
+# ------------------- ServiceAccount ------------------- #
+
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  namespace: kube-system
+  name: admin
+
+---
+# ------------------- ClusterRoleBinding ------------------- #
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: cluster-admin:kube-system:admin
+subjects:
+- kind: ServiceAccount
+  namespace: kube-system
+  name: admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
