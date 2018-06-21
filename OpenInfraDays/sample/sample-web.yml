@@ -41,6 +41,9 @@ spec:
     - name: http
       port: 80
       targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 80
   selector:
     k8s-app: sample-web
 
@@ -65,3 +68,6 @@ spec:
         backend:
           serviceName: sample-web
           servicePort: 80
+  tls:
+  - hosts:
+    - sample-web.apps.nalbam.com

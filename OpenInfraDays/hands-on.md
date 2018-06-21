@@ -315,14 +315,6 @@ kubectl get svc -o wide -n kube-system
 kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep kubernetes-dashboard-token | awk '{print $1}')
 ```
 
-* 접속해보면 권한 때문에 정상적으로 보이지 않을 겁니다. 권한 부여를 합니다.
-
-```bash
-kubectl create clusterrolebinding cluster-admin:kube-system:kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
-```
-
-* 리로드를 하면 정상적인 화면이 보이게 됩니다.
-
 Note:
 - https://github.com/kubernetes/dashboard/
 
