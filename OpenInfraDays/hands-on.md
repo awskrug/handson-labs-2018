@@ -316,7 +316,8 @@ kubectl get svc -o wide -n kube-system
 kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/OpenInfraDays/sample/admin.yml
 ```
 
-* 로그인은 `Token` 을 사용 하겠습니다. 그리고 `Secret` 에서 `token` 을 조회 해서 붙여 넣습니다.
+* 로그인은 `Token` 을 사용 하겠습니다.
+* `Secret` 에서 `admin-token` 을 조회 해서 붙여 넣습니다.
 
 ```bash
 kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep admin-token | awk '{print $1}')
