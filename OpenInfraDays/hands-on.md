@@ -309,10 +309,17 @@ kubectl get svc -o wide -n kube-system
 
 * 서버인증서가 없어 사이트가 안전하지 않다고 하지만 이동 하도록 하겠습니다.
 
-* 로그인은 `Token` 방식을 사용 하겠습니다. 그리고 `Secret` 에서 `token` 을 조회 해서 붙여 넣습니다.
+* dashboard 에 접속 하기 위해 `ServiceAccount` 와 `Role` 이 필요 합니다.
+* `admin` 을 만들어서, `cluster-admin` 권한을 부여 하겠습니다.
 
 ```bash
-kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep kubernetes-dashboard-token | awk '{print $1}')
+kubectl apply -f role/admin.yml
+```
+
+* 로그인은 `Token` 을 사용 하겠습니다. 그리고 `Secret` 에서 `token` 을 조회 해서 붙여 넣습니다.
+
+```bash
+kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep admin-token | awk '{print $1}')
 ```
 
 Note:
