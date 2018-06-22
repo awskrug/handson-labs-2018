@@ -216,7 +216,7 @@ Suggestions:
 ```
 
 Note:
-- VPC, Instance, ELB, Route53 에 객체들이 생성됩니다.
+- VPC, Instance, ELB, Auto Scaling Group 에 객체들이 생성됩니다.
 - 클러스터 생성 완료까지 `10분` 정도 소요 됩니다.
 
 ### Validate Cluster
@@ -262,17 +262,22 @@ Note:
 
 ### Sample
 
-* 샘플 웹을 하나 생성해 봅니다.
+* 샘플 웹을 생성해 봅니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-node.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-node-lb.yml
+
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-spring-lb.yml
 ```
 ```
 deployment.apps "sample-node" created
 service "sample-node" created
+
+deployment.apps "sample-spring" created
+service "sample-spring" created
 ```
 ```bash
-kubectl get svc -o wide -n default
+kubectl get pod,svc -o wide -n default
 ```
 
 * Pod 와 Service 가 만들어졌고, AWS 에서 만들었으므로 ELB 도 생겼습니다.
@@ -288,7 +293,7 @@ Note:
 * 웹 UI 를 통하여 정보와 상태를 볼수 있도록 Dashboard 를 올려 보겠습니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3.yml
 ```
 ```
 secret "kubernetes-dashboard-certs" created
