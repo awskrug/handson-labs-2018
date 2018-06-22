@@ -265,12 +265,11 @@ Note:
 * 샘플 웹을 하나 생성해 봅니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/OpenInfraDays/sample/sample-web.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-node.yml
 ```
 ```
-deployment.apps "sample-web" created
-horizontalpodautoscaler.autoscaling "sample-web" created
-service "sample-web" created
+deployment.apps "sample-node" created
+service "sample-node" created
 ```
 ```bash
 kubectl get svc -o wide -n default
@@ -289,7 +288,7 @@ Note:
 * 웹 UI 를 통하여 정보와 상태를 볼수 있도록 Dashboard 를 올려 보겠습니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/OpenInfraDays/sample/dashboard-v1.8.3.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
 ```
 ```
 secret "kubernetes-dashboard-certs" created
@@ -313,14 +312,18 @@ kubectl get svc -o wide -n kube-system
 * `admin` 을 만들어서, `cluster-admin` 권한을 부여 하겠습니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/OpenInfraDays/sample/admin.yml
+kubectl create serviceaccount admin -n kube-system
+
+kubectl create clusterrolebinding cluster-admin:kube-system:admin \
+        --clusterrole=cluster-admin \
+        --serviceaccount=kube-system:admin
 ```
 
 * 로그인은 `Token` 을 사용 하겠습니다.
 * `Secret` 에서 `admin-token` 을 조회 해서 붙여 넣습니다.
 
 ```bash
-kubectl describe secret -n kube-system $(kubectl get secret -n kube-system | grep admin-token | awk '{print $1}')
+kubectl describe secret $(kubectl get secret -n kube-system | grep admin-token | awk '{print $1}') -n kube-system
 ```
 
 Note:
@@ -333,7 +336,7 @@ Note:
 * 참고로 힙스터는 현재 `DEPRECATED` 되었습니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/docs/master/201806/OpenInfraDays/sample/heapster-v1.7.0.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
 ```
 ```
 deployment.extensions "heapster" created

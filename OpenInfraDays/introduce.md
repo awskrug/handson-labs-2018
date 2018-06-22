@@ -1,11 +1,30 @@
-# Kubernetes on AWS
+---
+title: Kubernetes on AWS
+separator: <!--s-->
+verticalSeparator: <!--v-->
+revealOptions:
+  transition: slide
+---
+# Kubernetes
+
+## on
+
+# AWS
+
+#### 유정열 (awskrug)
+
+<!--s-->
 
 ## Kubernetes
 
+<!--s-->
+
 ## KOPS
+
+<!--s-->
 
 ## Jenkins X
 
-## Helm
+<!--s-->
 
-## GitOps
+## Thank You
