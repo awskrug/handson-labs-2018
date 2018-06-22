@@ -216,7 +216,7 @@ Suggestions:
 ```
 
 Note:
-- VPC, Instance, ELB, Route53 에 객체들이 생성됩니다.
+- VPC, Instance, ELB, Auto Scaling Group 에 객체들이 생성됩니다.
 - 클러스터 생성 완료까지 `10분` 정도 소요 됩니다.
 
 ### Validate Cluster
@@ -262,17 +262,24 @@ Note:
 
 ### Sample
 
-* 샘플 웹을 하나 생성해 봅니다.
+* 샘플 웹을 생성해 봅니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-node.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-node-ing.yml
+
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-web-ing.yml
 ```
 ```
 deployment.apps "sample-node" created
 service "sample-node" created
+ingress.extensions "sample-node" created
+
+deployment.apps "sample-web" created
+service "sample-web" created
+ingress.extensions "sample-web" created
 ```
 ```bash
-kubectl get svc -o wide -n default
+kubectl get pod,svc -o wide -n default
 ```
 
 * Pod 와 Service 가 만들어졌고, AWS 에서 만들었으므로 ELB 도 생겼습니다.
@@ -288,7 +295,7 @@ Note:
 * 웹 UI 를 통하여 정보와 상태를 볼수 있도록 Dashboard 를 올려 보겠습니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3.yml
 ```
 ```
 secret "kubernetes-dashboard-certs" created
@@ -313,10 +320,16 @@ kubectl get svc -o wide -n kube-system
 
 ```bash
 kubectl create serviceaccount admin -n kube-system
+```
+```
+serviceaccount "admin" created
+```
 
-kubectl create clusterrolebinding cluster-admin:kube-system:admin \
-        --clusterrole=cluster-admin \
-        --serviceaccount=kube-system:admin
+```bash
+kubectl create clusterrolebinding cluster-admin:kube-system:admin --clusterrole=cluster-admin --serviceaccount=kube-system:admin
+```
+```
+clusterrolebinding.rbac.authorization.k8s.io "cluster-admin:kube-system:admin" created
 ```
 
 * 로그인은 `Token` 을 사용 하겠습니다.
@@ -396,7 +409,7 @@ jx install --provider=aws
 * ELB 의 IP 를 이용한 nio.io 도메인을 이용 합니다.
 
 ```
-? Domain [? for help] (13.0.0.0.nip.io)
+? Domain [? for help] (0.0.0.0.nip.io)
 ```
 
 * Github user name 에 본인의 계정을 입력합니다.
@@ -422,7 +435,7 @@ Then COPY the token and enter in into the form below:
 * `Show API Token` 버튼을 눌러 키를 합니다. 그리고 화면에 붙여 넣습니다.
 
 ```
-Please go to http://jenkins.jx.13.0.0.0.nip.io/me/configure and click Show API Token to get your API Token
+Please go to http://jenkins.jx.0.0.0.0.nip.io/me/configure and click Show API Token to get your API Token
 Then COPY the token and enter in into the form below:
 
 ? API Token:
@@ -469,7 +482,7 @@ Initialized empty Git repository in /home/ec2-user/demo/.git/
 ```
 Pushed git repository to https://github.com/nalbam/demo
 
-Created Jenkins Project: http://jenkins.jx.13.0.0.0.nip.io/job/nalbam/job/demo/
+Created Jenkins Project: http://jenkins.jx.0.0.0.0.nip.io/job/nalbam/job/demo/
 
 Watch pipeline activity via:    jx get activity -f demo -w
 Browse the pipeline log via:    jx get build logs nalbam/demo/master
