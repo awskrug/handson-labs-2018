@@ -1,22 +1,23 @@
 ---
-title: Kubernetes on AWS
+title: Kubernetes and Jenkins X
 separator: <!--s-->
 verticalSeparator: <!--v-->
 revealOptions:
   transition: slide
 ---
 
-# Kubernetes
+## Kubernetes
 
 and
 
-# Jenkins X
+## Jenkins X
 
 #### 유정열 (awskrug)
 
 Note:
-- 저는 아마존사용자 그룹의 유정열 입니다.
-- 이번 세션에서는 쿠버네티스 와 젠킨스엑스 를 설명 하도록 하겠습니다.
+- 저는 아마존사용자그룹의 유정열 입니다.
+- 이번 세션에서는 아마존 클라우드 위에서 쿠버네티스 클러스터 구성하는 방법과
+- 젠킨스엑스 에 관하여 이야기 해보려합니다.
 
 <!--s-->
 
@@ -29,7 +30,7 @@ Note:
   * Node <!-- .element: class="fragment" -->
 
 Note:
-- 쿠버네티스는 컨테이너 작업을 자동화하는 오픈소스 플랫폼입니다.
+- 먼저 쿠버네티스는 컨테이너 작업을 자동화하는 오픈소스 플랫폼입니다.
 - 컨테이너 오케스트레이션은 컨테이너 배치 최적화를 의미 합니다.
 - 또한 로드밸런싱, 디스커버리, 장애 복구, 외부에 서비스를 제공을 지원 합니다.
 - 쿠버네티스 클러스터는 마스터 와 노드 로 구성 됩니다.
@@ -42,6 +43,10 @@ Note:
 - 제일 기본적인 구성인 한개의 마스터와 두개의 노드로 구성된 클러스터 입니다.
 - 마스터에서는 API Server 를 동하여 정보를 제공하고.
 - Controller 와 Scheduler 로 Node 의 객체를 관리합니다.
+- 노드에는 한개이상의 컨테이너가 Pod 로 감싸져서 배포가 되고
+- Service 를 통하여 Pod 를 Discovery 하고 LoadBalancing 을 합니다.
+- 이 서비스는 Kube-proxy 및 Ingress 설정에 따라 외부로 서비스 될수 있습니다.
+- 이뿐 아니라 ConfigMap, Secret, Account, Role 등도 지원 합니다.
 
 <!--v-->
 
@@ -63,17 +68,17 @@ Note:
 
 Note:
 - 쿠버네티스 오페레이션의 약자입니다.
-- Kubernetes Cluster 를 구성하는 제일 쉬운 방법 으로
+- 간단한 명령어로 Kubernetes Cluster 를 구성 할수 있습니다.
 - 아마존 클라우드는 현재 공식 지원하고 있고
-- 구글 클라우드는 베타지원 상태 입니다.
+- 구글 클라우드는 베타 지원 상태 입니다.
 
 <!--v-->
 
 <img src="images/kops.png" width="500">
 
 Note:
-- 아마존 클라우드를 예를 들어 VPC Subnet 위에 클러스터를 구성하고
-- EC2 인스턴스로 Master 와 Node 를 구성 합니다.
+- 아마존 클라우드를 예를 들어 VPC, Subnet, Security Group 을 생성하고
+- Auto Scaling Group 으로 EC2 인스턴스를 생성하여 Master 와 Node 를 구성 합니다.
 - 또한 Route53 과 ELB 를 통하여 외부에 서비스를 제공 합니다.
 
 <!--v-->
@@ -113,6 +118,7 @@ Note:
 - Jenkins X 는 Webhook 을 받아 빌드하여 임시버전을 Preview 환경에 배포합니다.
 - 개발자 혹은 테스터가 PR 의 Comment 에 등록된 주소를 통하여 확인 후, Merge 를 하면
 - 다시 빌드 하여 정식 할당된 버전을 Staging 환경에 배포 합니다.
+- 이때 이미지는 내장된 Registry 로, 버전관리는 Helm 을 사용하여 관리합니다. 
 - 테스터는 Staging 환경에 배포된 서비스를 테스트하고 이상이 없으면
 - Production 환경에 배포 하게 됩니다.
 
