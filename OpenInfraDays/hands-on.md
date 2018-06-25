@@ -38,7 +38,14 @@
 
 Note:
 - 파일명은 `credentials.csv` 일 것 입니다.
-- 발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.
+- `발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.`
+- `Administrator` 는 너무 많은 권한을 가지고 있고, 이를 가진 유저 생성은 추천하지 않습니다.
+- IAM 의 권한은 다음만 주셔도 됩니다.
+  - AmazonEC2FullAccess
+  - AmazonRoute53FullAccess
+  - AmazonS3FullAccess
+  - IAMFullAccess
+  - AmazonVPCFullAccess
 
 ### AWS EC2 - Key Pairs
 
@@ -54,7 +61,7 @@ Note:
 
 ### AWS EC2 - Instance
 
-* 빠른 진행을 위하여 필요한 서비스가 미리 설치된 AMI 로 부터 인스턴스를 생성 합니다.
+* 빠른 진행을 위하여 필요한 툴이 미리 설치된 AMI 로 부터 인스턴스를 생성 합니다.
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
 * 좌측 메뉴에서 `AMIs` 를 선택합니다.
 * `Owned by me` 를 `Public images` 로 변경합니다.
@@ -70,7 +77,9 @@ Note:
 - 쉽게 찾는 링크
   - https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Images:visibility=public-images;imageId=ami-5e11bb30
 - AMI 에 설치된 서비스
-  - awscli, kops, kubectl, helm, jenkins-x, openjdk8, maven
+  - awscli, kops, kubectl, helm, docker, jenkins-x, openjdk8, maven, nodejs
+- CentOs 혹은 Amazon Linux 에서 다음 쉘로 설치 가능 합니다.
+  - `curl -sL toast.sh/helper/bastion.sh | bash`
 
 ### AWS EC2 - 접속 (Windows 사용자)
 
@@ -179,6 +188,7 @@ Suggestions:
 
 Note:
 - 위 명령을 실행해도 아직 클러스터는 만들어지지 않습니다.
+- 저는 Jenkins X 시연을 위하여 m4.xlarge 를 선택 하였습니다.
 - https://aws.amazon.com/ko/ec2/pricing/on-demand/
 
 ### Update Cluster
@@ -216,7 +226,7 @@ Suggestions:
 ```
 
 Note:
-- VPC, Instance, ELB, Auto Scaling Group 에 객체들이 생성됩니다.
+- VPC, Instance, ELB, Auto Scaling Group 에 관련 객체들이 생성됩니다.
 - 클러스터 생성 완료까지 `10분` 정도 소요 됩니다.
 
 ### Validate Cluster
@@ -316,7 +326,8 @@ kubectl get svc -o wide -n kube-system
 * 서버인증서가 없어 사이트가 안전하지 않다고 하지만 이동 하도록 하겠습니다.
 
 * dashboard 에 접속 하기 위해 `ServiceAccount` 와 `Role` 이 필요 합니다.
-* `admin` 을 만들어서, `cluster-admin` 권한을 부여 하겠습니다.
+
+* `kube-system` 네임스페이스에 `admin` 유저를 만들겠습니다.
 
 ```bash
 kubectl create serviceaccount admin -n kube-system
@@ -324,6 +335,8 @@ kubectl create serviceaccount admin -n kube-system
 ```
 serviceaccount "admin" created
 ```
+
+* `cluster-admin` 권한을 부여 하겠습니다.
 
 ```bash
 kubectl create clusterrolebinding cluster-admin:kube-system:admin --clusterrole=cluster-admin --serviceaccount=kube-system:admin
@@ -344,9 +357,8 @@ Note:
 
 ### Heapster
 
-* 대시보드 로는 충분한 정보를 볼수 잆습니다. 예를 들면 CPU, Memory 사용량 같은것들...
+* 대시보드 로는 충분한 정보를 볼수 잆습니다. 예를 들면 CPU, Memory...
 * 힙스터를 설치하고 잠시 기다리면 정보가 수집되고, 대시보드에 보여집니다.
-* 참고로 힙스터는 현재 `DEPRECATED` 되었습니다.
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
@@ -361,6 +373,7 @@ rolebinding.rbac.authorization.k8s.io "heapster-binding" created
 ```
 
 * 잠시후 Heapster 가 정보를 수집하면 Dashboard 에 관련 정보를 추가로 볼수 있습니다.
+* 또한, CLI 로도 조회가 가능 합니다.
 
 ```bash
 kubectl top pod --all-namespaces
@@ -370,6 +383,7 @@ kubectl top pod -n default
 ```
 
 Note:
+- 힙스터는 현재 `DEPRECATED` 되었습니다.
 - https://github.com/kubernetes/heapster/
 
 ## Pipeline
@@ -394,7 +408,7 @@ jx install --provider=aws
 ? Please enter the email address you wish to use with git:
 ```
 
-* `ingress controller` 를 `kube-system` 에 설치 하겠습니다.
+* `ingress controller` 를 설치 하겠습니다.
 
 ```
 ? No existing ingress controller found in the kube-system namespace, shall we install one? [? for help] (Y/n)
@@ -527,8 +541,7 @@ git push orign fixme
 jx get activity -f demo -w
 ```
 
-* 빌드가 완료되면, Github Issues 에 이슈가 등록 되고,
-* `preview` 링크를 통하여 결과를 확인 할수 있습니다.
+* 빌드가 완료되면, Pull Request 에 `preview` 링크가 덧글로 등록 됩니다.
 
 Note:
 - https://github.com/nalbam/demo/pull/1
@@ -541,7 +554,7 @@ Note:
 
 ### Production
 
-* `production` 환경에 배포하기 위해서는 다음의 명령을 하면 됩니다.
+* `production` 환경에 배포하기 위하여 다음의 명령을 실행 합니다.
 
 ```bash
 jx promote demo -v 0.0.2 -e production
