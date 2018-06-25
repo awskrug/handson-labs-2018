@@ -81,20 +81,42 @@ Note:
 - CentOs 혹은 Amazon Linux 에서 다음 쉘로 설치 가능 합니다.
   - `curl -sL toast.sh/helper/bastion.sh | bash`
 
-### AWS EC2 - 접속 (Windows 사용자)
+### AWS EC2 - 접속 (Windows 사용자 - Git Bash)
 
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
 * 좌측 메뉴에서 `Instances` 를 선택합니다.
 * 방금 만들었던 인스턴스를 선택 합니다.
 * `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
-* PuTTYgen 으로 프라이빗 키를 변환 해야 합니다.
+
+* https://git-scm.com/download/win 를 브라우저에서 엽니다.
+  * 다운로드 되는 파일을 설치 합니다.
+
+* `Git Bash` 로 인스턴스에 접속 할수 있습니다.
+  * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
+  * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
+
+```bash
+ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
+```
+
+### AWS EC2 - 접속 (Windows 사용자 - PuTTY)
+
+* https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
+* 좌측 메뉴에서 `Instances` 를 선택합니다.
+* 방금 만들었던 인스턴스를 선택 합니다.
+* `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
+
+* https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.70-installer.msi 를 다운로드 하여 설치 합니다.
+
+* `PuTTYgen` 으로 프라이빗 키를 변환 해야 합니다.
   * `PuTTYgen` 을 시작합니다.
   * `Type of key to generate` 에서 `RSA` 를 선택합니다.
   * `Load` 를 선택합니다. `.pem` 파일을 찾으려면 모든 유형의 파일을 표시하는 옵션을 선택합니다.
   * `awskrug.pem` 을 선택합니다.
   * `Save private key` 버튼을 눌러 저장 합니다.
   * `awskrug.ppk` 가 만들어 졌습니다.
-* PuTTY 로 인스턴스에 접속 할수 있습니다.
+
+* `PuTTY` 로 인스턴스에 접속 할수 있습니다.
   * `PuTTY` 를 시작합니다.
   * `Category` 창에서 `Session` 을 선택하고 다음 필드를 작성합니다.
   * `Host Name` 에 `ec2-user@` 과 위에서 확인한 `IP` 를 입력 합니다.
@@ -111,7 +133,8 @@ Note:
 * 좌측 메뉴에서 `Instances` 를 선택합니다.
 * 방금 만들었던 인스턴스를 선택 합니다.
 * `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
-* Terminal 로 인스턴스에 접속 할수 있습니다.
+
+* `Terminal` 로 인스턴스에 접속 할수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
