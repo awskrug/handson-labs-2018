@@ -31,22 +31,22 @@ Note:
 
 Note:
 - 먼저 쿠버네티스는 컨테이너 작업을 자동화하는 오픈소스 플랫폼입니다.
-- 컨테이너 오케스트레이션은 컨테이너 배치 최적화를 의미 합니다.
-- 또한 로드밸런싱, 디스커버리, 장애 복구, 외부에 서비스를 제공을 지원 합니다.
-- 쿠버네티스 클러스터는 마스터 와 노드 로 구성 됩니다.
+- `컨테이너 오케스트레이션` 은 `컨테이너 배치 최적화` 를 의미 합니다.
+- 배포, 로드밸런싱, 디스커버리, 스케일링, 장애 복구, 서비스 제공을 지원 합니다.
+- 쿠버네티스 클러스터는 `마스터` 와 `노드` 로 구성 됩니다.
 
 <!--v-->
 
 ![](images/kubernetes.png)
 
 Note:
-- 제일 기본적인 구성인 한개의 마스터와 두개의 노드로 구성된 클러스터 입니다.
-- 마스터에서는 API Server 를 동하여 정보를 제공하고.
+- 가장 기본적인 구성인 한개의 마스터와 두개의 노드로 구성된 클러스터 입니다.
+- `Master` 에서 API Server 를 통하여 정보를 제공하고.
 - Controller 와 Scheduler 로 Node 의 객체를 관리합니다.
-- 노드에는 한개이상의 컨테이너가 Pod 로 감싸져서 배포가 되고
+- `Node` 에는 한개 이상의 컨테이너가 Pod 로 감싸져 배포 되고.
 - Service 를 통하여 Pod 를 Discovery 하고 LoadBalancing 을 합니다.
-- 이 서비스는 Kube-proxy 및 Ingress 설정에 따라 외부로 서비스 될수 있습니다.
-- 이뿐 아니라 ConfigMap, Secret, Account, Role 등도 지원 합니다.
+- Kube-proxy 및 Ingress 설정에 따라 외부로 서비스 될수 있습니다.
+- ConfigMap, Secret, Account, Role 등도 지원 합니다.
 
 <!--v-->
 
@@ -67,9 +67,9 @@ Note:
 * GCE 베타 지원 <!-- .element: class="fragment" -->
 
 Note:
-- 쿠버네티스 오페레이션의 약자입니다.
-- 간단한 명령어로 Kubernetes Cluster 를 구성 할수 있습니다.
-- 아마존 클라우드는 현재 공식 지원하고 있고
+- `KOPS` 는 쿠버네티스 오페레이션의 약자입니다.
+- 간단한 명령으로 Kubernetes Cluster 를 구성 할수 있습니다.
+- 아마존 클라우드는 현재 공식 지원하고 있고.
 - 구글 클라우드는 베타 지원 상태 입니다.
 
 <!--v-->
@@ -79,7 +79,8 @@ Note:
 Note:
 - 아마존 클라우드를 예를 들어 VPC, Subnet, Security Group 을 생성하고
 - Auto Scaling Group 으로 EC2 인스턴스를 생성하여 Master 와 Node 를 구성 합니다.
-- 또한 Route53 과 ELB 를 통하여 외부에 서비스를 제공 합니다.
+- Route53 과 ELB 를 통하여 외부에 서비스를 제공 합니다.
+- Persistent Volume 은 EBS 를 Mount 하여 제공 합니다.
 
 <!--v-->
 
