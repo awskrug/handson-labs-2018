@@ -535,7 +535,7 @@ When the pipeline is complete:  jx get applications
 * 로그를 보며 완료 되길 기다립니다.
 
 ```bash
-jx get activity -f demo -w
+jx get activity -w
 ```
 
 Note:
@@ -545,26 +545,11 @@ Note:
 ### Pull Request
 
 * Branch 를 만들어 줍니다.
-* 약간의 소스를 수정 하고 commit/push 를 합니다.
-
-```bash
-jx create issue -t "awskrug & cncf"
-
-git branch fixme
-git checkout fixme
-
-git commit -a -m "fix: hands-on
-
-fixes: #1"
-
-git push orign fixme
-```
-
-* `Pull Request` 를 보내봅니다.
+* 약간의 소스를 수정 하고 `Pull Request` 를 보내봅니다.
 * `PR-1` 빌드가 시작 되었습니다.
 
 ```bash
-jx get activity -f demo -w
+jx get activity -w
 ```
 
 * 빌드가 완료되면, Pull Request 에 `preview` 링크가 덧글로 등록 됩니다.
