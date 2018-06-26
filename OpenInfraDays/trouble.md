@@ -1,6 +1,7 @@
 # install
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-node-ing.yml
+kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-spring-ing.yml
 kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-web-ing.yml
 
 kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3.yml
