@@ -27,17 +27,18 @@
 * https://console.aws.amazon.com/iam/home?region=ap-northeast-2 를 브라우저에서 엽니다.
 * 좌측 메뉴에서 `Users` 를 선택합니다.
 * `Add user` 버튼으로 새 사용자를 만듭니다.
+![](images/iam-01.png)
 * User name 에 `awskrug` 를 입력합니다.
 * `Programmatic access` 를 체크합니다.
 * `Next: Permissions` 버튼을 눌러 다음 화면으로 이동합니다.
+![](images/iam-02.png)
 * `Attach existing policies directly` 를 선택합니다.
 * `AdministratorAccess` 를 검색하여 선택합니다.
 * `Next: Review` 버튼을 눌러 다음 화면으로 이동합니다.
 * `Create user` 버튼을 눌러 새 유저를 만듭니다.
-* `Download .csv` 버튼을 눌러 파일을 저장합니다.
+* 생성된 Access key ID와 Secret access key는 실습에 사용하므로 메모장에 복사해둡니다.
 
 Note:
-- 파일명은 `credentials.csv` 일 것 입니다.
 - `발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.`
 - `Administrator` 는 너무 많은 권한을 가지고 있고, 이를 가진 유저 생성은 추천하지 않습니다.
 - IAM 의 권한은 다음만 주셔도 됩니다.
@@ -52,6 +53,7 @@ Note:
 * 생성할 Instance 에 접속하기 위하여 프라이빗 키를 발급 받습니다.
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
 * 좌측 메뉴에서 `Key Pairs` 를 선택합니다.
+![](images/key-01.png)
 * `Create Key Pair` 버튼으로 새 키페어를 생성합니다.
 * 이름은 `awskrug` 로 하겠습니다.
 * 프라이빗 키 파일을 잘 저장해 둡니다.
@@ -63,12 +65,13 @@ Note:
 
 * 빠른 진행을 위하여 필요한 툴이 미리 설치된 AMI 로 부터 인스턴스를 생성 합니다.
 * https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home 를 브라우저에서 엽니다.
+![](images/ami-01.png)
 * 좌측 메뉴에서 `AMIs` 를 선택합니다.
 * `Owned by me` 를 `Public images` 로 변경합니다.
 * Add filter 에서 `AMI ID:` 를 선택 하고 `ami-5e11bb30` 를 입력합니다.
 * 검색된 이미지로 `Launch` 를 선택 합니다.
 * 기본 값인 `t2.micro` 를 사용 하겠습니다.
-* `Review and Launch` 버튼을 눌러 다음 화면으로 이동합니다.
+* `Next`와 `Review and Launch` 버튼을 눌러 다음 화면으로 이동합니다.
 * `Launch` 버튼을 눌러 인스턴스를 생성합니다.
 * Select a key pair 에 `awskrug` 가 선택 되었는지 확인합니다.
 * 체크 박스를 체크 하고, `Launch Instances` 버튼으로 인스턴스를 생성합니다.
@@ -90,7 +93,7 @@ Note:
 
 * https://git-scm.com/download/win 를 브라우저에서 엽니다.
   * 다운로드 되는 파일을 설치 합니다.
-
+![](images/access-01.png)
 * `Git Bash` 로 인스턴스에 접속 할수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
