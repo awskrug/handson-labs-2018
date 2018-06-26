@@ -93,7 +93,9 @@ Note:
 
 * https://git-scm.com/download/win 를 브라우저에서 엽니다.
   * 다운로드 되는 파일을 설치 합니다.
+
 ![](images/access-01.png)
+
 * `Git Bash` 로 인스턴스에 접속 할수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
@@ -147,6 +149,7 @@ ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
 
 ### SSH Key Gen
 
+![](images/bastion-01.png)
 * 클러스터를 관리할 ssh-key 를 생성 합니다.
 
 ```bash
@@ -156,29 +159,25 @@ ssh-keygen -q -f ~/.ssh/id_rsa -N ''
 Note:
 - 클러스터 내에서 서로 접속 하기 위하여 필요 합니다.
 
+
 ### AWS Credentials
 
-* 다운 받았던 `credentials.csv` 파일을 열어 Access Key 를 확인 합니다.
-* `~/.aws/credentials` 파일에 Access Key 를 넣고 저장 합니다.
+![](images/bastion-02.png)
+* IAM으로 생성하였던 awskrug 유저의 권한을 사용하기 위해 아까 메모장에 복사해둔 Access key ID와 Secret access key를 등록합니다.
 
 ```bash
-vi ~/.aws/credentials
-```
-```
-[default]
-aws_access_key_id=
-aws_secret_access_key=
+aws configure
 ```
 
 ## Cluster
-
+![](images/bastion-03.png)
 * 클러스터 이름을 설정 합니다.
 * 클러스터 상태를 저장할 S3 Bucket 을 만들어 줍니다.
-* `MY_UNIQUE_ID` 에 본인의 아이디를 넣어 만들어 주세요.
+* `(MY_UNIQUE_ID)` 에는 본인의 이름을 넣어 만들어 주세요.
 
 ```bash
 export KOPS_CLUSTER_NAME=awskrug.k8s.local
-export KOPS_STATE_STORE=s3://kops-awskrug-MY_UNIQUE_ID
+export KOPS_STATE_STORE=s3://kops-awskrug-(MY_UNIQUE_ID)
 
 aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 ```
@@ -189,6 +188,7 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 * Master Node 는 `m4.large` 1대로 하겠습니다. (2/8)
 * Worker Node 는 `m4.xlarge` 2대로 하겠습니다. (4/16)
 
+![](images/bastion-04.png)
 ```bash
 kops create cluster \
     --cloud=aws \
