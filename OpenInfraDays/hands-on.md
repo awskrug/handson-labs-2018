@@ -481,7 +481,7 @@ Then COPY the token and enter in into the form below:
 ? API Token:
 ```
 
-* `stageing` 과 `production` 관리 repo 를 저장할 계정을 선택 합니다.
+* `staging` 과 `production` 관리 repo 를 저장할 계정을 선택 합니다.
 
 ```
 To import existing projects into Jenkins:     jx import
