@@ -36,7 +36,7 @@
 * `AdministratorAccess` 를 검색하여 선택합니다.
 * `Next: Review` 버튼을 눌러 다음 화면으로 이동합니다.
 * `Create user` 버튼을 눌러 새 유저를 만듭니다.
-* 생성된 Access key ID와 Secret access key는 실습에 사용하므로 메모장에 복사해둡니다.
+* 생성된 Access key ID와 Secret access key 는 실습에 사용하므로 메모장에 복사해둡니다.
 
 Note:
 - `발급 받은 키는 유출되지 않도록 잘 관리 해야 합니다.`
@@ -150,6 +150,7 @@ ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
 ### SSH Key Gen
 
 ![](images/bastion-01.png)
+
 * 클러스터를 관리할 ssh-key 를 생성 합니다.
 
 ```bash
@@ -159,36 +160,42 @@ ssh-keygen -q -f ~/.ssh/id_rsa -N ''
 Note:
 - 클러스터 내에서 서로 접속 하기 위하여 필요 합니다.
 
-
 ### AWS Credentials
 
 ![](images/bastion-02.png)
-* IAM으로 생성하였던 awskrug 유저의 권한을 사용하기 위해 아까 메모장에 복사해둔 Access key ID와 Secret access key를 등록합니다.
+
+* IAM 으로 생성하여 메모장에 복사해둔 Access key ID 와 Secret access key 를 등록합니다.
 
 ```bash
 aws configure
 ```
 
+Note:
+- AWS 에 객체를 생성하기 위하여 필요 합니다.
+
 ## Cluster
+
 ![](images/bastion-03.png)
+
 * 클러스터 이름을 설정 합니다.
 * 클러스터 상태를 저장할 S3 Bucket 을 만들어 줍니다.
-* `(MY_UNIQUE_ID)` 에는 본인의 이름을 넣어 만들어 주세요.
+* `MY_UNIQUE_ID` 에는 본인의 이름을 넣어 만들어 주세요.
 
 ```bash
 export KOPS_CLUSTER_NAME=awskrug.k8s.local
-export KOPS_STATE_STORE=s3://kops-awskrug-(MY_UNIQUE_ID)
+export KOPS_STATE_STORE=s3://kops-awskrug-MY_UNIQUE_ID
 
 aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 ```
 
 ### Create Cluster
 
-* Cloud 는 AWS 를 사용 하겠습니다.
-* Master Node 는 `m4.large` 1대로 하겠습니다. (2/8)
-* Worker Node 는 `m4.xlarge` 2대로 하겠습니다. (4/16)
-
 ![](images/bastion-04.png)
+
+* Cloud 는 AWS 를 사용 하겠습니다.
+* Master Node 는 `m4.large` 1대로 하겠습니다. (cpu 2 / mem 8)
+* Worker Node 는 `m4.xlarge` 2대로 하겠습니다. (cpu 4 / mem 16)
+
 ```bash
 kops create cluster \
     --cloud=aws \
