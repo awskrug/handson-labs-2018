@@ -243,3 +243,5 @@ $RECYCLE.BIN/
 *.lnk
 
 
+
+serverless_datalake/2\.ingest_data/2\.1\.csv_trigger/data\.tar\.gz
