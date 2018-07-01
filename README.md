@@ -3,7 +3,7 @@ AWSKRUG Hands-on Lab 2018 is bi-weekly Saturday HoLs until Sep 8 (8 sessions, 70
 
 * 2nd June – [Container #1: The basic of Docker](https://github.com/awskrug/handson-labs-2018/blob/master/Container/1_Docker)  (In Korean)
 * 16th June – [Container #2: Amazon ECS](https://github.com/awskrug/handson-labs-2018/tree/master/Container/2_ECS)  (In Korean)
-* 30th June – [Serverless #1: Serverless Web App & Crawler ](./Serverless/1_WebApp-Crawler)
+* 30th June – [Serverless #1: Serverless Web App & Crawler ](./Serverless/1_WebApp-Crawler)  (In Korean)
 * 14th July – [Container #3: Kubernates on AWS, Kops & EKS](https://github.com/awskrug/handson-labs-2018/tree/master/Container/3_Kubernetes) (In Korean) 
 * 28th July – Serverless #2:  AWS SAM & CI/CD  (Coming Soon)
 * 11st August – Serverless #3:  Serverless Data Lake  (Coming Soon)
