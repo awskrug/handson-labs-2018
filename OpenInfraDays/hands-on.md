@@ -101,6 +101,7 @@ Note:
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
 ```bash
+chmod 600 PEM_PATH/awskrug.pem
 ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
 ```
 
@@ -144,6 +145,7 @@ Note:
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
 ```bash
+chmod 600 PEM_PATH/awskrug.pem
 ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
 ```
 

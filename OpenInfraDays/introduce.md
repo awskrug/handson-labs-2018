@@ -74,7 +74,7 @@ Note:
 
 <!--v-->
 
-<img src="images/kops.png" width="500">
+![](images/kubernetes-kops.png)
 
 Note:
 - 아마존 클라우드를 예를 들어 VPC, Subnet, Security Group 을 생성하고
