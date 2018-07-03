@@ -6,8 +6,11 @@
 
 * [Bastion](#bastion)
 * [Cluster](#cluster)
-* [Addons](#addons)
-* [Pipeline](#pipeline)
+* [Ingress](#ingress-controller)
+* [Sample](#sample-application)
+* [Dashboard](#dashboard)
+* [Heapster](#heapster)
+* [Autoscaler](#autoscaler)
 
 <!-- /TOC -->
 
@@ -341,11 +344,59 @@ Note:
 - 두개의 IP 가 나올것입니다.
 - 하나만 골라 기억해 둡니다.
 
+### Sample Application
+
+* 샘플 어플리케이션을 생성해 봅니다.
+* 우선 yaml 파일을 다운 받아 vi 로 편집 합니다.
+* 파일 하단의 nalbam.com 부분을 위의 ELB IP 를 넣어 `0.0.0.0.nip.io` 로 바꿔줍니다. 
+
+```bash
+wget https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-spring-ing.yml
+
+vi sample-spring-ing.yml
+```
+```yaml
+spec:
+  rules:
+  - host: sample-spring.apps.0.0.0.0.nip.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: sample-spring
+          servicePort: 80
+```
+
+```bash
+kubectl apply -f sample-spring-ing.yml
+```
+```
+deployment.apps/sample-spring created
+service/sample-spring created
+ingress.extensions/sample-spring created
+horizontalpodautoscaler.autoscaling/sample-spring created
+```
+
+* Pod 와 Service 가 만들어졌습니다.
+
+```bash
+kubectl get deploy,pod,svc -n default
+```
+
+* Ingress 설정에 의하여 각 도메인이 Ingress Controller 와 연결 되었습니다.
+
+```bash
+kubectl get ing -o wide -n default
+```
+```
+NAME            HOSTS                               ADDRESS                                                 PORTS     AGE
+sample-spring   sample-spring.apps.0.0.0.0.nip.io   a2aed74f77e8b-129875.ap-northeast-2.elb.amazonaws.com   80        43m
+```
+
 ### Dashboard
 
 * 웹 UI 를 통하여 정보와 상태를 볼수 있도록 Dashboard 를 올려 보겠습니다.
-* 우선 yaml 파일을 다운 받아 vi 로 편집 합니다.
-* 파일 하단의 nalbam.com 부분을 위의 ELB IP 를 넣어 `0.0.0.0.nip.io` 로 바꿔줍니다. 
+* Dashboard 도 Ingress 설정으로 도메인을 부여 하겠습니다.
 
 ```bash
 wget https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3-ing.yml
@@ -374,16 +425,7 @@ role.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
 rolebinding.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
 deployment.apps "kubernetes-dashboard" created
 service "kubernetes-dashboard" created
-```
-
-* Dashboard 의 도메인이 Ingress Controller 로 연결 되었는지 확인 합니다.
-
-```bash
-kubectl get ing -o wide -n kube-system
-```
-```
-NAME                   HOSTS                                      ADDRESS                                                 PORTS     AGE
-kubernetes-dashboard   kubernetes-dashboard.apps.0.0.0.0.nip.io   a2aed74f77e8b-129875.ap-northeast-2.elb.amazonaws.com   80        43m
+ingress.extensions/kubernetes-dashboard created
 ```
 
 * dashboard 에 접속 하기 위해 `ServiceAccount` 와 `Role` 이 필요 합니다.
@@ -449,40 +491,31 @@ Note:
 - 모니터링을 위해 `metrics-server` 또는 `Prometheus` 를 고려해 보시기 바랍니다.
 - https://github.com/kubernetes/heapster/
 
-## Sample
+### Autoscaler
 
-* 샘플 웹을 생성해 봅니다.
+* 사용량이 늘어남에 따라 pod 를 늘어나고, 사용량이 줄어듦에 따라 pod 가 줄어드는 매직을 부려 봅니다.
+* 이미 `sample-spring` 에는 `HorizontalPodAutoscaler` 가 선언 되어있습니다.
+* CPU 사용량을 얻기 위하여 `metrics-server` 를 설치 합니다.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-node-ing.yml
-
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-spring-ing.yml
-
-kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-web-ing.yml
+git clone https://github.com/kubernetes-incubator/metrics-server
+kubectl apply -f metrics-server/deploy/1.8+/
 ```
-```
-deployment.apps "sample-node" created
-service "sample-node" created
-ingress.extensions "sample-node" created
 
-deployment.apps "sample-spring" created
-service "sample-spring" created
-ingress.extensions "sample-spring" created
+* `Deployment` 의 `replicas: 2` 인데, pod 를 조회 해보면. 1개로 줄어들어 있습니다.
+* `HorizontalPodAutoscaler` 설정에 따라 사용량이 없어서 `1` 로 줄였기 때문 입니다.
 
-deployment.apps "sample-web" created
-service "sample-web" created
-ingress.extensions "sample-web" created
-```
 ```bash
-kubectl get pod,svc,ing -o wide -n default
+kubectl get hpa -w
 ```
 
-* Pod 와 Service 가 만들어졌습니다.
-* Service type 이 LoadBalancer 인 sample-web 의 경우 ELB 가 만들어졌습니다.
-* Ingress 설정  
+* 아파치 (httpd) 를 설치하면 ab (apache benchmark) 가 설치 됩니다.
+* 동시 1개 (concurrency, -c) 에서 백만개의 요청을 (requests, -n) 날려 봅시다.
+* 이 명령은 새창으로 해봅시다.
 
-Note:
-- ELB 가 구분 되지 않으면, `Tags` 를 확인해 봅니다.
+```bash
+ab -n 1000000 -c 1 https://sample-spring.apps.nalbam.com/stress
+```
 
 ## Clean Up
 
@@ -500,8 +533,5 @@ kops delete cluster --name=${KOPS_CLUSTER_NAME} --yes
 
 * IAM User 를 지웁니다.
   * https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users
-
-* Github 토큰을 지웁니다.
-  * https://github.com/settings/tokens
 
 ## Thank You
