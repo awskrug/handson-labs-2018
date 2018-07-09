@@ -322,7 +322,7 @@ Note:
 * Ingress Controller 로 도메인을 내부 서비스로 연결해 줍니다.
 
 ```bash
-wget https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/ingress-nginx-v1.6.0.yml
+curl -LO https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/ingress-nginx-v1.6.0.yml
 
 kubectl apply -f ingress-nginx-v1.6.0.yml
 ```
@@ -356,7 +356,7 @@ dig +short $(kubectl get svc -o wide -n kube-ingress | grep ingress-nginx | awk 
 * 파일 하단의 nalbam.com 부분을 위의 ELB IP 를 넣어 `0.0.0.0.nip.io` 로 바꿔줍니다. 
 
 ```bash
-wget https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-spring-ing.yml
+curl -LO https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-spring-ing.yml
 
 vi sample-spring-ing.yml
 ```
@@ -405,7 +405,7 @@ sample-spring   sample-spring.apps.0.0.0.0.nip.io   a2aed74f77e8b-129875.ap-nort
 * 웹 UI 를 통하여 정보와 상태를 볼수 있도록 Dashboard 를 올려 보겠습니다.
 
 ```bash
-wget https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3.yml
+curl -LO https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3.yml
 
 kubectl apply -f dashboard-v1.8.3-ing.yml
 ```
@@ -453,7 +453,7 @@ Note:
 * 힙스터를 설치하고 잠시 기다리면 정보가 수집되고, 대시보드에 보여집니다.
 
 ```bash
-wget https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
+curl -LO https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
 
 kubectl apply -f heapster-v1.7.0.yml
 ```
@@ -493,21 +493,21 @@ git clone https://github.com/kubernetes-incubator/metrics-server
 kubectl apply -f metrics-server/deploy/1.8+/
 ```
 
-* `Deployment` 의 `replicas: 2` 인데, pod 를 조회 해보면. `1`로 줄어들어 있습니다.
-* `HorizontalPodAutoscaler` 설정에 따라 사용량이 없어서 `1`로 줄였기 때문 입니다.
+* `Deployment` 의 `replicas: 2` 인데, pod 를 조회 해보면. `1` 로 줄어들어 있습니다.
+* `HorizontalPodAutoscaler` 설정에 따라 사용량이 없어서 `1` 로 줄였기 때문 입니다.
 
 ```bash
 kubectl get hpa
 ```
 ```
-NAME            REFERENCE                  TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
-sample-spring   Deployment/sample-spring   1%/50%          1         100       1          3m
+NAME            REFERENCE                  TARGETS   MINPODS   MAXPODS   REPLICAS
+sample-spring   Deployment/sample-spring   0%/50%    1         100       1
 ```
 
 * 아파치 (httpd) 를 설치하면 ab (apache benchmark) 가 설치 됩니다.
 
-* 동시 1개 (concurrency, -c) 에서 백만개의 요청을 (requests, -n) 보내 봅시다.
-* 이 명령은 새창으로 해봅시다.
+* 동시 `1`개 (concurrency, -c) 에서 `1,000,000`개 (requests, -n) 의 요청을 보내 봅시다.
+  * 이 명령은 새창으로 해봅시다.
 
 ```bash
 ab -n 1000000 -c 1 http://sample-spring.apps.0.0.0.0.nip.io/stress
@@ -519,28 +519,27 @@ ab -n 1000000 -c 1 http://sample-spring.apps.0.0.0.0.nip.io/stress
 kubectl get hpa -w
 ```
 ```
-NAME            REFERENCE                  TARGETS    MINPODS   MAXPODS   REPLICAS
-sample-spring   Deployment/sample-spring   1%/50%     1         100       1
-sample-spring   Deployment/sample-spring   195%/50%   1         100       1
-sample-spring   Deployment/sample-spring   241%/50%   1         100       4
-sample-spring   Deployment/sample-spring   98%/50%    1         100       4
-sample-spring   Deployment/sample-spring   80%/50%    1         100       4
-sample-spring   Deployment/sample-spring   86%/50%    1         100       4
-sample-spring   Deployment/sample-spring   63%/50%    1         100       7
-sample-spring   Deployment/sample-spring   49%/50%    1         100       7
-sample-spring   Deployment/sample-spring   37%/50%    1         100       7
+NAME            REFERENCE                  TARGETS   MINPODS   MAXPODS   REPLICAS
+sample-spring   Deployment/sample-spring   0%/50%    1         100       1
+sample-spring   Deployment/sample-spring   0%/50%    1         100       2
+sample-spring   Deployment/sample-spring   66%/50%   1         100       2
+sample-spring   Deployment/sample-spring   82%/50%   1         100       2
+sample-spring   Deployment/sample-spring   68%/50%   1         100       4
+sample-spring   Deployment/sample-spring   42%/50%   1         100       4
+sample-spring   Deployment/sample-spring   34%/50%   1         100       4
+sample-spring   Deployment/sample-spring   36%/50%   1         100       4
 ```
 
 Note:
-- 7개 정도는 무리 없이 감당하는군요.
+- `4` 정도는 무리 없이 감당하는 군요.
 
 ### Cluster Autoscaler
 
-* 이번에는 동시 5개 (concurrency, -c) 에서 백만개의 요청을 (requests, -n) 보내 봅시다.
-* 이 명령은 새창으로 해봅시다.
+* 이번에는 동시 `3`개 (concurrency, -c) 에서 `1,000,000`개 (requests, -n) 의 요청을 보내 봅시다.
+  * 이 명령은 새창으로 해봅시다.
 
 ```bash
-ab -n 1000000 -c 5 http://sample-spring.apps.0.0.0.0.nip.io/stress
+ab -n 1000000 -c 3 http://sample-spring.apps.0.0.0.0.nip.io/stress
 ```
 
 ```bash
@@ -548,19 +547,55 @@ kubectl get hpa -w
 ```
 ```
 NAME            REFERENCE                  TARGETS    MINPODS   MAXPODS   REPLICAS
-sample-spring   Deployment/sample-spring   77%/50%    1         100       14
-sample-spring   Deployment/sample-spring   61%/50%    1         100       14
+sample-spring   Deployment/sample-spring   77%/50%    1         100       7
+sample-spring   Deployment/sample-spring   65%/50%    1         100       7
+sample-spring   Deployment/sample-spring   64%/50%    1         100       7
+sample-spring   Deployment/sample-spring   63%/50%    1         100       7
+```
+
+* `Pod` 상태를 확인해 봅시다.
+
+```bash
+kubectl get pod -n default
+```
+```
+NAME                            READY     STATUS    RESTARTS   AGE
+sample-spring-6566df5db-4c7p6   1/1       Running   0          13m
+sample-spring-6566df5db-7sbdq   0/1       Pending   0          58s
+sample-spring-6566df5db-jjzlv   1/1       Running   0          4m
+sample-spring-6566df5db-9b6wb   1/1       Running   0          19m
+sample-spring-6566df5db-b5pb8   1/1       Running   0          58s
+sample-spring-6566df5db-dgp2v   0/1       Pending   0          58s
+sample-spring-6566df5db-wltj6   1/1       Running   0          10m
+```
+
+* `Dashboard` 를 통해서도 확인해 봅시다.
+
+```
+0/3 nodes are available: 1 PodToleratesNodeTaints, 2 Insufficient cpu. 
 ```
 
 * 사용량이 더 늘어나면, 현재의 Cluster 공간보다 더 많은 Application 을 띄우려 시도 할것 입니다.
-* 하지만 공간이 부족하여 더이상 pod 가 생성되지 않고 에러가 나고있습니다.
+* 하지만 `CPU` 자원이 부족하여 더이상 pod 가 생성되지 않고 에러가 발생하고 있습니다.
 
 * 그래서 `Cluster Autoscaler` 설치해 봅니다.
 
 ```bash
-wget https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/cluster-autoscaler-v1.8.0.yml
+export ADDON="cluster-autoscaler-v1.8.0.yml"
 
-kubectl apply -f cluster-autoscaler-v1.8.0.yml
+curl -LO https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/${ADDON}
+
+MIN_NODES=2
+MAX_NODES=8
+AWS_REGION=ap-northeast-2
+GROUP_NAME="nodes.${KOPS_CLUSTER_NAME}"
+
+sed -i -e "s@{{MIN_NODES}}@${MIN_NODES}@g" "${ADDON}"
+sed -i -e "s@{{MAX_NODES}}@${MAX_NODES}@g" "${ADDON}"
+sed -i -e "s@{{GROUP_NAME}}@${GROUP_NAME}@g" "${ADDON}"
+sed -i -e "s@{{AWS_REGION}}@${AWS_REGION}@g" "${ADDON}"
+
+kubectl apply -f ${ADDON}
 ```
 ```
 serviceaccount/cluster-autoscaler created
@@ -571,7 +606,13 @@ rolebinding.rbac.authorization.k8s.io/cluster-autoscaler created
 deployment.extensions/cluster-autoscaler created
 ```
 
-* node 가 `1`개 늘어 `3`개가 되었습니다.
+* 로그 조회도 해 봅시다.
+
+```bash
+kubectl logs $(kubectl get pod -n kube-system | grep cluster-autoscaler | awk '{print $1}') -n kube-system -f
+```
+
+* `Node` 가 `1`개가 늘어나 `3`개가 되었습니다.
 
 ```bash
 kubectl get node
@@ -584,24 +625,19 @@ ip-10-10-10-12.ap-northeast-2.compute.internal    Ready     node      39m       
 ip-10-10-10-13.ap-northeast-2.compute.internal    Ready     node      12m       v1.9.6
 ```
 
-* pod 도 이제 `19` 에서 안정화 되었습니다.
+* pod 도 이제 `8` 에서 안정화 되었습니다.
 
 ```bash
 kubectl get hpa -w
 ```
 ```
 NAME            REFERENCE                  TARGETS    MINPODS   MAXPODS   REPLICAS
-sample-spring   Deployment/sample-spring   148%/50%   1         100       8
-sample-spring   Deployment/sample-spring   152%/50%   1         100       8
-sample-spring   Deployment/sample-spring   114%/50%   1         100       16
-sample-spring   Deployment/sample-spring   80%/50%    1         100       16
-sample-spring   Deployment/sample-spring   57%/50%    1         100       16
-sample-spring   Deployment/sample-spring   53%/50%    1         100       16
-sample-spring   Deployment/sample-spring   59%/50%    1         100       19
-sample-spring   Deployment/sample-spring   53%/50%    1         100       19
-sample-spring   Deployment/sample-spring   53%/50%    1         100       19
-sample-spring   Deployment/sample-spring   44%/50%    1         100       19
-sample-spring   Deployment/sample-spring   44%/50%    1         100       19
+sample-spring   Deployment/sample-spring   64%/50%    1         100       7
+sample-spring   Deployment/sample-spring   63%/50%    1         100       7
+sample-spring   Deployment/sample-spring   56%/50%    1         100       7
+sample-spring   Deployment/sample-spring   56%/50%    1         100       8
+sample-spring   Deployment/sample-spring   44%/50%    1         100       8
+sample-spring   Deployment/sample-spring   44%/50%    1         100       8
 ```
 
 ## Clean Up
