@@ -246,11 +246,22 @@ Note:
 
 ### Edit Cluster
 
-* 클러스터를 생성하기 전, 클러스터를 조회 하거나
+* 클러스터를 실제 생성하기 전, 클러스터를 조회 할수 있습니다.
 
 ```bash
 # get cluster
 kops get cluster
+```
+
+```bash
+Cluster
+NAME                 CLOUD    ZONES
+cluster.k8s.local    aws      ap-northeast-2a,ap-northeast-2c
+
+Instance Groups
+NAME                      ROLE      MACHINETYPE    MIN    MAX    ZONES
+master-ap-northeast-2a    Master    c4.large       1      1      ap-northeast-2a
+nodes                     Node      t2.medium      2      1      ap-northeast-2a,ap-northeast-2c
 ```
 
 * 클러스터를 수정 할수 있 습니다.
@@ -270,7 +281,7 @@ kops edit ig nodes
 spec:
   image: kope.io/k8s-1.9-debian-jessie-amd64-hvm-ebs-2018-03-11
   machineType: t2.medium
-  maxSize: 10
+  maxSize: 12
   minSize: 2
 ```
 
@@ -374,6 +385,13 @@ kubectl get svc -o wide -n kube-ingress
 # ELB 도메인으로 ip 를 획득 합니다.
 dig +short $(kubectl get svc -o wide -n kube-ingress | grep ingress-nginx | awk '{print $4}' | head -n 1)
 ```
+
+Note:
+
+* 도메인이 있다면, ELB Domain 을 Route53 등을 이용하여 CNAME 으로 연결 해주면 됩니다.
+* 도메인이 없는 상황을 가정하므로, ELB 에서 IP 를 얻어 nip.io 서비스를 이용했습니다.
+  * <http://nip.io> 는 여러분의 IP 를 도메인처럼 동작 하도록 해주는 서비스 입니다.
+  * IP 와 nip.io 조합의 도메인 앞에 어떤 문자든 IP 로 연결시켜 줍니다.
 
 ### Sample Application
 
