@@ -1,4 +1,7 @@
-# install
+# trouble
+
+## install
+
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-node-ing.yml
 kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-spring-ing.yml
@@ -13,20 +16,23 @@ kubectl create clusterrolebinding cluster-admin:kube-system:admin --clusterrole=
 kubectl describe secret $(kubectl get secret -n kube-system | grep admin-token | awk '{print $1}') -n kube-system
 ```
 
-# uninstall cluster
+## uninstall cluster
+
 ```bash
 kops delete cluster --name=awskrug.k8s.local --yes
 rm -rf ~/.jx ~/.helm ~/.kube
 ```
 
-# uninstall jx
+## uninstall jx
+
 ```bash
 jx uninstall
 helm reset --force
 rm -rf ~/.jx ~/.helm
 ```
 
-# start pipeline
+## start pipeline
+
 ```bash
 jx start pipeline -f demo
 ```
