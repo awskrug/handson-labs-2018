@@ -1,0 +1,3 @@
+pynamodb==3.3.0
+aws-xray-sdk
+fiona==1.8a1

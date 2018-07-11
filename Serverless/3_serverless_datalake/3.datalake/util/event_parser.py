@@ -104,11 +104,7 @@ class S3:
         self.region = self.raw['awsRegion']
         self.object = s3.Object(self.bucket_name, self.object_key)
 
-    def get_tar(self):
-        data = self.object.get()['Body']
-        with io.BytesIO(data.read()) as buffer:
-            tar = tarfile.open(fileobj=buffer)
-        return tar
+
 
 
 class Kinesis(BaseParser):

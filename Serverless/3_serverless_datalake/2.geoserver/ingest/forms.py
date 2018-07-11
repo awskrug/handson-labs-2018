@@ -1,5 +1,16 @@
+import boto3
 from django import forms
+from django.conf import settings
 from django.core.validators import FileExtensionValidator
+
+cloudformation = boto3.resource('cloudformation')
+
+
+
+def get_bucket(resource):
+    stack = cloudformation.Stack(settings.CFN_STACK_NAME).outputs
+    # todo : stack에서 각 리소스(csv,shp등)별 버킷명 가져오기 - 2018-07-08
+    return
 
 
 class S3UploadForm(forms.Form):
@@ -23,6 +34,7 @@ class CsvUploadForm(S3UploadForm):
 
     def upload(self):
         # todo : csv 업로드 함수 추가 - 2018-06-06
+        bucket = get_bucket('csv')
         pass
 
 
@@ -42,4 +54,4 @@ class ShpUploadForm(S3UploadForm):
 
     def upload(self):
         # todo : shp 업로드 함수 추가 - 2018-06-06
-        pass
+        bucket = get_bucket('shp')

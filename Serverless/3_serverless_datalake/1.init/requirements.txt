@@ -1,4 +1,4 @@
 psycopg2==2.7.3.1
 Django
 zappa>=0.45.1
-ipdb
+aws-xray-sdk

@@ -47,3 +47,6 @@ Default output format [None]: json
 - `.venv/bin/activate`
 - `pip install -r requierments.txt`
 - `npm install -g serverless`
+
+- [ ] kibana에서 사용할 브이월드 라이센스 키 발급 문서화 필요
+- [ ] 전체 구축완료후 sls pulgin 설치과정 추가 필요
