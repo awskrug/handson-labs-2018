@@ -1,0 +1,10 @@
+{
+  "name": "gis-datalake",
+  "description": "",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "serverless-plugin-tracing": "^2.0.0",
+    "serverless-python-requirements": "^4.1.0"
+  }
+}

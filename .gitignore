@@ -3,7 +3,7 @@
 
 \.idea/
 
-serverless_datalake/data/origin/work/
+Serverless/3_serverless_datalake/0.origin_data/origin/work/
 
 \.venv/
 ### VirtualEnv template
@@ -243,3 +243,9 @@ $RECYCLE.BIN/
 *.lnk
 
 
+
+Serverless/3_serverless_datalake/3.datalake/2\.1\.csv_trigger/data\.tar\.gz
+
+Serverless/3_serverless_datalake/3\.datalake/node_modules/
+
+Serverless/3_serverless_datalake/3\.datalake/\.serverless/
