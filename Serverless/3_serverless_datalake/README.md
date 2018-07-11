@@ -7,11 +7,11 @@
 2. 개발환경 구축
 3. geoserver 배포
 4. datalake 구축
-4.1. csv2shp 배포 및 geoserver를 통해 실습
-4.2. shp2dynamodb 배포 및 geoserver를 통해 실습
-4.3. shp2elasticsearch 배포 및 kibana로 직접 데이터 확인 및 간단한 자료 조회
-4.4. firehouse2geojson 배포 및 geoserver를 통해 실습
-4.5. shp2firehouse 배포 및 geoserver를 통해 실습
+- csv2shp 배포 및 geoserver를 통해 실습
+- shp2dynamodb 배포 및 geoserver를 통해 실습
+- shp2elasticsearch 배포 및 kibana로 직접 데이터 확인 및 간단한 자료 조회
+- firehouse2geojson 배포 및 geoserver를 통해 실습
+- shp2firehouse 배포 및 geoserver를 통해 실습
 5. geojson을 아테네로 연결 및 쿼리 실습
 6. geojson을 quicksight로 연결 및 시각화 실습
 
