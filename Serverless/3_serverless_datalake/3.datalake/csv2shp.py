@@ -63,7 +63,6 @@ def make_record(properties: Dict[str, type], load_num: str, tree_row: Dict[str, 
     record['properties']['위도'] = point['위도']
     record['properties']['고도'] = point['고도']
     record['geometry'] = mapping(Point(point['경도'], point['위도']))
-    print(record)
     return record
 
 
@@ -119,64 +118,12 @@ def handler(event, context):
             tree_csv, point_csv = get_tar(s3)
             points = get_point_data(point_csv)
             shp = make_shp(tree_csv, points)
-
             trees = get_tree_data(tree_csv)
 
     return 'hi'
 
 
-@mock_s3
-def test():
-    bucket = 'test_bucket'
-    file_name = 'data.tar.gz'
-    s3 = boto3.client('s3', region_name='ap-northeast-2')
-    BASE_DIR = os.path.dirname(__file__)
-    file = os.path.join(BASE_DIR, file_name)
 
-    conn = boto3.resource('s3', region_name='ap-northeast-2')
-    conn.create_bucket(Bucket=bucket)
-
-    with open(file, 'rb') as f:
-        s3.put_object(Bucket=bucket, Key=file_name, Body=f)
-    event = {
-        "Records": [
-            {
-                "eventVersion": "2.0",
-                "eventTime": "1970-01-01T00:00:00.000Z",
-                "requestParameters": {
-                    "sourceIPAddress": "127.0.0.1"
-                },
-                "s3": {
-                    "configurationId": "testConfigRule",
-                    "object": {
-                        "eTag": "0123456789abcdef0123456789abcdef",
-                        "sequencer": "0A1B2C3D4E5F678901",
-                        "key": file_name,
-                        "size": 1024
-                    },
-                    "bucket": {
-                        "arn": '',
-                        "name": bucket,
-                        "ownerIdentity": {
-                            "principalId": "EXAMPLE"
-                        }
-                    },
-                    "s3SchemaVersion": "1.0"
-                },
-                "responseElements": {
-                    "x-amz-id-2": "EXAMPLE123/5678abcdefghijklambdaisawesome/mnopqrstuvwxyzABCDEFGH",
-                    "x-amz-request-id": "EXAMPLE123456789"
-                },
-                "awsRegion": "us-east-1",
-                "eventName": "ObjectCreated:Put",
-                "userIdentity": {
-                    "principalId": "EXAMPLE"
-                },
-                "eventSource": "aws:s3"
-            }
-        ]
-    }
-    handler(event, None)
 
 
 if __name__ == '__main__':
