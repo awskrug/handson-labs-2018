@@ -209,7 +209,7 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 ![Create Cluster](images/bastion-04.png)
 
 * Cloud 는 AWS 를 사용 하겠습니다.
-* Master Node 는 `m4.large` 1대로 하겠습니다. (cpu 2 / mem 8)
+* Master Node 는 `c4.large` 1대로 하겠습니다. (cpu 2 / mem 8)
 * Worker Node 는 `m4.xlarge` 2대로 하겠습니다. (cpu 4 / mem 16)
 
 ```bash
@@ -217,7 +217,7 @@ kops create cluster \
     --cloud=aws \
     --name=${KOPS_CLUSTER_NAME} \
     --state=${KOPS_STATE_STORE} \
-    --master-size=m4.large \
+    --master-size=c4.large \
     --node-size=m4.xlarge \
     --node-count=2 \
     --zones=ap-northeast-2a,ap-northeast-2c \
@@ -297,7 +297,7 @@ Validating cluster awskrug.k8s.local
 
 INSTANCE GROUPS
 NAME                   ROLE   MACHINETYPE MIN MAX SUBNETS
-master-ap-northeast-2a Master m4.large    1   1   ap-northeast-2a
+master-ap-northeast-2a Master c4.large    1   1   ap-northeast-2a
 nodes                  Node   m4.xlarge   2   2   ap-northeast-2a,ap-northeast-2c
 
 NODE STATUS
