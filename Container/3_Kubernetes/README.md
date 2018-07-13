@@ -14,13 +14,13 @@
 
 <!-- /TOC -->
 
-### Basic Knowledge
+## Requirement
 
-* Kubernetes 를 들어봤다.
-* AWS 에 인스턴스를 만들어 봤다.
-* SSH 로 접속을 할 수 있다.
-* 필요 계정 : AWS
-  * <https://aws.amazon.com/ko/>
+* 공통
+  * AWS 계정: <https://aws.amazon.com/ko/>
+* 윈도우 사용자
+  * Git Bash: https://git-scm.com/download/win
+  * FireFox: https://www.mozilla.org/ko/firefox/new/
 
 ## Bastion
 
@@ -506,7 +506,7 @@ Note:
 
 ### Heapster
 
-* 대시보드 로는 충분한 정보를 볼수 잆습니다. 예를 들면 CPU, Memory...
+* 대시보드 만 으로는 충분한 정보를 볼수 없습니다. 예를 들면 CPU, Memory 사용량 같은 것들...
 * 힙스터를 설치하고 잠시 기다리면 정보가 수집되고, 대시보드에 보여집니다.
 
 ```bash
