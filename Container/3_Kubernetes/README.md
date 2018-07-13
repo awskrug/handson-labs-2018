@@ -1,4 +1,4 @@
-# Kubernetes Hands-on
+# Kubernetes on AWS : AWSKRUG Container hands-on #3
 
 ## Index
 
