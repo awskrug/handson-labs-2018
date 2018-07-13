@@ -13,6 +13,12 @@
 * [Autoscaler](#autoscaler)
 
 <!-- /TOC -->
+## Synopsis
+* KOPS를 이용하여 Kubernetes Cluster 생성
+* ingress-nginx 설치 후 Sample Application과 도메인 연결
+* dashboard, heapster 로 대시보드를 구성하고 모니터링 추가
+* HorizontalPodAutoscaler, cluster-autoscaler 로 pod 과 node 를 스케일링
+* 클러스터 제거 (중요!!) - 이 핸즈온 내용은 무료제공(free tier)를 벗어납니다!
 
 ## Requirement
 
