@@ -110,7 +110,7 @@ Note:
 
 ![Git Bash](images/access-01.png)
 
-* `Git Bash` 로 인스턴스에 접속 할수 있습니다.
+* `Git Bash` 로 인스턴스에 접속 할 수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
@@ -136,7 +136,7 @@ ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
   * `Save private key` 버튼을 눌러 저장 합니다.
   * `awskrug.ppk` 가 만들어 졌습니다.
 
-* `PuTTY` 로 인스턴스에 접속 할수 있습니다.
+* `PuTTY` 로 인스턴스에 접속 할 수 있습니다.
   * `PuTTY` 를 시작합니다.
   * `Category` 창에서 `Session` 을 선택하고 다음 필드를 작성합니다.
   * `Host Name` 에 `ec2-user@` 과 위에서 확인한 `IP` 를 입력 합니다.
@@ -155,7 +155,7 @@ Note:
 * 방금 만들었던 인스턴스를 선택 합니다.
 * `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
 
-* `Terminal` 로 인스턴스에 접속 할수 있습니다.
+* `Terminal` 로 인스턴스에 접속 할 수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
@@ -212,7 +212,7 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 ![Create Cluster](images/bastion-04.png)
 
 * Cloud 는 AWS 를 사용 하겠습니다.
-* Master Node 는 `c4.large` 1대로 하겠습니다.
+* Master Node 는 `t2.medium` 1대로 하겠습니다.
 * Worker Node 는 `t2.medium` 2대로 하겠습니다.
 
 ```bash
@@ -220,7 +220,7 @@ kops create cluster \
     --cloud=aws \
     --name=${KOPS_CLUSTER_NAME} \
     --state=${KOPS_STATE_STORE} \
-    --master-size=c4.large \
+    --master-size=t2.medium \
     --node-size=t2.medium \
     --node-count=2 \
     --zones=ap-northeast-2a,ap-northeast-2c \
@@ -246,10 +246,9 @@ Note:
 
 ### Edit Cluster
 
-* 클러스터를 실제 생성하기 전, 클러스터를 조회 할수 있습니다.
+* 클러스터를 실제 생성하기 전, 클러스터를 조회 할 수 있습니다.
 
 ```bash
-# get cluster
 kops get cluster
 ```
 
@@ -260,21 +259,20 @@ cluster.k8s.local    aws      ap-northeast-2a,ap-northeast-2c
 
 Instance Groups
 NAME                      ROLE      MACHINETYPE    MIN    MAX    ZONES
-master-ap-northeast-2a    Master    c4.large       1      1      ap-northeast-2a
+master-ap-northeast-2a    Master    t2.medium      1      1      ap-northeast-2a
 nodes                     Node      t2.medium      2      1      ap-northeast-2a,ap-northeast-2c
 ```
 
-* 클러스터를 수정 할수 있 습니다.
+* 클러스터를 수정 할 수 있습니다.
 
 ```bash
-# edit cluster
 kops edit cluster
 ```
 
 * Cluster Autoscalier 에서 node 를 늘려 줄 수 있도록 `node maxSize` 를 변경 합니다.
 
 ```bash
-kops edit ig nodes
+kops edit instancegroup nodes
 ```
 
 ```yaml
@@ -309,7 +307,7 @@ Note:
 
 ### Validate Cluster
 
-* `kops validate` 명령으로 생성이 완료 되었는지 확인 할수 있습니다.
+* `kops validate` 명령으로 생성이 완료 되었는지 확인 할 수 있습니다.
 
 ```bash
 kops validate cluster --name=${KOPS_CLUSTER_NAME}
@@ -320,7 +318,7 @@ Validating cluster awskrug.k8s.local
 
 INSTANCE GROUPS
 NAME                   ROLE   MACHINETYPE MIN MAX SUBNETS
-master-ap-northeast-2a Master c4.large    1   1   ap-northeast-2a
+master-ap-northeast-2a Master t2.medium   1   1   ap-northeast-2a
 nodes                  Node   t2.medium   2   2   ap-northeast-2a,ap-northeast-2c
 
 NODE STATUS
@@ -334,20 +332,20 @@ Your cluster awskrug.k8s.local is ready
 
 ### kubectl
 
-* 생성이 완료 되었으면, 다음 명령으로 정보를 조회 할수 있습니다.
+* 생성이 완료 되었으면, 다음 명령으로 정보를 조회 할 수 있습니다.
 
 ```bash
 kubectl get node
 
-kubectl get deploy,pod,svc --all-namespaces
+kubectl get deploy,pod,service --all-namespaces
 
-kubectl get deploy,pod,svc -n kube-system
-kubectl get deploy,pod,svc -n default
+kubectl get deploy,pod,service -n kube-system
+kubectl get deploy,pod,service -n default
 ```
 
 Note:
 
-* 모든 네임스페이스 혹은 지정한 네임스페이스 객체를 조회 할수 있습니다.
+* 모든 네임스페이스 혹은 지정한 네임스페이스 객체를 조회 할 수 있습니다.
 * <https://kubernetes.io/docs/tasks/>
 
 ## Addons
@@ -380,10 +378,10 @@ deployment.extensions/ingress-nginx created
 
 ```bash
 # ELB 도메인을 획득 합니다.
-kubectl get svc -o wide -n kube-ingress
+kubectl get service -o wide -n kube-ingress
 
 # ELB 도메인으로 ip 를 획득 합니다.
-dig +short $(kubectl get svc -o wide -n kube-ingress | grep ingress-nginx | awk '{print $4}' | head -n 1)
+dig +short $(kubectl get service -o wide -n kube-ingress | grep ingress-nginx | awk '{print $4}' | head -n 1)
 ```
 
 Note:
@@ -432,13 +430,13 @@ horizontalpodautoscaler.autoscaling/sample-spring created
 * Pod 와 Service 가 만들어졌습니다.
 
 ```bash
-kubectl get deploy,pod,svc -n default
+kubectl get deploy,pod,service -n default
 ```
 
 * Ingress 설정에 의하여 각 도메인이 Ingress Controller 와 연결 되었습니다.
 
 ```bash
-kubectl get ing -o wide -n default
+kubectl get ingress -o wide -n default
 ```
 
 ```text
@@ -497,7 +495,7 @@ kubectl describe secret $(kubectl get secret -n kube-system | grep admin-token |
 * 접속은 ELB 도메인을 조회 해서, `https://` 를 붙여 접속 하도록 하겠습니다.
 
 ```bash
-kubectl get svc -o wide -n kube-system | grep kubernetes-dashboard
+kubectl get service -o wide -n kube-system | grep kubernetes-dashboard
 ```
 
 Note:
