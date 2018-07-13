@@ -494,10 +494,10 @@ kubectl describe secret $(kubectl get secret -n kube-system | grep admin-token |
 ```
 
 * Dashboard 는 Ingress 설정을 빼고, Service type 을 LoadBalancer 로 지정했습니다.
-* 접속은 ELB 를 조회 해서, https:// 로 하도록 하겠습니다.
+* 접속은 ELB 도메인을 조회 해서, https:// 를 붙여 접속 하도록 하겠습니다.
 
 ```bash
-kubectl get svc -o wide -n kube-system
+kubectl get svc -o wide -n kube-system | grep kubernetes-dashboard
 ```
 
 Note:
