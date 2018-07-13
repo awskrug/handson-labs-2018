@@ -19,8 +19,8 @@
 * 공통
   * AWS 계정: <https://aws.amazon.com/ko/>
 * 윈도우 사용자
-  * Git Bash: https://git-scm.com/download/win
-  * FireFox: https://www.mozilla.org/ko/firefox/new/
+  * Git Bash: <https://git-scm.com/download/win>
+  * FireFox: <https://www.mozilla.org/ko/firefox/new/>
 
 ## Bastion
 
@@ -110,7 +110,7 @@ Note:
 
 ![Git Bash](images/access-01.png)
 
-* `Git Bash` 로 인스턴스에 접속 할수 있습니다.
+* `Git Bash` 로 인스턴스에 접속 할 수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
@@ -136,7 +136,7 @@ ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
   * `Save private key` 버튼을 눌러 저장 합니다.
   * `awskrug.ppk` 가 만들어 졌습니다.
 
-* `PuTTY` 로 인스턴스에 접속 할수 있습니다.
+* `PuTTY` 로 인스턴스에 접속 할 수 있습니다.
   * `PuTTY` 를 시작합니다.
   * `Category` 창에서 `Session` 을 선택하고 다음 필드를 작성합니다.
   * `Host Name` 에 `ec2-user@` 과 위에서 확인한 `IP` 를 입력 합니다.
@@ -155,7 +155,7 @@ Note:
 * 방금 만들었던 인스턴스를 선택 합니다.
 * `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
 
-* `Terminal` 로 인스턴스에 접속 할수 있습니다.
+* `Terminal` 로 인스턴스에 접속 할 수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
@@ -212,7 +212,7 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 ![Create Cluster](images/bastion-04.png)
 
 * Cloud 는 AWS 를 사용 하겠습니다.
-* Master Node 는 `c4.large` 1대로 하겠습니다.
+* Master Node 는 `t2.medium` 1대로 하겠습니다.
 * Worker Node 는 `t2.medium` 2대로 하겠습니다.
 
 ```bash
@@ -220,7 +220,7 @@ kops create cluster \
     --cloud=aws \
     --name=${KOPS_CLUSTER_NAME} \
     --state=${KOPS_STATE_STORE} \
-    --master-size=c4.large \
+    --master-size=t2.medium \
     --node-size=t2.medium \
     --node-count=2 \
     --zones=ap-northeast-2a,ap-northeast-2c \
@@ -228,7 +228,7 @@ kops create cluster \
     --networking=calico
 ```
 
-```bash
+```text
 Must specify --yes to apply changes
 
 Cluster configuration has been created.
@@ -246,35 +246,33 @@ Note:
 
 ### Edit Cluster
 
-* 클러스터를 실제 생성하기 전, 클러스터를 조회 할수 있습니다.
+* 클러스터를 실제 생성하기 전, 클러스터를 조회 할 수 있습니다.
 
 ```bash
-# get cluster
 kops get cluster
 ```
 
-```bash
+```text
 Cluster
 NAME                 CLOUD    ZONES
 cluster.k8s.local    aws      ap-northeast-2a,ap-northeast-2c
 
 Instance Groups
 NAME                      ROLE      MACHINETYPE    MIN    MAX    ZONES
-master-ap-northeast-2a    Master    c4.large       1      1      ap-northeast-2a
+master-ap-northeast-2a    Master    t2.medium      1      1      ap-northeast-2a
 nodes                     Node      t2.medium      2      1      ap-northeast-2a,ap-northeast-2c
 ```
 
-* 클러스터를 수정 할수 있 습니다.
+* 클러스터를 수정 할 수 있습니다.
 
 ```bash
-# edit cluster
 kops edit cluster
 ```
 
 * Cluster Autoscalier 에서 node 를 늘려 줄 수 있도록 `node maxSize` 를 변경 합니다.
 
 ```bash
-kops edit ig nodes
+kops edit instancegroup nodes
 ```
 
 ```yaml
@@ -293,7 +291,7 @@ spec:
 kops update cluster --name=${KOPS_CLUSTER_NAME} --yes
 ```
 
-```bash
+```text
 Cluster is starting.  It should be ready in a few minutes.
 
 Suggestions:
@@ -309,18 +307,18 @@ Note:
 
 ### Validate Cluster
 
-* `kops validate` 명령으로 생성이 완료 되었는지 확인 할수 있습니다.
+* `kops validate` 명령으로 생성이 완료 되었는지 확인 할 수 있습니다.
 
 ```bash
 kops validate cluster --name=${KOPS_CLUSTER_NAME}
 ```
 
-```bash
+```text
 Validating cluster awskrug.k8s.local
 
 INSTANCE GROUPS
 NAME                   ROLE   MACHINETYPE MIN MAX SUBNETS
-master-ap-northeast-2a Master c4.large    1   1   ap-northeast-2a
+master-ap-northeast-2a Master t2.medium   1   1   ap-northeast-2a
 nodes                  Node   t2.medium   2   2   ap-northeast-2a,ap-northeast-2c
 
 NODE STATUS
@@ -334,20 +332,20 @@ Your cluster awskrug.k8s.local is ready
 
 ### kubectl
 
-* 생성이 완료 되었으면, 다음 명령으로 정보를 조회 할수 있습니다.
+* 생성이 완료 되었으면, 다음 명령으로 정보를 조회 할 수 있습니다.
 
 ```bash
 kubectl get node
 
-kubectl get deploy,pod,svc --all-namespaces
+kubectl get deploy,pod,service --all-namespaces
 
-kubectl get deploy,pod,svc -n kube-system
-kubectl get deploy,pod,svc -n default
+kubectl get deploy,pod,service -n kube-system
+kubectl get deploy,pod,service -n default
 ```
 
 Note:
 
-* 모든 네임스페이스 혹은 지정한 네임스페이스 객체를 조회 할수 있습니다.
+* 모든 네임스페이스 혹은 지정한 네임스페이스 객체를 조회 할 수 있습니다.
 * <https://kubernetes.io/docs/tasks/>
 
 ## Addons
@@ -362,7 +360,7 @@ curl -LO https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/ingre
 kubectl apply -f ingress-nginx-v1.6.0.yml
 ```
 
-```bash
+```text
 namespace/kube-ingress created
 serviceaccount/nginx-ingress-controller created
 clusterrole.rbac.authorization.k8s.io/nginx-ingress-controller created
@@ -380,10 +378,10 @@ deployment.extensions/ingress-nginx created
 
 ```bash
 # ELB 도메인을 획득 합니다.
-kubectl get svc -o wide -n kube-ingress
+kubectl get service -o wide -n kube-ingress
 
 # ELB 도메인으로 ip 를 획득 합니다.
-dig +short $(kubectl get svc -o wide -n kube-ingress | grep ingress-nginx | awk '{print $4}' | head -n 1)
+dig +short $(kubectl get service -o wide -n kube-ingress | grep ingress-nginx | awk '{print $4}' | head -n 1)
 ```
 
 Note:
@@ -422,7 +420,7 @@ spec:
 kubectl apply -f sample-spring-ing.yml
 ```
 
-```bash
+```text
 deployment.apps/sample-spring created
 service/sample-spring created
 ingress.extensions/sample-spring created
@@ -432,16 +430,16 @@ horizontalpodautoscaler.autoscaling/sample-spring created
 * Pod 와 Service 가 만들어졌습니다.
 
 ```bash
-kubectl get deploy,pod,svc -n default
+kubectl get deploy,pod,service -n default
 ```
 
 * Ingress 설정에 의하여 각 도메인이 Ingress Controller 와 연결 되었습니다.
 
 ```bash
-kubectl get ing -o wide -n default
+kubectl get ingress -o wide -n default
 ```
 
-```bash
+```text
 NAME            HOSTS                               ADDRESS                                                 PORTS     AGE
 sample-spring   sample-spring.apps.0.0.0.0.nip.io   a2aed74f77e8b-129875.ap-northeast-2.elb.amazonaws.com   80        43m
 ```
@@ -456,7 +454,7 @@ curl -LO https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashb
 kubectl apply -f dashboard-v1.8.3.yml
 ```
 
-```bash
+```text
 secret "kubernetes-dashboard-certs" created
 serviceaccount "kubernetes-dashboard" created
 role.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
@@ -472,7 +470,7 @@ service "kubernetes-dashboard" created
 kubectl create serviceaccount admin -n kube-system
 ```
 
-```bash
+```text
 serviceaccount "admin" created
 ```
 
@@ -482,7 +480,7 @@ serviceaccount "admin" created
 kubectl create clusterrolebinding cluster-admin:kube-system:admin --clusterrole=cluster-admin --serviceaccount=kube-system:admin
 ```
 
-```bash
+```text
 clusterrolebinding.rbac.authorization.k8s.io "cluster-admin:kube-system:admin" created
 ```
 
@@ -494,10 +492,10 @@ kubectl describe secret $(kubectl get secret -n kube-system | grep admin-token |
 ```
 
 * Dashboard 는 Ingress 설정을 빼고, Service type 을 LoadBalancer 로 지정했습니다.
-* 접속은 ELB 도메인을 조회 해서, https:// 를 붙여 접속 하도록 하겠습니다.
+* 접속은 ELB 도메인을 조회 해서, `https://` 를 붙여 접속 하도록 하겠습니다.
 
 ```bash
-kubectl get svc -o wide -n kube-system | grep kubernetes-dashboard
+kubectl get service -o wide -n kube-system | grep kubernetes-dashboard
 ```
 
 Note:
@@ -515,7 +513,7 @@ curl -LO https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heaps
 kubectl apply -f heapster-v1.7.0.yml
 ```
 
-```bash
+```text
 deployment.extensions "heapster" created
 service "heapster" created
 serviceaccount "heapster" created
@@ -559,7 +557,7 @@ kubectl apply -f metrics-server/deploy/1.8+/
 kubectl get hpa
 ```
 
-```bash
+```text
 NAME            REFERENCE                  TARGETS   MINPODS   MAXPODS   REPLICAS
 sample-spring   Deployment/sample-spring   0%/50%    1         100       1
 ```
@@ -579,7 +577,7 @@ ab -n 1000000 -c 1 http://sample-spring.apps.0.0.0.0.nip.io/stress
 kubectl get hpa -w
 ```
 
-```bash
+```text
 NAME            REFERENCE                  TARGETS   MINPODS   MAXPODS   REPLICAS
 sample-spring   Deployment/sample-spring   0%/50%    1         100       1
 sample-spring   Deployment/sample-spring   0%/50%    1         100       2
@@ -608,7 +606,7 @@ ab -n 1000000 -c 3 http://sample-spring.apps.0.0.0.0.nip.io/stress
 kubectl get hpa -w
 ```
 
-```bash
+```text
 NAME            REFERENCE                  TARGETS    MINPODS   MAXPODS   REPLICAS
 sample-spring   Deployment/sample-spring   77%/50%    1         100       7
 sample-spring   Deployment/sample-spring   65%/50%    1         100       7
@@ -622,7 +620,7 @@ sample-spring   Deployment/sample-spring   63%/50%    1         100       7
 kubectl get pod -n default
 ```
 
-```bash
+```text
 NAME                            READY     STATUS    RESTARTS   AGE
 sample-spring-6566df5db-4c7p6   1/1       Running   0          13m
 sample-spring-6566df5db-7sbdq   0/1       Pending   0          58s
@@ -635,7 +633,7 @@ sample-spring-6566df5db-wltj6   1/1       Running   0          10m
 
 * `Dashboard` 를 통해서도 확인해 봅시다.
 
-```bash
+```text
 0/3 nodes are available: 1 PodToleratesNodeTaints, 2 Insufficient cpu.
 ```
 
@@ -662,7 +660,7 @@ sed -i -e "s@{{AWS_REGION}}@${AWS_REGION}@g" "${ADDON}"
 kubectl apply -f ${ADDON}
 ```
 
-```bash
+```text
 serviceaccount/cluster-autoscaler created
 clusterrole.rbac.authorization.k8s.io/cluster-autoscaler created
 role.rbac.authorization.k8s.io/cluster-autoscaler created
@@ -683,7 +681,7 @@ kubectl logs $(kubectl get pod -n kube-system | grep cluster-autoscaler | awk '{
 kubectl get node
 ```
 
-```bash
+```text
 NAME                                              STATUS    ROLES     AGE       VERSION
 ip-10-10-10-10.ap-northeast-2.compute.internal    Ready     master    41m       v1.9.6
 ip-10-10-10-11.ap-northeast-2.compute.internal    Ready     node      39m       v1.9.6
@@ -697,7 +695,7 @@ ip-10-10-10-13.ap-northeast-2.compute.internal    Ready     node      12m       
 kubectl get hpa -w
 ```
 
-```bash
+```text
 NAME            REFERENCE                  TARGETS    MINPODS   MAXPODS   REPLICAS
 sample-spring   Deployment/sample-spring   64%/50%    1         100       7
 sample-spring   Deployment/sample-spring   63%/50%    1         100       7

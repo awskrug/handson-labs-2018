@@ -107,7 +107,7 @@ Note:
 
 ![Git Bash](images/access-01.png)
 
-* `Git Bash` 로 인스턴스에 접속 할수 있습니다.
+* `Git Bash` 로 인스턴스에 접속 할 수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
@@ -133,7 +133,7 @@ ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
   * `Save private key` 버튼을 눌러 저장 합니다.
   * `awskrug.ppk` 가 만들어 졌습니다.
 
-* `PuTTY` 로 인스턴스에 접속 할수 있습니다.
+* `PuTTY` 로 인스턴스에 접속 할 수 있습니다.
   * `PuTTY` 를 시작합니다.
   * `Category` 창에서 `Session` 을 선택하고 다음 필드를 작성합니다.
   * `Host Name` 에 `ec2-user@` 과 위에서 확인한 `IP` 를 입력 합니다.
@@ -152,7 +152,7 @@ Note:
 * 방금 만들었던 인스턴스를 선택 합니다.
 * `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
 
-* `Terminal` 로 인스턴스에 접속 할수 있습니다.
+* `Terminal` 로 인스턴스에 접속 할 수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
@@ -209,7 +209,7 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 ![Create Cluster](images/bastion-04.png)
 
 * Cloud 는 AWS 를 사용 하겠습니다.
-* Master Node 는 `m4.large` 1대로 하겠습니다. (cpu 2 / mem 8)
+* Master Node 는 `c4.large` 1대로 하겠습니다. (cpu 2 / mem 8)
 * Worker Node 는 `m4.xlarge` 2대로 하겠습니다. (cpu 4 / mem 16)
 
 ```bash
@@ -217,7 +217,7 @@ kops create cluster \
     --cloud=aws \
     --name=${KOPS_CLUSTER_NAME} \
     --state=${KOPS_STATE_STORE} \
-    --master-size=m4.large \
+    --master-size=c4.large \
     --node-size=m4.xlarge \
     --node-count=2 \
     --zones=ap-northeast-2a,ap-northeast-2c \
@@ -244,7 +244,7 @@ Note:
 
 ### Edit Cluster
 
-* 클러스터를 생성하기 전, 클러스터를 수정 할수 있습니다.
+* 클러스터를 생성하기 전, 클러스터를 수정 할 수 있습니다.
 
 ```bash
 kops edit cluster --name=${KOPS_CLUSTER_NAME}
@@ -286,7 +286,7 @@ Note:
 
 ### Validate Cluster
 
-* `kops validate` 명령으로 생성이 완료 되었는지 확인 할수 있습니다.
+* `kops validate` 명령으로 생성이 완료 되었는지 확인 할 수 있습니다.
 
 ```bash
 kops validate cluster --name=${KOPS_CLUSTER_NAME}
@@ -297,7 +297,7 @@ Validating cluster awskrug.k8s.local
 
 INSTANCE GROUPS
 NAME                   ROLE   MACHINETYPE MIN MAX SUBNETS
-master-ap-northeast-2a Master m4.large    1   1   ap-northeast-2a
+master-ap-northeast-2a Master c4.large    1   1   ap-northeast-2a
 nodes                  Node   m4.xlarge   2   2   ap-northeast-2a,ap-northeast-2c
 
 NODE STATUS
@@ -311,7 +311,7 @@ Your cluster awskrug.k8s.local is ready
 
 ### kubectl
 
-* 생성이 완료 되었으면, 다음 명령으로 정보를 조회 할수 있습니다.
+* 생성이 완료 되었으면, 다음 명령으로 정보를 조회 할 수 있습니다.
 
 ```bash
 kubectl get node
@@ -324,7 +324,7 @@ kubectl get deploy,pod,svc -n default
 
 Note:
 
-* 모든 네임스페이스 혹은 지정한 네임스페이스 객체를 조회 할수 있습니다.
+* 모든 네임스페이스 혹은 지정한 네임스페이스 객체를 조회 할 수 있습니다.
 * <https://kubernetes.io/docs/tasks/>
 
 ### Sample
@@ -381,7 +381,7 @@ service "kubernetes-dashboard" created
 kubectl get svc -o wide -n kube-system
 ```
 
-* 생성된 ELB 로 접속 할수 있습니다.
+* 생성된 ELB 로 접속 할 수 있습니다.
   * <https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#LoadBalancers>
 * ELB 의 `DNS name` 에 `https://` 를 붙여서 접속 해야 합니다.
 
@@ -582,7 +582,7 @@ jx get activity -w
 
 Note:
 
-* 빌드가 완료 되면, `staging` 환경에 배포되어 결과를 확인 할수 있습니다.
+* 빌드가 완료 되면, `staging` 환경에 배포되어 결과를 확인 할 수 있습니다.
 * 최초 빌드 이므로 `10분` 정도 소요 됩니다.
 
 ### Pull Request
@@ -605,7 +605,7 @@ Note:
 
 * PR 을 merge 하면, `master` Branch 의 빌드가 진행 됩니다.
 
-* 빌드가 완료 되면, `staging` 환경에 배포되어 결과를 확인 할수 있습니다.
+* 빌드가 완료 되면, `staging` 환경에 배포되어 결과를 확인 할 수 있습니다.
 
 ### Production
 
@@ -617,7 +617,7 @@ jx promote demo -v 0.0.2 -e production
 
 * Github user name 과 password 가 필요 합니다.
 
-* 배포가 완료 되면, 다음 명령어로 결과를 확인 할수 있습니다.
+* 배포가 완료 되면, 다음 명령어로 결과를 확인 할 수 있습니다.
 
 ```bash
 jx get applications

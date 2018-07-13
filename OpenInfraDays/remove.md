@@ -88,7 +88,7 @@ Note:
 
 ![Git Bash](images/access-01.png)
 
-* `Git Bash` 로 인스턴스에 접속 할수 있습니다.
+* `Git Bash` 로 인스턴스에 접속 할 수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
@@ -114,7 +114,7 @@ ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
   * `Save private key` 버튼을 눌러 저장 합니다.
   * `awskrug.ppk` 가 만들어 졌습니다.
 
-* `PuTTY` 로 인스턴스에 접속 할수 있습니다.
+* `PuTTY` 로 인스턴스에 접속 할 수 있습니다.
   * `PuTTY` 를 시작합니다.
   * `Category` 창에서 `Session` 을 선택하고 다음 필드를 작성합니다.
   * `Host Name` 에 `ec2-user@` 과 위에서 확인한 `IP` 를 입력 합니다.
@@ -133,7 +133,7 @@ Note:
 * 방금 만들었던 인스턴스를 선택 합니다.
 * `IPv4 Public IP` 에 생성된 `IP` 를 확인 합니다.
 
-* `Terminal` 로 인스턴스에 접속 할수 있습니다.
+* `Terminal` 로 인스턴스에 접속 할 수 있습니다.
   * `PEM_PATH` 를 다운받은 `awskrug.pem` 파일 경로로 변경 합니다.
   * `PUBLIC_IP` 를 위에서 확인한 `IP` 로 변경하여 접속 합니다.
 
