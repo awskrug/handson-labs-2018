@@ -224,7 +224,7 @@ kops create cluster \
     --network-cidr=10.10.0.0/16
 ```
 
-```
+```text
 Must specify --yes to apply changes
 
 Cluster configuration has been created.
@@ -270,7 +270,7 @@ Note:
 kops update cluster --name=${KOPS_CLUSTER_NAME} --yes
 ```
 
-```
+```text
 Cluster is starting.  It should be ready in a few minutes.
 
 Suggestions:
@@ -292,7 +292,7 @@ Note:
 kops validate cluster --name=${KOPS_CLUSTER_NAME}
 ```
 
-```
+```text
 Validating cluster awskrug.k8s.local
 
 INSTANCE GROUPS
@@ -337,7 +337,7 @@ kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/samp
 kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/sample/sample-web-ing.yml
 ```
 
-```
+```text
 deployment.apps "sample-node" created
 service "sample-node" created
 ingress.extensions "sample-node" created
@@ -368,7 +368,7 @@ Note:
 kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3.yml
 ```
 
-```
+```text
 secret "kubernetes-dashboard-certs" created
 serviceaccount "kubernetes-dashboard" created
 role.rbac.authorization.k8s.io "kubernetes-dashboard-minimal" created
@@ -395,7 +395,7 @@ kubectl get svc -o wide -n kube-system
 kubectl create serviceaccount admin -n kube-system
 ```
 
-```
+```text
 serviceaccount "admin" created
 ```
 
@@ -405,7 +405,7 @@ serviceaccount "admin" created
 kubectl create clusterrolebinding cluster-admin:kube-system:admin --clusterrole=cluster-admin --serviceaccount=kube-system:admin
 ```
 
-```
+```text
 clusterrolebinding.rbac.authorization.k8s.io "cluster-admin:kube-system:admin" created
 ```
 
@@ -417,7 +417,8 @@ kubectl describe secret $(kubectl get secret -n kube-system | grep admin-token |
 ```
 
 Note:
-- <https://github.com/kubernetes/dashboard/>
+
+* <https://github.com/kubernetes/dashboard/>
 
 ### Heapster
 
@@ -428,7 +429,7 @@ Note:
 kubectl apply -f https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/heapster-v1.7.0.yml
 ```
 
-```
+```text
 deployment.extensions "heapster" created
 service "heapster" created
 serviceaccount "heapster" created
@@ -469,32 +470,32 @@ jx install --provider=aws
 * git 에서 사용할 `user name` 을 입력해 줍니다.
 * git 에서 사용할 `email` 을 입력해 줍니다.
 
-```
+```text
 ? Please enter the name you wish to use with git:
 ? Please enter the email address you wish to use with git:
 ```
 
 * `ingress controller` 를 설치 하겠습니다.
 
-```
+```text
 ? No existing ingress controller found in the kube-system namespace, shall we install one? [? for help] (Y/n)
 ```
 
 * ELB 도메인을 이용하여 IP 를 얻도록 하겠습니다.
 
-```
+```text
 ? Would you like wait and resolve this address to an IP address and use it for the domain? [? for help] (Y/n)
 ```
 
 * ELB 의 IP 를 이용한 nio.io 도메인을 이용 합니다.
 
-```
+```text
 ? Domain [? for help] (0.0.0.0.nip.io)
 ```
 
 * Github user name 에 본인의 계정을 입력합니다.
 
-```
+```text
 ? GitHub user name:
 ```
 
@@ -503,7 +504,7 @@ jx install --provider=aws
 * `Generate token` 버튼을 눌러 토큰을 만듭니다.
 * `토큰 복사/붙여넣기 하면서 토큰 문자열 앞의 공백에 주의해 주세요.`
 
-```
+```text
 Please click this URL https://github.com/settings/tokens/new?scopes=repo,read:user,user:email,write:repo_hook
 Then COPY the token and enter in into the form below:
 
@@ -514,7 +515,7 @@ Then COPY the token and enter in into the form below:
 * 아이디 `admin` 과 제시된 비밀번호를 입력해 주세요.
 * `Show API Token` 버튼을 눌러 키를 합니다. 그리고 화면에 붙여 넣습니다.
 
-```
+```text
 Please go to http://jenkins.jx.0.0.0.0.nip.io/me/configure and click Show API Token to get your API Token
 Then COPY the token and enter in into the form below:
 
@@ -523,7 +524,7 @@ Then COPY the token and enter in into the form below:
 
 * `staging` 과 `production` 관리 repo 를 저장할 계정을 선택 합니다.
 
-```
+```text
 To import existing projects into Jenkins:     jx import
 To create a new Spring Boot microservice:       jx create spring -d web -d actuator
 To create a new microservice from a quickstart: jx create quickstart
@@ -551,7 +552,7 @@ jx create spring -d web -d actuator
 jx create quickstart
 ```
 
-```
+```text
 ? Language: java
 ? Group: com.example
 ? Artifact: demo
@@ -561,7 +562,7 @@ jx create quickstart
 Initialized empty Git repository in /home/ec2-user/demo/.git/
 ```
 
-```
+```text
 Pushed git repository to https://github.com/nalbam/demo
 
 Created Jenkins Project: http://jenkins.jx.0.0.0.0.nip.io/job/nalbam/job/demo/
