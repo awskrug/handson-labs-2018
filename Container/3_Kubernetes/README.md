@@ -453,7 +453,7 @@ sample-spring   sample-spring.apps.0.0.0.0.nip.io   a2aed74f77e8b-129875.ap-nort
 ```bash
 curl -LO https://raw.githubusercontent.com/nalbam/kubernetes/master/addons/dashboard-v1.8.3.yml
 
-kubectl apply -f dashboard-v1.8.3-ing.yml
+kubectl apply -f dashboard-v1.8.3.yml
 ```
 
 ```bash
@@ -491,6 +491,13 @@ clusterrolebinding.rbac.authorization.k8s.io "cluster-admin:kube-system:admin" c
 
 ```bash
 kubectl describe secret $(kubectl get secret -n kube-system | grep admin-token | awk '{print $1}') -n kube-system
+```
+
+* Dashboard 는 Ingress 설정을 빼고, Service type 를 LoadBalancer 로 지정했습니다.
+* 접속은 ELB 를 조회 해서, https:// 로 하도록 하겠습니다.
+
+```bash
+kubectl get svc -o wide -n kube-system
 ```
 
 Note:
