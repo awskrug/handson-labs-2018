@@ -13,12 +13,14 @@
 * [Autoscaler](#autoscaler)
 
 <!-- /TOC -->
+
 ## Synopsis
+
 * KOPS를 이용하여 Kubernetes Cluster 생성
 * ingress-nginx 설치 후 Sample Application과 도메인 연결
 * dashboard, heapster 로 대시보드를 구성하고 모니터링 추가
 * HorizontalPodAutoscaler, cluster-autoscaler 로 pod 과 node 를 스케일링
-* 클러스터 제거 (중요!!) - 이 핸즈온 내용은 무료제공(free tier)를 벗어납니다!
+* `클러스터 제거` `(중요!!)` - 이 핸즈온 내용은 무료제공(free tier)를 벗어납니다!
 
 ## Requirement
 
@@ -174,7 +176,7 @@ ssh -i PEM_PATH/awskrug.pem ec2-user@PUBLIC_IP
 
 ![ssh-key](images/bastion-01.png)
 
-* 클러스터를 관리할 ssh-key 를 생성 합니다.
+* 클러스터를 관리할 `ssh-key` 를 생성 합니다.
 
 ```bash
 ssh-keygen -q -f ~/.ssh/id_rsa -N ''
@@ -188,7 +190,7 @@ Note:
 
 ![Credentials](images/bastion-02.png)
 
-* IAM 으로 생성하여 메모장에 복사해둔 Access key ID 와 Secret access key 를 등록합니다.
+* IAM 으로 생성하여 메모장에 복사해둔 `Access key ID` 와 `Secret access key` 를 등록합니다.
 
 ```bash
 aws configure
@@ -217,7 +219,7 @@ aws s3 mb ${KOPS_STATE_STORE} --region ap-northeast-2
 
 ![Create Cluster](images/bastion-04.png)
 
-* Cloud 는 AWS 를 사용 하겠습니다.
+* Cloud 는 `AWS` 를 사용 하겠습니다.
 * Master Node 는 `t2.medium` 1대로 하겠습니다.
 * Worker Node 는 `t2.medium` 2대로 하겠습니다.
 
@@ -396,6 +398,8 @@ Note:
 * 도메인이 없는 상황을 가정하므로, ELB 에서 IP 를 얻어 nip.io 서비스를 이용했습니다.
   * <http://nip.io> 는 여러분의 IP 를 도메인처럼 동작 하도록 해주는 서비스 입니다.
   * IP 와 nip.io 조합의 도메인 앞에 어떤 문자든 IP 로 연결시켜 줍니다.
+* 참고: <https://github.com/kubernetes/ingress-nginx>
+* 참고: <https://github.com/kubernetes/kops/tree/master/addons/ingress-nginx>
 
 ### Sample Application
 
@@ -506,7 +510,8 @@ kubectl get service -o wide -n kube-system | grep kubernetes-dashboard
 
 Note:
 
-* <https://github.com/kubernetes/dashboard/>
+* 참고: <https://github.com/kubernetes/dashboard/>
+* 참고: <https://github.com/kubernetes/kops/tree/master/addons/kubernetes-dashboard>
 
 ### Heapster
 
@@ -542,7 +547,8 @@ Note:
 
 * 힙스터는 현재 `DEPRECATED` 되었습니다.
 * 모니터링을 위해 `metrics-server` 또는 `Prometheus` 를 고려해 보시기 바랍니다.
-* <https://github.com/kubernetes/heapster/>
+* 참고: <https://github.com/kubernetes/heapster/>
+* 참고: <https://github.com/kubernetes/kops/tree/master/addons/monitoring-standalone>
 
 ### Pod Autoscaler
 
@@ -598,6 +604,8 @@ sample-spring   Deployment/sample-spring   36%/50%   1         100       4
 Note:
 
 * `4` 정도는 무리 없이 감당하는 군요.
+* 참고: <https://github.com/kubernetes-incubator/metrics-server>
+* 참고: <https://github.com/kubernetes/kops/tree/master/addons/metrics-server>
 
 ### Cluster Autoscaler
 
@@ -710,6 +718,10 @@ sample-spring   Deployment/sample-spring   56%/50%    1         100       8
 sample-spring   Deployment/sample-spring   44%/50%    1         100       8
 sample-spring   Deployment/sample-spring   44%/50%    1         100       8
 ```
+
+Note:
+
+* 참고: <https://github.com/kubernetes/kops/tree/master/addons/cluster-autoscaler>
 
 ## Clean Up
 
