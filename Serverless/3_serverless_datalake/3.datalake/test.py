@@ -1,5 +1,5 @@
-from cgitb import handler
 from datetime import datetime, timezone
+from os import path
 from unittest import TestCase
 
 import boto3
@@ -8,60 +8,8 @@ from moto import mock_dynamodb2, mock_s3
 csv_s3 = 'csv_s3'
 shp_S3 = 'shp_s3'
 json_S3 = 'json_s3'
-
-
-# @mock_s3
-# def test():
-#     bucket = 'test_bucket'
-#     file_name = 'data.tar.gz'
-#     s3 = boto3.client('s3', region_name='ap-northeast-2')
-#     BASE_DIR = os.path.dirname(__file__)
-#     file = os.path.join(BASE_DIR, file_name)
-#
-#     conn = boto3.resource('s3', region_name='ap-northeast-2')
-#     conn.create_bucket(Bucket=bucket)
-#
-#     with open(file, 'rb') as f:
-#         s3.put_object(Bucket=bucket, Key=file_name, Body=f)
-#     event = {
-#         "Records": [
-#             {
-#                 "eventVersion": "2.0",
-#                 "eventTime": "1970-01-01T00:00:00.000Z",
-#                 "requestParameters": {
-#                     "sourceIPAddress": "127.0.0.1"
-#                 },
-#                 "s3": {
-#                     "configurationId": "testConfigRule",
-#                     "object": {
-#                         "eTag": "0123456789abcdef0123456789abcdef",
-#                         "sequencer": "0A1B2C3D4E5F678901",
-#                         "key": file_name,
-#                         "size": 1024
-#                     },
-#                     "bucket": {
-#                         "arn": '',
-#                         "name": bucket,
-#                         "ownerIdentity": {
-#                             "principalId": "EXAMPLE"
-#                         }
-#                     },
-#                     "s3SchemaVersion": "1.0"
-#                 },
-#                 "responseElements": {
-#                     "x-amz-id-2": "EXAMPLE123/5678abcdefghijklambdaisawesome/mnopqrstuvwxyzABCDEFGH",
-#                     "x-amz-request-id": "EXAMPLE123456789"
-#                 },
-#                 "awsRegion": "us-east-1",
-#                 "eventName": "ObjectCreated:Put",
-#                 "userIdentity": {
-#                     "principalId": "EXAMPLE"
-#                 },
-#                 "eventSource": "aws:s3"
-#             }
-#         ]
-#     }
-#     handler(event, None)
+base_dir = path.abspath(path.dirname(__file__))
+mock_dir = path.join(base_dir, "mock")
 
 
 class LambdaTestCase(TestCase):
@@ -200,10 +148,14 @@ class LambdaTestCase(TestCase):
         self.mock_s3.start()
         self.mock_ddb.start()
 
+        self.csv_bucket = csv_s3
+        self.shp_bucket = shp_S3
+        self.json_bucket = json_S3
+
         self.s3 = boto3.client('s3')
-        self.s3.create_bucket(Bucket=csv_s3)
-        self.s3.create_bucket(Bucket=shp_S3)
-        self.s3.create_bucket(Bucket=json_S3)
+        self.s3.create_bucket(Bucket=self.csv_bucket)
+        self.s3.create_bucket(Bucket=self.shp_bucket)
+        self.s3.create_bucket(Bucket=self.json_bucket)
 
     def stop_mock(self):
         self.mock_s3.stop()
@@ -230,3 +182,81 @@ class LambdaTestCase(TestCase):
         :return:
         """
         pass
+
+
+class Csv2ShpTestCase(LambdaTestCase):
+
+    def setUpExt(self):
+        self.mock_data = path.join(mock_dir, "csv.tar.gz")
+        self.mock_obj_key = "mock_csv.tar.gz"
+        self.research_data = "1993-09-22"
+        self.researcher = "mr.lambda"
+        self.description = "this is mock file"
+        self.mock_metadata = {
+            "x-amz-meta-research-date": self.research_data,
+            "x-amz-meta-researcher": self.researcher,
+            "x-amz-meta-description": self.description
+        }
+        self.mock_event = self.upload_data_file(self.mock_data, self.csv_bucket, self.mock_obj_key, **self.mock_metadata)
+
+    def tearDownExt(self):
+        pass
+
+    def test_handler(self):
+        from ..csv2shp import handler
+        result = handler(self.mock_event)
+        self.assertEqual('hi',result)
+        print(result)
+        return
+# @mock_s3
+# def test():
+#     bucket = 'test_bucket'
+#     file_name = 'data.tar.gz'
+#     s3 = boto3.client('s3', region_name='ap-northeast-2')
+#     BASE_DIR = os.path.dirname(__file__)
+#     file = os.path.join(BASE_DIR, file_name)
+#
+#     conn = boto3.resource('s3', region_name='ap-northeast-2')
+#     conn.create_bucket(Bucket=bucket)
+#
+#     with open(file, 'rb') as f:
+#         s3.put_object(Bucket=bucket, Key=file_name, Body=f)
+#     event = {
+#         "Records": [
+#             {
+#                 "eventVersion": "2.0",
+#                 "eventTime": "1970-01-01T00:00:00.000Z",
+#                 "requestParameters": {
+#                     "sourceIPAddress": "127.0.0.1"
+#                 },
+#                 "s3": {
+#                     "configurationId": "testConfigRule",
+#                     "object": {
+#                         "eTag": "0123456789abcdef0123456789abcdef",
+#                         "sequencer": "0A1B2C3D4E5F678901",
+#                         "key": file_name,
+#                         "size": 1024
+#                     },
+#                     "bucket": {
+#                         "arn": '',
+#                         "name": bucket,
+#                         "ownerIdentity": {
+#                             "principalId": "EXAMPLE"
+#                         }
+#                     },
+#                     "s3SchemaVersion": "1.0"
+#                 },
+#                 "responseElements": {
+#                     "x-amz-id-2": "EXAMPLE123/5678abcdefghijklambdaisawesome/mnopqrstuvwxyzABCDEFGH",
+#                     "x-amz-request-id": "EXAMPLE123456789"
+#                 },
+#                 "awsRegion": "us-east-1",
+#                 "eventName": "ObjectCreated:Put",
+#                 "userIdentity": {
+#                     "principalId": "EXAMPLE"
+#                 },
+#                 "eventSource": "aws:s3"
+#             }
+#         ]
+#     }
+#     handler(event, None)

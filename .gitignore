@@ -249,3 +249,5 @@ Serverless/3_serverless_datalake/3.datalake/2\.1\.csv_trigger/data\.tar\.gz
 Serverless/3_serverless_datalake/3\.datalake/node_modules/
 
 Serverless/3_serverless_datalake/3\.datalake/\.serverless/
+
+Serverless/3_serverless_datalake/3\.datalake/data/shp2geojson\.ipynb
