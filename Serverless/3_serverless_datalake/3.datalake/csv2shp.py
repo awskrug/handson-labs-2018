@@ -1,14 +1,17 @@
 import csv
+import gzip
 import io
-import os
+import shutil
 import tarfile
 from collections import OrderedDict
+from datetime import datetime
+from tempfile import NamedTemporaryFile
 from typing import Dict
 
 import boto3
 import fiona
 from fiona import crs
-from moto import mock_s3
+from hashids import Hashids
 from shapely.geometry import Point, mapping
 
 from .util.event_parser import EVENT_PARSER
@@ -87,15 +90,16 @@ def make_shp(tree_csv, points):
         'geometry': 'Point'
     }
     shp_crs = crs.from_epsg(4326)
-    with fiona.open('/tmp/sample.shp', 'w', encoding="utf-8", driver=shp_driver, schema=shp_schema, crs=shp_crs) as shp:
-        for row in tree_csv:
-            # 구간 번호
-            point_num = int(row['구간'])
-            # 수목의 구간번호에 매칭하는 좌표 정보
-            point_info = points[point_num]
-            # shp에 입력될 형식
-            record = make_record(properties, 1, row, point_info)
-            shp.write(record)
+    shp = fiona.open('/tmp/sample.shp', 'w', encoding="utf-8", driver=shp_driver, schema=shp_schema, crs=shp_crs)
+    for row in tree_csv:
+        # 구간 번호
+        point_num = int(row['구간'])
+        # 수목의 구간번호에 매칭하는 좌표 정보
+        point_info = points[point_num]
+        # shp에 입력될 형식
+        record = make_record(properties, 1, row, point_info)
+        shp.write(record)
+    return shp
 
 
 def get_tar(s3):
@@ -118,13 +122,20 @@ def handler(event, context):
             tree_csv, point_csv = get_tar(s3)
             points = get_point_data(point_csv)
             shp = make_shp(tree_csv, points)
-            trees = get_tree_data(tree_csv)
+            f = NamedTemporaryFile()
+            gz = gzip.open(f, 'wb')
+            shutil.copyfileobj(f, gz)
 
-    return 'hi'
+            meta = {
+                "origin_data_bucket": s3.bucket_arn,
+                "origin_data_key": s3.object_key,
+            }
+            dt = datetime.utcnow()
+            file_name = f"{Hashids(s3.object_key).encode(dt.year, dt.month, dt.day)}.gz"
+            s3_resource = boto3.resource('s3')
+            s3_resource.Object(s3.bucket_name, file_name).put(Body=gz, ContentEncoding="gzip",
+                                                              Metadata=meta)
+            shp.close()
+            gz.close()
 
-
-
-
-
-if __name__ == '__main__':
-    test()
+    return 'hellow'
