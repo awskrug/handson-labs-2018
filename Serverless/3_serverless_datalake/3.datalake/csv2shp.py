@@ -1,7 +1,6 @@
 import csv
-import gzip
 import io
-import shutil
+import os
 import tarfile
 from collections import OrderedDict
 from datetime import datetime
@@ -14,7 +13,10 @@ from fiona import crs
 from hashids import Hashids
 from shapely.geometry import Point, mapping
 
-from .util.event_parser import EVENT_PARSER
+try:
+    from util.event_parser import EVENT_PARSER
+except Exception:
+    from .util.event_parser import EVENT_PARSER
 
 
 def get_csv(name, tar):
@@ -69,7 +71,7 @@ def make_record(properties: Dict[str, type], load_num: str, tree_row: Dict[str, 
     return record
 
 
-def make_shp(tree_csv, points):
+def make_shp(tree_csv, points, hashid):
     """
     수목정보와 좌표정보를 매칭시켜 shp파일을 생성합니다
     :param tree_csv:
@@ -90,16 +92,17 @@ def make_shp(tree_csv, points):
         'geometry': 'Point'
     }
     shp_crs = crs.from_epsg(4326)
-    shp = fiona.open('/tmp/sample.shp', 'w', encoding="utf-8", driver=shp_driver, schema=shp_schema, crs=shp_crs)
-    for row in tree_csv:
-        # 구간 번호
-        point_num = int(row['구간'])
-        # 수목의 구간번호에 매칭하는 좌표 정보
-        point_info = points[point_num]
-        # shp에 입력될 형식
-        record = make_record(properties, 1, row, point_info)
-        shp.write(record)
-    return shp
+    file = f'/tmp/{hashid}.shp'
+    with fiona.open(file, 'w', encoding="utf-8", driver=shp_driver, schema=shp_schema, crs=shp_crs) as shp:
+        for row in tree_csv:
+            # 구간 번호
+            point_num = int(row['구간'])
+            # 수목의 구간번호에 매칭하는 좌표 정보
+            point_info = points[point_num]
+            # shp에 입력될 형식
+            record = make_record(properties, 1, row, point_info)
+            shp.write(record)
+    return file
 
 
 def get_tar(s3):
@@ -121,21 +124,33 @@ def handler(event, context):
             # s3의 tar.gz 파일에서 수목,좌표 csv 객체 압축 해제
             tree_csv, point_csv = get_tar(s3)
             points = get_point_data(point_csv)
-            shp = make_shp(tree_csv, points)
-            f = NamedTemporaryFile()
-            gz = gzip.open(f, 'wb')
-            shutil.copyfileobj(f, gz)
+            # 람다의 tmp폴더 혼용에 의한 오류방지를 위해 해시id 생성
+            dt = datetime.utcnow()
+            hashid = Hashids(s3.object_key).encode(dt.year, dt.month, dt.day)
+
+            shp = make_shp(tree_csv, points, hashid)
+            f = NamedTemporaryFile(delete=False)
+
+            tmp_file = f"{hashid}.tar.gz"
+            file_name = f"shp/{tmp_file}"
+
+            root, dirs, files = list(os.walk(os.path.dirname(shp)))[0]
+            shp_exts = ['prj', 'shp', 'shx', 'dbf', 'cpg']
+            # 해시파일중 shp 관련 파일로 필터링
+            files = [f for f in files if f.split('.')[0] == hashid and f.split('.')[-1] in shp_exts]
+            with tarfile.open(f.name, mode='w:gz') as gz:
+                for name in files:
+                    file_path = os.path.join(root, name)
+                    gz.add(file_path, arcname=name)
 
             meta = {
                 "origin_data_bucket": s3.bucket_arn,
                 "origin_data_key": s3.object_key,
             }
-            dt = datetime.utcnow()
-            file_name = f"{Hashids(s3.object_key).encode(dt.year, dt.month, dt.day)}.gz"
+
             s3_resource = boto3.resource('s3')
-            s3_resource.Object(s3.bucket_name, file_name).put(Body=gz, ContentEncoding="gzip",
-                                                              Metadata=meta)
-            shp.close()
-            gz.close()
+            with open(f.name, 'rb') as result:
+                s3_resource.Object(s3.bucket_name, file_name).put(Body=result.read(), ContentEncoding="gzip",
+                                                                  Metadata=meta)
 
     return 'hellow'

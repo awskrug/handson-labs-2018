@@ -1,7 +1,10 @@
-import importlib
+import io
+import os
+import sys
+import tarfile
 from datetime import datetime, timezone
-from os import path
 # from .base_testcase import LambdaTestCase
+from os import path
 from unittest import TestCase
 
 import boto3
@@ -9,7 +12,7 @@ from moto import mock_dynamodb2, mock_s3
 
 base_dir = path.abspath(path.dirname(__file__))
 mock_dir = path.join(base_dir, "mock")
-
+sys.path.insert(0, os.getcwd())
 csv_s3 = 'csv_s3'
 shp_S3 = 'shp_s3'
 json_S3 = 'json_s3'
@@ -155,14 +158,9 @@ class LambdaTestCase(TestCase):
         self.mock_s3.start()
         self.mock_ddb.start()
 
-        self.csv_bucket = csv_s3
-        self.shp_bucket = shp_S3
-        self.json_bucket = json_S3
-
+        self.bucket = csv_s3
         self.s3 = boto3.client('s3')
-        self.s3.create_bucket(Bucket=self.csv_bucket)
-        self.s3.create_bucket(Bucket=self.shp_bucket)
-        self.s3.create_bucket(Bucket=self.json_bucket)
+        self.s3.create_bucket(Bucket=self.bucket)
 
     def stop_mock(self):
         self.mock_s3.stop()
@@ -194,12 +192,8 @@ class LambdaTestCase(TestCase):
 class Csv2ShpTestCase(LambdaTestCase):
 
     def setUpExt(self):
-        # import ipdb;
-        # ipdb.set_trace()
-        import os
-        print("haha", os.getcwd())
-
-        self.handelr = importlib.import_module("handler",".")
+        from csv2shp import handler
+        self.handler = handler
         self.mock_data = path.join(mock_dir, "csv.tar.gz")
         self.mock_obj_key = "mock_csv.tar.gz"
         self.research_data = "1993-09-22"
@@ -214,11 +208,89 @@ class Csv2ShpTestCase(LambdaTestCase):
     def tearDownExt(self):
         pass
 
-    def test_handler(self):
-        self.mock_event = self.upload_data_file(self.mock_data, self.csv_bucket, self.mock_obj_key,
-                                                **self.mock_metadata)
+    def count_objects(self, prefix):
+        """
+        해당 prefix안의 파일 개수
+        :param prefix:
+        :return:
+        """
+        objs = self.s3.list_objects(
+            Bucket=self.bucket,
+            Prefix=prefix,
+        )
+        contents = objs.get('Contents')
+        return len(contents) if contents else 0
 
-        result = self.handler(self.mock_event, None)
-        self.assertEqual('hi', result)
-        print(result)
-        return
+    def test_handler(self):
+        self.mock_event = self.upload_data_file(self.mock_data, self.bucket, self.mock_obj_key,
+                                                **self.mock_metadata)
+        # shp폴더 초기화 확인
+        self.assertEqual(self.count_objects('shp'), 0)
+        self.handler(self.mock_event, None)
+        objs = self.s3.list_objects(
+            Bucket=self.bucket,
+            Prefix='shp',
+        )['Contents']
+
+        # shp폴더에 압축파일 생성 확인
+        self.assertEqual(self.count_objects('shp'), 1)
+
+        obj_key = objs[0]['Key']
+        obj = boto3.resource('s3').Object(self.bucket, obj_key).get()['Body']
+        with io.BytesIO(obj.read()) as buffer:
+            tar = tarfile.open(fileobj=buffer)
+            # shp에 속하는 5개의 확장자 파일 모두 압축 되었느지 확인
+            self.assertEqual(len(tar.getmembers()), 5)
+
+class Shp2JsonTestCase(LambdaTestCase):
+
+    def setUpExt(self):
+        from shp2json import handler
+        self.handler = handler
+        self.mock_data = path.join(mock_dir, "shp.tar.gz")
+        self.mock_obj_key = "mock_csv.tar.gz"
+        self.research_data = "1993-09-22"
+        self.researcher = "mr.lambda"
+        self.description = "this is mock file"
+        self.mock_metadata = {
+            "x-amz-meta-research-date": self.research_data,
+            "x-amz-meta-researcher": self.researcher,
+            "x-amz-meta-description": self.description,
+        }
+
+    def tearDownExt(self):
+        pass
+
+    def count_objects(self, prefix):
+        """
+        해당 prefix안의 파일 개수
+        :param prefix:
+        :return:
+        """
+        objs = self.s3.list_objects(
+            Bucket=self.bucket,
+            Prefix=prefix,
+        )
+        contents = objs.get('Contents')
+        return len(contents) if contents else 0
+
+    def test_handler(self):
+        self.mock_event = self.upload_data_file(self.mock_data, self.bucket, self.mock_obj_key,
+                                                **self.mock_metadata)
+        # shp폴더 초기화 확인
+        self.assertEqual(self.count_objects('shp'), 0)
+        self.handler(self.mock_event, None)
+        objs = self.s3.list_objects(
+            Bucket=self.bucket,
+            Prefix='shp',
+        )['Contents']
+
+        # shp폴더에 압축파일 생성 확인
+        self.assertEqual(self.count_objects('shp'), 1)
+
+        obj_key = objs[0]['Key']
+        obj = boto3.resource('s3').Object(self.bucket, obj_key).get()['Body']
+        with io.BytesIO(obj.read()) as buffer:
+            tar = tarfile.open(fileobj=buffer)
+            # shp에 속하는 5개의 확장자 파일 모두 압축 되었느지 확인
+            self.assertEqual(len(tar.getmembers()), 5)

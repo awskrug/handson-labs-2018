@@ -24,6 +24,9 @@ custom:
     slim: true
   bucketName: ${self:service}-#{AWS::AccountId}-geodata-s3
   topicName: ${self:service}-shp-topic
+  topicArn:
+    Fn::Sub: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
+
   sqsName: ${self:service}-sqs
   DDB:
     name: ${self:service}-shp-me
@@ -57,8 +60,7 @@ provider:
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - "s3:ListBucket"
-        - "s3:PutObject"
+        - "s3:*"
         - "xray:PutTraceSegments"
         - "xray:PutTelemetryRecords"
       Resource:
@@ -85,8 +87,8 @@ functions:
   csv2shp:
     handler: csv2shp.handler
 
-  shp2geojson:
-    handler: csv2shp.handler
+  shp2json:
+    handler: shp2json.handler
     events:
       - sqs:
           batchSize: 2
@@ -95,10 +97,18 @@ functions:
               - Shp2GeojsonQue
               - Arn
   shp2metadata:
-    handler: csv2shp.handler
+    handler: shp2metadata.handler
     events:
       - sns:
-          arn: arn:aws:sns:ap-northeast-2:#{AWS::AccountId}:gis-datalake-shp-topic
+          arn:
+            Fn::Join:
+                - ""
+                - - "arn:aws:sns:"
+                  - Ref: "AWS::Region"
+                  - ":"
+                  - Ref: "AWS::AccountId"
+                  - "${self:custom.topicName}"
+          topicName: "${self:custom.topicName}"
 
 #
 resources:
@@ -113,7 +123,7 @@ resources:
     NewShpTopic:
       Type: AWS::SNS::Topic
       Properties:
-        DisplayName: "새 shp 알림 토픽"
+        DisplayName: "new shp input notice"
         TopicName: ${self:custom.topicName}
 
     SubscribeTopic:
@@ -125,13 +135,22 @@ resources:
             - Arn
         Protocol: sqs
         TopicArn:
-          Ref: NewShpTopic
+
     # S3
     S3BucketGeodata:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.bucketName}
         NotificationConfiguration:
+          TopicConfigurations:
+            - Event: "s3:ObjectCreated:*"
+              Filter:
+                S3Key:
+                  Rules:
+                    - Name: prefix
+                      Value: shp/
+              Topic:
+                - Ref: NewShpTopic
           LambdaConfigurations:
             - Event: "s3:ObjectCreated:*"
               Filter:
@@ -143,14 +162,20 @@ resources:
                 "Fn::GetAtt":
                   - Csv2shpLambdaFunction
                   - Arn
-#          TopicConfigurations:
-#            - Event: "s3:ObjectCreated:*"
-#              Filter:
-#                S3Key:
-#                  Rules:
-#                    - Name: prefix
-#                      Value: shp/
-#              Topic: arn:aws:sns:ap-northeast-2:${AWS::AccountId}:gis-datalake-shp-topic
+    SNSTopicPolicy:
+      Type: AWS::SNS::TopicPolicy
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                AWS: "*"
+              Action: sns:Publish
+              Resource: ${self:custom.topicName}
+        Topics:
+          - Ref: NewShpTopic
+
 
     Csv2shpLambdaPermissionGeodataS3:
       Type: "AWS::Lambda::Permission"
