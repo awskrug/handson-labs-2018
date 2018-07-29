@@ -1,8 +1,6 @@
 import ast
 import base64
-import io
 import json
-import tarfile
 import zlib
 
 import boto3
@@ -72,9 +70,8 @@ class DynamoStream:
 
 # lambda event 파싱 클래스
 class SnsEvent:
-    def __init__(self, record, client):
+    def __init__(self, record):
         self.raw = record
-        self.client = client
         self.EventSubscriptionArn = self.raw.get('EventSubscriptionArn')
         self.data = self.raw['Sns']
         self.TopicArn = self.data.get('TopicArn')
@@ -105,6 +102,18 @@ class S3:
         self.object = s3.Object(self.bucket_name, self.object_key)
 
 
+class Sqs:
+    def __init__(self, record):
+        self.raw = record
+        self.messageId = self.raw['messageId']
+        self.body = self.raw['body']
+        self.attributes = self.raw['attributes']
+        self.md5OfBody = self.raw['md5OfBody']
+        self.region = self.raw['awsRegion']
+
+    @property
+    def json(self):
+        return json.loads(self.body)
 
 
 class Kinesis(BaseParser):
@@ -116,7 +125,7 @@ class Kinesis(BaseParser):
 
 
 records_event_parser = {
-    "Sns": {
+    "sns": {
         'name': 'sns',
         'parser': SnsEvent,
     },
@@ -131,7 +140,11 @@ records_event_parser = {
     "kinesis": {
         'name': 'kinesis',
         'parser': Kinesis,
-    }
+    },
+    "sqs": {
+        "name": "sqs",
+        "parser": Sqs,
+    },
 }
 
 
@@ -143,7 +156,7 @@ class EVENT_PARSER(BaseParser):
         self.apig = False
         self.scheduled_event = False
         self.check_event()
-        self.support_event_type = ['apig', 's3', 'logs', 'kinesis', 'sns', 'dynamodb']
+        self.support_event_type = ['apig', 's3', 'logs', 'kinesis', 'sns', 'sqs', 'dynamodb']
         for event_type in self.support_event_type:
             setattr(self, event_type, False if self.event_type != event_type else True)
 
@@ -166,8 +179,11 @@ class EVENT_PARSER(BaseParser):
     def check_records_event(self):
         # detect service
         records = self.raw_event['Records']
-        record_keys = records[0].keys()
-        event = [event for event in records_event_parser.keys() if event in record_keys][0]
+        record = records[0]
+        if record.get("eventSource"):
+            event = [event for event in records_event_parser.keys() if event in record["eventSource"]][0]
+        else:
+            event = [event for event in records_event_parser.keys() if event in record["EventSource"]][0]
         self.event_type = records_event_parser[event]['name']
         parser = records_event_parser[event]['parser']
         self.records += [parser(r) for r in records]

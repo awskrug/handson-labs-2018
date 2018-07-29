@@ -2,7 +2,9 @@
   "name": "gis-datalake",
   "description": "",
   "version": "0.1.0",
-  "dependencies": {},
+  "dependencies": {
+    "serverless-dynamodb-autoscaling": "^0.6.2"
+  },
   "devDependencies": {
     "serverless-plugin-tracing": "^2.0.0",
     "serverless-python-requirements": "^4.1.0"

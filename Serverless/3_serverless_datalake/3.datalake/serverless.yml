@@ -17,10 +17,35 @@ plugins:
   - serverless-pseudo-parameters
   - serverless-python-requirements
   - serverless-plugin-tracing
+  - serverless-dynamodb-autoscaling
 custom:
   pythonRequirements:
     dockerizePip: true
     slim: true
+  bucketName: ${self:service}-#{AWS::AccountId}-geodata-s3
+  topicName: ${self:service}-shp-topic
+  topicArn: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
+
+  sqsName: ${self:service}-sqs
+  DDB:
+    name: ${self:service}-shp-me
+    read:
+      min: 1
+      max: 5
+    write:
+      min: 1
+      max: 5
+#  capacities:
+#    - table: ShpMetaDB
+#      read:
+#        minimum: ${self:custom.DDB.read.min}        # Minimum read capacity
+#        maximum: ${self:custom.DDB.read.max}     # Maximum read capacity
+#        usage: 0.5       # Targeted usage percentage
+#      write:
+#        minimum: ${self:custom.DDB.write.min}        # Minimum read capacity
+#        maximum: ${self:custom.DDB.write.max}      # Maximum write capacity
+#        usage: 0.75        # Targeted usage percentage
+
 
 provider:
   name: aws
@@ -34,8 +59,7 @@ provider:
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - "s3:ListBucket"
-        - "s3:PutObject"
+        - "s3:*"
         - "xray:PutTraceSegments"
         - "xray:PutTelemetryRecords"
       Resource:
@@ -43,8 +67,8 @@ provider:
 
 
 # you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+  environment:
+    GeoData: ${self:custom.bucketName}
 
 # you can add packaging information here
 package:
@@ -52,48 +76,148 @@ package:
     - util/**
   exclude:
     - data/**
+    - node_modules/**
+    - .git/**
+    - mock/**
+    - .venv/**
+    - test/**
 
-#functions:
-#  csv2shp:
-#    handler: csv2shp.han
-#      - s3:
-#        bucket:
-#          Fn::ImportValue: "handson-datalake-s3-name"
-#        event: s3:ObjectCreated:*
-#        rules:
-#          - prefix: csv/
-#          - suffix: .gz
+functions:
+  csv2shp:
+    handler: csv2shp.handler
+
+  shp2json:
+    handler: shp2json.handler
+    events:
+      - sqs:
+          batchSize: 1
+          arn:
+            Fn::GetAtt:
+              - Shp2GeojsonQue
+              - Arn
+  shp2metadata:
+    handler: shp2metadata.handler
+    events:
+      - sns:
+          arn: "${self:custom.topicArn}"
+          topicName: "${self:custom.topicName}"
+
 #
 resources:
   Resources:
-    CSVResource:
+    # SQS
+    Shp2GeojsonQue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:custom.sqsName}
+
+    # SNS Topic
+    NewShpTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        DisplayName: "new shp input notice"
+        TopicName: ${self:custom.topicName}
+
+    SubscribeTopic:
+      Type: "AWS::SNS::Subscription"
+      Properties:
+        Endpoint:
+          Fn::GetAtt:
+            - Shp2GeojsonQue
+            - Arn
+        Protocol: sqs
+        TopicArn: "${self:custom.topicArn}"
+
+    # S3
+    S3BucketGeodata:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:service}-csv-#{AWS::AccountId}
-    SHPResource:
-      Type: AWS::S3::Bucket
+        BucketName: ${self:custom.bucketName}
+        NotificationConfiguration:
+          TopicConfigurations:
+            - Event: "s3:ObjectCreated:*"
+              Filter:
+                S3Key:
+                  Rules:
+                    - Name: prefix
+                      Value: shp/
+              Topic:
+                Ref: NewShpTopic
+          LambdaConfigurations:
+            - Event: "s3:ObjectCreated:*"
+              Filter:
+                S3Key:
+                  Rules:
+                    - Name: prefix
+                      Value: csv/
+              Function:
+                Fn::GetAtt: [Csv2shpLambdaFunction,"Arn"]
+
+    SNSTopicPolicy:
+      Type: AWS::SNS::TopicPolicy
       Properties:
-        BucketName: ${self:service}-shp-#{AWS::AccountId}
-    JSONResource:
-      Type: AWS::S3::Bucket
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: AllowBucketToPushNotificationEffect #identifier of the policy statement
+              Effect: Allow
+              Principal:
+                Service: s3.amazonaws.com #allow s3 to used this policy
+              Action: sns:Publish #grant publish rights
+              Resource: "*"
+        Topics:
+          - Ref: NewShpTopic
+    SNSSQSPolicy:
+      Type: AWS::SQS::QueuePolicy
       Properties:
-        BucketName: ${self:service}-json-#{AWS::AccountId}
-  Outputs:
-     CSVS3:
-       Description: "datalake csv tar.gz files bucket"
-       Value:
-        "Ref": CSVResource
-       Export:
-        Name: ${self:service}-csv
-     SHPS3:
-       Description: "datalake shp tar.gz files bucket"
-       Value:
-        "Ref": SHPResource
-       Export:
-        Name: ${self:service}-shp
-     JSONS3:
-       Description: "datalake json files bucket"
-       Value:
-        "Ref": JSONResource
-       Export:
-        Name: ${self:service}-json
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: AllowSnsToSendMessage #identifier of the policy statement
+              Effect: Allow
+              Principal: "*" #allow s3 to used this policy
+              Action: sqs:SendMessage #grant publish rights
+              Resource: "*"
+        Queues:
+          - Ref: Shp2GeojsonQue
+
+
+
+    Csv2shpLambdaPermissionGeodataS3:
+      Type: "AWS::Lambda::Permission"
+      Properties:
+        FunctionName:
+          "Fn::GetAtt":
+            - Csv2shpLambdaFunction
+            - Arn
+        Principal: "s3.amazonaws.com"
+        Action: "lambda:InvokeFunction"
+        SourceAccount:
+          Ref: AWS::AccountId
+        SourceArn: "arn:aws:s3:::${self:custom.bucketName}"
+
+    ShpMetaDB:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.DDB.name}
+        AttributeDefinitions:
+          - AttributeName: file
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: S
+        KeySchema:
+          - AttributeName: file
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: ${self:custom.DDB.read.min}
+          WriteCapacityUnits: ${self:custom.DDB.write.min}
+
+#  Outputs:
+#     GeoData:
+#       Description: "datalake geodata like csv,shp,geojson"
+#       Value:
+#        "Ref": GeoData
+#       Export:
+#        Name: ${self:custom.bucketName}
