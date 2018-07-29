@@ -4,3 +4,4 @@ fiona==1.8a1
 shapely==1.6.4.post2
 boto3
 hashids
+django==2.0.7

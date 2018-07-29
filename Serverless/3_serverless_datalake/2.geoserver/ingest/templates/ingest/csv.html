@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
-    <form class="ui form" enctype="multipart/form-data" action="/ingest/csv/" method="post">
+    <form class="ui form" enctype="multipart/form-data" action="{% url "ingest:csv_upload" %}" method="post">
         {% csrf_token %}
         <div class="ui top attached header">
             <h1>탐방로 수목 조사자료 업로드(csv)</h1>
@@ -49,7 +49,7 @@
                 </button>
 
             </div>
-            <a href="{% url 's3_csv_reset' %}" class="ui button">s3 초기화</a>
+            <a href="{% url 'ingest:s3_csv_reset' %}" class="ui button">s3 초기화</a>
         </div>
     </form>
 {% endblock %}

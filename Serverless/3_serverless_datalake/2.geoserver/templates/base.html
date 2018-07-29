@@ -36,17 +36,13 @@
              width=450 height=75>
 
         <div class="right  menu">
-            <a class="item" href="{% url "csv_upload" %}">
+            <a class="item" href="{% url "ingest:csv_upload" %}">
                 <i class="file archive icon"></i>
                 csv 업로드
             </a>
-            <a class="item" href="{% url "shp_upload" %}">
+            <a class="item" href="{% url "ingest:shp_upload" %}">
                 <i class="archive icon"></i>
                 shp 업로드
-            </a>
-            <a class="item" href="#">
-                <i class="cloud upload icon"></i>
-                스트리밍
             </a>
         </div>
     </div>

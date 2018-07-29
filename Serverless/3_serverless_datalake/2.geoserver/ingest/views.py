@@ -1,5 +1,4 @@
 # Create your views here.
-import boto3
 from django.template.response import TemplateResponse
 from django.views.generic.edit import FormView
 
@@ -9,9 +8,8 @@ from .util import reset_s3
 
 class UplaodView(FormView):
     def form_valid(self, form):
-        form.upload()
         context = self.get_context_data()
-        context['success'] = True
+        context['success'] = form.upload()
         return TemplateResponse(self.request, self.template_name, context=context)
 
 

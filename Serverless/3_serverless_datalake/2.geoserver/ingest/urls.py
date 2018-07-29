@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import path
 
 from .views import CsvUploadView, ShpUploadView, reset_csv_s3, reset_shp_s3
-
+app_name  = 'ingest'
 urlpatterns = [
     path('csv/reset', reset_csv_s3, name="s3_csv_reset"),
     path('shp/reset', reset_shp_s3, name="s3_shp_reset"),

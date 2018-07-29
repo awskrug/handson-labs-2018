@@ -214,10 +214,9 @@ resources:
           ReadCapacityUnits: ${self:custom.DDB.read.min}
           WriteCapacityUnits: ${self:custom.DDB.write.min}
 
-#  Outputs:
-#     GeoData:
-#       Description: "datalake geodata like csv,shp,geojson"
-#       Value:
-#        "Ref": GeoData
-#       Export:
-#        Name: ${self:custom.bucketName}
+  Outputs:
+     GeoData:
+       Description: "datalake geodata like csv,shp,geojson"
+       Value: ${self:custom.bucketName}
+       Export:
+        Name: gis-datalake-bucket
