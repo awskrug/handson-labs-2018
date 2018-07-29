@@ -1,4 +1,5 @@
 import io
+import json
 import os
 import sys
 import tarfile
@@ -89,6 +90,21 @@ class LambdaTestCase(TestCase):
                     'MessageAttributes': {}
                 }
             }]
+        }
+        return event
+
+    def sns_msg(self,msg):
+        event = {
+            'Type': 'Notification',
+            'MessageId': '707baebe-bac4-5e15-a67e-fd68b75f66f1',
+            'TopicArn': 'arn:aws:sns:ap-northeast-2::gis-datalake-shp-topic',
+            'Subject': 'Amazon S3 Notification',
+            'Message': msg,
+            'Timestamp': '2018-07-28T06:21:15.607Z',
+            'SignatureVersion': '1',
+            'Signature': 'ip+X7/9eYI4ZKf/UN8BAZ7zoX821aw4QjM0PD7HMoFQFByhTZ+MY2abCpGBLrrpztT5AReiqjc0JzlCBasHEbXbKo5ihwG8AZg9JtHKIfVgoPvNmR6dupeidQxHFeJC9lyWpA4xVjtR1vTpW0tZ0kA4pp9eY5rzhYyXOU8ajMQRPmC5UwtbjP1kaAITMH4Hiu51ATWeDtmEJgt427cm2VG+rM+C7zarZOyzllJlSQQEiiJbSf8ndngl8a9sq6Sskh+NFROFckFoPBT9qbH452kb2IPn/YCz5M68YWC8nq4XSwUL2zdO4OslxAm+bQvKvNGaWr99JJQNFbpt01KUH4w==',
+            'SigningCertURL': 'url1',
+            'UnsubscribeURL': 'url2'
         }
         return event
 
@@ -242,6 +258,7 @@ class Csv2ShpTestCase(LambdaTestCase):
             # shp에 속하는 5개의 확장자 파일 모두 압축 되었느지 확인
             self.assertEqual(len(tar.getmembers()), 5)
 
+
 class Shp2JsonTestCase(LambdaTestCase):
 
     def setUpExt(self):
@@ -275,22 +292,25 @@ class Shp2JsonTestCase(LambdaTestCase):
         return len(contents) if contents else 0
 
     def test_handler(self):
-        self.mock_event = self.upload_data_file(self.mock_data, self.bucket, self.mock_obj_key,
+        self.event_s3 = self.upload_data_file(self.mock_data, self.bucket, self.mock_obj_key,
                                                 **self.mock_metadata)
+        # s3 -> sns -> sqs
+        self.event = self.sqs_event(json.dumps(self.sns_msg(json.dumps(self.event_s3))))
+
         # shp폴더 초기화 확인
         self.assertEqual(self.count_objects('shp'), 0)
-        self.handler(self.mock_event, None)
+        self.handler(self.event, None)
+
+        # json파일 생성 확인
+        self.assertEqual(self.count_objects('json'), 1)
         objs = self.s3.list_objects(
             Bucket=self.bucket,
-            Prefix='shp',
+            Prefix='json',
         )['Contents']
-
-        # shp폴더에 압축파일 생성 확인
-        self.assertEqual(self.count_objects('shp'), 1)
-
         obj_key = objs[0]['Key']
         obj = boto3.resource('s3').Object(self.bucket, obj_key).get()['Body']
         with io.BytesIO(obj.read()) as buffer:
-            tar = tarfile.open(fileobj=buffer)
-            # shp에 속하는 5개의 확장자 파일 모두 압축 되었느지 확인
-            self.assertEqual(len(tar.getmembers()), 5)
+            pass
+            # tar = tarfile.open(fileobj=buffer)
+            # # shp에 속하는 5개의 확장자 파일 모두 압축 되었느지 확인
+            # self.assertEqual(len(tar.getmembers()), 5)

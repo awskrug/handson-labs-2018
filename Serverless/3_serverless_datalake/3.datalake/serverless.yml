@@ -24,8 +24,7 @@ custom:
     slim: true
   bucketName: ${self:service}-#{AWS::AccountId}-geodata-s3
   topicName: ${self:service}-shp-topic
-  topicArn:
-    Fn::Sub: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
+  topicArn: arn:aws:sns:${self:provider.region}:#{AWS::AccountId}:${self:custom.topicName}
 
   sqsName: ${self:service}-sqs
   DDB:
@@ -91,7 +90,7 @@ functions:
     handler: shp2json.handler
     events:
       - sqs:
-          batchSize: 2
+          batchSize: 1
           arn:
             Fn::GetAtt:
               - Shp2GeojsonQue
@@ -100,14 +99,7 @@ functions:
     handler: shp2metadata.handler
     events:
       - sns:
-          arn:
-            Fn::Join:
-                - ""
-                - - "arn:aws:sns:"
-                  - Ref: "AWS::Region"
-                  - ":"
-                  - Ref: "AWS::AccountId"
-                  - "${self:custom.topicName}"
+          arn: "${self:custom.topicArn}"
           topicName: "${self:custom.topicName}"
 
 #
@@ -134,7 +126,7 @@ resources:
             - Shp2GeojsonQue
             - Arn
         Protocol: sqs
-        TopicArn:
+        TopicArn: "${self:custom.topicArn}"
 
     # S3
     S3BucketGeodata:
@@ -150,7 +142,7 @@ resources:
                     - Name: prefix
                       Value: shp/
               Topic:
-                - Ref: NewShpTopic
+                Ref: NewShpTopic
           LambdaConfigurations:
             - Event: "s3:ObjectCreated:*"
               Filter:
@@ -159,22 +151,36 @@ resources:
                     - Name: prefix
                       Value: csv/
               Function:
-                "Fn::GetAtt":
-                  - Csv2shpLambdaFunction
-                  - Arn
+                Fn::GetAtt: [Csv2shpLambdaFunction,"Arn"]
+
     SNSTopicPolicy:
       Type: AWS::SNS::TopicPolicy
       Properties:
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
-            - Effect: Allow
+            - Sid: AllowBucketToPushNotificationEffect #identifier of the policy statement
+              Effect: Allow
               Principal:
-                AWS: "*"
-              Action: sns:Publish
-              Resource: ${self:custom.topicName}
+                Service: s3.amazonaws.com #allow s3 to used this policy
+              Action: sns:Publish #grant publish rights
+              Resource: "*"
         Topics:
           - Ref: NewShpTopic
+    SNSSQSPolicy:
+      Type: AWS::SQS::QueuePolicy
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: AllowSnsToSendMessage #identifier of the policy statement
+              Effect: Allow
+              Principal: "*" #allow s3 to used this policy
+              Action: sqs:SendMessage #grant publish rights
+              Resource: "*"
+        Queues:
+          - Ref: Shp2GeojsonQue
+
 
 
     Csv2shpLambdaPermissionGeodataS3:
@@ -189,6 +195,7 @@ resources:
         SourceAccount:
           Ref: AWS::AccountId
         SourceArn: "arn:aws:s3:::${self:custom.bucketName}"
+
     ShpMetaDB:
       Type: AWS::DynamoDB::Table
       Properties:
