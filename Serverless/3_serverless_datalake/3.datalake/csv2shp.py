@@ -142,15 +142,15 @@ def handler(event, context):
                 for name in files:
                     file_path = os.path.join(root, name)
                     gz.add(file_path, arcname=name)
-
-            meta = {
-                "origin_data_bucket": s3.bucket_arn,
-                "origin_data_key": s3.object_key,
-            }
+            metadata = s3.object.get("Metadata")
+            metadata = {f"origin_{key}": value for key, value in zip(metadata.keys(), metadata.values())}
+            metadata['upload_by'] = 'csv2shp'
+            metadata['origin_data_bucket'] = s3.bucket_arn
+            metadata['origin_data_key'] = s3.object_key
 
             s3_resource = boto3.resource('s3')
             with open(f.name, 'rb') as result:
                 s3_resource.Object(s3.bucket_name, file_name).put(Body=result.read(), ContentEncoding="gzip",
-                                                                  Metadata=meta)
+                                                                  Metadata=metadata)
 
     return 'hellow'

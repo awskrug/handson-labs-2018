@@ -101,3 +101,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CFN_STACK_NAME = "awskrug-handson-datalake"
+BUCKET_EXPORT_NAME = "gis-datalake-bucket"

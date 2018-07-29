@@ -17,5 +17,5 @@ Including another URLconf
 from django.urls import include, path
 
 urlpatterns = [
-    path('ingest/', include('ingest.urls')),
+    path('', include('ingest.urls')),
 ]

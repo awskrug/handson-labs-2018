@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
-    <form class="ui form" enctype="multipart/form-data" action="/ingest/shp/" method="post">
+    <form class="ui form segments" enctype="multipart/form-data" action={% url 'ingest:shp_upload' %} method="post">
         {% csrf_token %}
         <div class="ui top attached header">
             <h1>탐방로 수목 조사자료 업로드(shp)</h1>
@@ -45,7 +45,10 @@
                     <i class="cloud upload icon"></i>업로드
                 </button>
             </div>
-            <a href="{% url 's3_shp_reset' %}" class="ui button">s3 초기화</a>
+            <a href="{% url 'ingest:reset' %}?next=ingest:shp_upload" class="ui button">s3 초기화</a>
         </div>
     </form>
+    {% if bucket_name %}
+        {% include 'ingest/bucket.html' with bucket_name=bucket_name %}
+    {% endif %}
 {% endblock %}

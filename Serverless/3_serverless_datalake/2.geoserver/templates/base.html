@@ -32,21 +32,19 @@
 <body>
 {% block navi %}
     <div class="ui labeled icon menu">
-        <img src="https://d1.awsstatic.com/International/ko_KR/banners/Hands-on%20Labs%20LP%20Banner.04c83ecb7c16f458e5723909ee1301e43453ee6b.png"
-             width=450 height=75>
+        <a href={% url "ingest:home" %}>
+            <img src="https://d1.awsstatic.com/International/ko_KR/banners/Hands-on%20Labs%20LP%20Banner.04c83ecb7c16f458e5723909ee1301e43453ee6b.png"
+                 width=450 height=75>
+        </a>
 
         <div class="right  menu">
-            <a class="item" href="{% url "csv_upload" %}">
+            <a class="item" href="{% url "ingest:csv_upload" %}">
                 <i class="file archive icon"></i>
                 csv 업로드
             </a>
-            <a class="item" href="{% url "shp_upload" %}">
+            <a class="item" href="{% url "ingest:shp_upload" %}">
                 <i class="archive icon"></i>
                 shp 업로드
-            </a>
-            <a class="item" href="#">
-                <i class="cloud upload icon"></i>
-                스트리밍
             </a>
         </div>
     </div>
