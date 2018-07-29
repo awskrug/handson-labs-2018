@@ -28,7 +28,7 @@ custom:
 
   sqsName: ${self:service}-sqs
   DDB:
-    name: ${self:service}-shp-me
+    name: ${self:service}-shp-metadata
     read:
       min: 1
       max: 5
@@ -135,7 +135,7 @@ resources:
         BucketName: ${self:custom.bucketName}
         NotificationConfiguration:
           TopicConfigurations:
-            - Event: "s3:ObjectCreated:*"
+            - Event: "s3:*"
               Filter:
                 S3Key:
                   Rules:

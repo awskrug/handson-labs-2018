@@ -1,19 +1,13 @@
 import tarfile
 import tempfile
+from datetime import datetime
 
+import boto3
 from django import forms
+from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 
-from .util import get_bucket_name
-
-
-def upload_file(prefix: str, file_obj, metadata: dict) -> bool:
-    bucket = get_bucket_name()
-    # 아직 s3배포 전일 경우 배포 실패
-    if bucket is None:
-        return False
-
-    return True
+s3 = boto3.resource('s3')
 
 
 def __init__(self, path):
@@ -26,9 +20,25 @@ def __init__(self, path):
     self.tarfile = tarfile.open(fileobj=self.tmp, mode='r:')
 
 
+def is_ascii(value):
+    try:
+        value.encode('ascii')
+    except UnicodeEncodeError:
+        raise ValidationError('영어로만 입력해주세요')
+
+
+class OnlyAsciiField(forms.CharField):
+    default_validators = [is_ascii]
+
+
+def default():
+    return f"{datetime.today()} upload file from geoserver"
+
+
 class S3UploadForm(forms.Form):
-    description = forms.CharField(max_length=50, required=True, help_text="자료에 대한 간단한 설명을 적어주요")
-    uploader = forms.CharField(max_length=10, required=True, help_text="업로더 이름을 입력하세요")
+    description = OnlyAsciiField(max_length=50, required=True, help_text="자료에 대한 간단한 설명을 영어로 적어주요",
+                                 )
+    uploader = OnlyAsciiField(max_length=10, required=True, help_text="업로더 이름을 영어로 입력하세요")
     research_date = forms.CharField(required=True, help_text="조사 날짜")
 
 
@@ -39,16 +49,6 @@ class CsvUploadForm(S3UploadForm):
     info_csv = forms.FileField(required=True,
                                validators=[FileExtensionValidator(allowed_extensions=['csv'])],
                                help_text='수목 정보가 담긴 csv파일')
-
-    def upload(self):
-        tmp = tempfile.TemporaryFile()
-        print(type(self.point_csv), self.point_csv)
-        print(type(self.info_csv), self.point_csv)
-        print(self.description, self.uploader, self.research_date)
-        # with tarfile.open(fileobj=tmp) as tar:
-        #     tar
-        # result = upload_file('csv', tmp, {})
-        return
 
 
 class ShpUploadForm(S3UploadForm):
@@ -64,6 +64,3 @@ class ShpUploadForm(S3UploadForm):
     prj = forms.FileField(required=True,
                           validators=[FileExtensionValidator(allowed_extensions=['prj'])],
                           help_text="prj 파일")
-
-    def upload(self):
-        return upload_file('shp', None, {})

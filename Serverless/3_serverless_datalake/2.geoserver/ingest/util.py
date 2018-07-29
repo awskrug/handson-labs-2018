@@ -21,14 +21,17 @@ def get_bucket_name():
     :return:
     """
     export_name = settings.BUCKET_EXPORT_NAME
-    stack = cloudformation.Stack(settings.CFN_STACK_NAME)
-    for out in stack.outpus:
-        if out['ExportName'] == export_name:
-            return out['OutputValue']
+    try:
+        stack = cloudformation.Stack(settings.CFN_STACK_NAME)
+        for out in stack.outputs:
+            if out.get('ExportName') == export_name:
+                return out['OutputValue']
+    except Exception:
+        pass
     return None
 
 
-def reset_s3(path):
+def reset_s3():
     """
     path의 모든 파일을 삭제 합니다
     :param path: 리셋할 s3 경로

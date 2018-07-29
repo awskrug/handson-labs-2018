@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 {% block body %}
-    <form class="ui form" enctype="multipart/form-data" action="{% url "ingest:csv_upload" %}" method="post">
+    <form class="ui form segments" enctype="multipart/form-data" action="{% url "ingest:csv_upload" %}" method="post">
         {% csrf_token %}
-        <div class="ui top attached header">
+        <div class="ui attached header">
             <h1>탐방로 수목 조사자료 업로드(csv)</h1>
-
         </div>
-        <div class="ui three top attached steps">
+        <div class="ui three steps segment">
             <div class="active step">
                 <i class="cloud upload icon"></i>
                 <div class="content">
@@ -49,7 +48,10 @@
                 </button>
 
             </div>
-            <a href="{% url 'ingest:s3_csv_reset' %}" class="ui button">s3 초기화</a>
+            <a href="{% url 'ingest:reset' %}?next=ingest:csv_upload" class="ui button">s3 초기화</a>
         </div>
     </form>
+    {% if bucket_name %}
+        {% include 'ingest/bucket.html' with bucket_name=bucket_name %}
+    {% endif %}
 {% endblock %}
