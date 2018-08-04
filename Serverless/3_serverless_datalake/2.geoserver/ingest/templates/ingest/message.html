@@ -1,0 +1,10 @@
+{% if success %}
+    <div class="ui attached positive message">
+        <div class="header">gis datalake에 성공적으로 저장 되었습니다</div>
+    </div>
+{% endif %}
+{% if reset_success %}
+    <div class="ui attached positive message">
+        <div class="header">{{ reset_success }} </div>
+    </div>
+{% endif %}

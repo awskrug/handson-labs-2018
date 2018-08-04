@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="ui segments">
+        <div class="ui attached header ">
+            <h1>GIS DataLake GeoServer</h1>
+
+        </div>
+        <div class="ui segment">
+            <p>
+                축하합니다! 성공적으로 geoserver을 배포했습니다!<br>
+                이곳은 datalake를 구축할때 마다 제대로 구현 됬는지 확인 하기 위해<br>
+                s3에 자료 업로드 및 s3 파일목록, 다시 테스트 기능이 담긴 곳입니다.<br>
+                오로지 원활한 실습을 위해 만들었으며 일반적으로 datalake에서는 이러한 서버가 필요하지는 않습니다.
+            </p>
+        </div>
+        <div class="ui segment">
+            <h3>1. 샘플파일을 다운로드 받으세요</h3>
+        </div>
+        <div class="ui secondary segment">
+            <a class="ui button" href="https://github.com/wesky93/handson-labs-2018/raw/develop/Serverless/3_serverless_datalake/2.geoserver/upload_sample.zip" download>샘플 파일 다운로드</a>
+        </div>
+        <div class="ui segment">
+            <h3>2. GIS DataLake를 단계별로 구축하고 직접 파일을 업로드 하여 결과를 확인해보세요</h3>
+        </div>
+        <div class="ui secondary segment">
+            <a class="ui button primary" href={% url  "ingest:csv_upload" %}>csv 파일 업로드</a>
+            <a class="ui button primary" href={% url  "ingest:shp_upload" %}>shp 파일 업로드</a>
+        </div>
+        <div class="ui segment">
+            <h3>3. 전체 진행 상황을 확인해보세요</h3>
+        </div>
+        <div class="ui secondary segment">
+            <a class="ui button primary" target="_blank" rel="noopener noreferrer"
+               href="https://ap-northeast-2.console.aws.amazon.com/xray/home?region=ap-northeast-2#/service-map?timeRange=PT6H">x-ray
+                보러가기</a>
+            <a class="ui button primary" target="_blank" rel="noopener noreferrer"
+               href="https://ap-northeast-2.console.aws.amazon.com/dynamodb/home?region=ap-northeast-2#tables:selected=gis-datalake-shp-metadata;tab=items">shp
+                메타데이터 보러가기</a>
+        </div>
+        <div class="ui segment">
+            <h3>4. datalake에 올라간 자료를 아테나와 퀵사이트를 이용해 분석해보세요</h3>
+        </div>
+        <div class="ui secondary segment">
+            <a class="ui button primary" target="_blank" rel="noopener noreferrer"
+               href="https://ap-northeast-2.console.aws.amazon.com/athena/home">Athena</a>
+            <a class="ui button primary" target="_blank" rel="noopener noreferrer"
+               href="https://ap-northeast-1.quicksight.aws.amazon.com/sn/start?#">QuickSight</a>
+        </div>
+        <div class="ui segment">
+            <h3>5. 실습을 완료했다면 datalake를 깔끔하게 지워봅시다!</h3>
+        </div>
+        <div class="ui secondary segment">
+            <p>먼저 <a class="ui button primary" href="{% url 'ingest:reset' %}?next=ingest:home">s3
+                초기화</a> 한뒤에</p>
+            <p>zappa로 배포한 geoserver 리소스와 serverless로 배포한 datalake 리소스를 삭제하시고</p>
+            <p>마지막으로 cloud9 인스턴스를 삭제하세요</p>
+        </div>
+    </div>
+
+{% endblock body %}

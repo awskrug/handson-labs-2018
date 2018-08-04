@@ -1,0 +1,32 @@
+{
+    "dev": {
+        "aws_region": "ap-northeast-2",
+        "django_settings": "geoserver.settings",
+        "project_name": "geoserver",
+        "profile_name":"datalake",
+        "runtime": "python3.6",
+        "s3_bucket": "zappa-datalake-server-<accountid>",
+        "extra_permissions": [
+            {
+                // Attach any extra permissions to this policy.
+                "Effect": "Allow",
+                "Action": [
+                    "*"
+                ],
+                // AWS Service ARN
+                "Resource": "*"
+            }
+        ],
+        "exclude": [
+            ".git",
+            ".idea",
+            ".venv"
+        ],
+        "environment_variables": {
+            "DEBUG": "True"
+        },
+        "xray_tracing": true,
+        "keep_warm": false,
+        "lambda_description": "자료 입력용 장고"
+    }
+}

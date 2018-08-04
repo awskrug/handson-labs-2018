@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block body %}
+    <form class="ui form segments" enctype="multipart/form-data" action={% url 'ingest:shp_upload' %} method="post">
+        {% csrf_token %}
+        <div class="ui top attached header">
+            <h1>탐방로 수목 조사자료 업로드(shp)</h1>
+        </div>
+        <div class="ui three top attached steps">
+            <div class="active step">
+                <i class="cloud upload icon"></i>
+                <div class="content">
+                    <div class="title">geoserver</div>
+                    <div class="description">형식 확인후 shp폴더에 자료 업로드</div>
+                </div>
+            </div>
+            <div class="step">
+                <i class="warehouse icon"></i>
+                <div class="content">
+                    <div class="title">s3</div>
+                    <div class="description">파일 추가시 람다 트리거 발생</div>
+                </div>
+            </div>
+            <div class="step">
+                <i class="bolt icon"></i>
+                <div class="content">
+                    <div class="title">람다</div>
+                    <div class="description">
+                        자료를 geojson로 변환후 json폴더에 저장<br>
+                        및 DDB에 json 파일 색인 추가
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'ingest/message.html' %}
+        {% include 'ingest/default_uplaod_fields.html' %}
+        {% include 'ingest/upload_fileds.html' %}
+
+        <div class="ui bottom attached clearing segment">
+            <div class="ui right floated buttons">
+                <button class="ui button" type="reset">
+                    <i class="undo icon"></i>다시하기
+                </button>
+                <div class="or"></div>
+                <button class="ui primary button" type="submit">
+                    <i class="cloud upload icon"></i>업로드
+                </button>
+            </div>
+            <a href="{% url 'ingest:reset' %}?next=ingest:shp_upload" class="ui red button">s3 초기화</a>
+            <a class="ui red button" target="_blank" rel="noopener noreferrer"
+               href="https://ap-northeast-2.console.aws.amazon.com/dynamodb/home?region=ap-northeast-2#tables:selected=gis-datalake-shp-metadata;tab=items">shp
+                메타데이터 초기화 하기</a>
+        </div>
+    </form>
+    {% if bucket_name %}
+        {% include 'ingest/bucket.html' with bucket_name=bucket_name %}
+    {% endif %}
+{% endblock %}

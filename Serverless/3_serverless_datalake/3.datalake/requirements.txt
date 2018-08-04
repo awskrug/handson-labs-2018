@@ -1,0 +1,5 @@
+pynamodb==3.3.0
+aws-xray-sdk
+fiona==1.8a1
+shapely==1.6.4.post2
+hashids

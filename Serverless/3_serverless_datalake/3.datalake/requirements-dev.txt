@@ -1,0 +1,5 @@
+-r requirements.txt
+moto
+nose
+ipdb
+aws-xray-sdk==0.95
