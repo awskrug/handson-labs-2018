@@ -4,7 +4,6 @@ plugins:
 - serverless-pseudo-parameters
 - serverless-python-requirements
 - serverless-plugin-tracing
-- serverless-dynamodb-autoscaling
 custom:
   pythonRequirements:
     dockerizePip: true

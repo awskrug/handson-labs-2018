@@ -59,15 +59,6 @@ resources:
       Properties:
         BucketName: ${self:custom.bucketName}
         NotificationConfiguration:
-          TopicConfigurations:
-          - Event: "s3:ObjectCreated:*"
-            Filter:
-              S3Key:
-                Rules:
-                - Name: prefix
-                  Value: shp/
-            Topic:
-              Ref: NewShpTopic
           LambdaConfigurations:
           - Event: "s3:ObjectCreated:*"
             Filter:

@@ -61,7 +61,8 @@ functions:
     handler: shp2metadata.handler
     events:
     - sns:
-        arn: "${self:custom.topicArn}"
+        arn:
+          Ref: NewShpTopic
         topicName: "${self:custom.topicName}"
 
 resources:
