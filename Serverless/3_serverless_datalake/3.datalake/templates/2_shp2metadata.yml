@@ -10,7 +10,6 @@ custom:
     slim: true
   bucketName: ${self:service}-#{AWS::AccountId}-geodata-s3
   topicName: ${self:service}-shp-topic
-  sqsName: ${self:service}-sqs
   DDB:
     name: ${self:service}-shp-metadata
     read: 2
@@ -20,8 +19,8 @@ provider:
   name: aws
   runtime: python3.6
   stage: dev
-  profile: datalake
   region: ap-northeast-2
+  profile: datalake
   # geoserver에서 해당 스택 이름으로 버킷명을 가져옴
   stackName: awskrug-handson-datalake
   tracing: true # enable tracing
@@ -36,7 +35,6 @@ provider:
     - "xray:PutTelemetryRecords"
     Resource:
     - "*"
-
 
   # you can define service wide environment variables here
   environment:
@@ -63,46 +61,17 @@ functions:
     handler: shp2metadata.handler
     events:
     - sns:
-        arn:
-          Ref: NewShpTopic
+        arn: "${self:custom.topicArn}"
         topicName: "${self:custom.topicName}"
-
-  shp2json:
-    handler: shp2json.handler
-    events:
-    - sqs:
-        batchSize: 1
-        arn:
-          Fn::GetAtt:
-          - Shp2GeojsonQue
-          - Arn
 
 resources:
   Resources:
-    # SQS
-    Shp2GeojsonQue:
-      Type: AWS::SQS::Queue
-      Properties:
-        QueueName: ${self:custom.sqsName}
-
     # SNS Topic
     NewShpTopic:
       Type: AWS::SNS::Topic
       Properties:
         DisplayName: "new shp input notice"
         TopicName: ${self:custom.topicName}
-
-    # 토픽에 sqs 구독
-    SubscribeTopic:
-      Type: "AWS::SNS::Subscription"
-      Properties:
-        Endpoint:
-          Fn::GetAtt:
-          - Shp2GeojsonQue
-          - Arn
-        Protocol: sqs
-        TopicArn:
-          Ref: NewShpTopic
 
     # S3
     S3BucketGeodata:
@@ -143,20 +112,6 @@ resources:
             Resource: "*"
         Topics:
         - Ref: NewShpTopic
-    # 토픽이 큐에 메시지 보낼수 있는 권한 부여
-    SNSSQSPolicy:
-      Type: AWS::SQS::QueuePolicy
-      Properties:
-        PolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-          - Sid: AllowSnsToSendMessage
-            Effect: Allow
-            Principal: "*"
-            Action: "sqs:*"
-            Resource: "*"
-        Queues:
-        - Ref: Shp2GeojsonQue
     # 버킷이 csv2shp를 호출 할 수 있는 권한 부여
     Csv2shpLambdaPermissionGeodataS3:
       Type: "AWS::Lambda::Permission"
@@ -170,7 +125,7 @@ resources:
         SourceAccount:
           Ref: AWS::AccountId
         SourceArn: "arn:aws:s3:::${self:custom.bucketName}"
-
+    # 메타데이터DB
     ShpMetaDB:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -192,7 +147,6 @@ resources:
   Outputs:
     GeoData:
       Description: "datalake geodata like csv,shp,geojson"
-      Value:
-        Ref: S3BucketGeodata
+      Value: ${self:custom.bucketName}
       Export:
         Name: gis-datalake-bucket

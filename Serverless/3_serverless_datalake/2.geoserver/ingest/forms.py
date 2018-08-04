@@ -64,3 +64,6 @@ class ShpUploadForm(S3UploadForm):
     prj = forms.FileField(required=True,
                           validators=[FileExtensionValidator(allowed_extensions=['prj'])],
                           help_text="prj 파일")
+    cpg = forms.FileField(required=True,
+                          validators=[FileExtensionValidator(allowed_extensions=['cpg'])],
+                          help_text="cpg 파일")

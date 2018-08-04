@@ -45,7 +45,10 @@
                     <i class="cloud upload icon"></i>업로드
                 </button>
             </div>
-            <a href="{% url 'ingest:reset' %}?next=ingest:shp_upload" class="ui button">s3 초기화</a>
+            <a href="{% url 'ingest:reset' %}?next=ingest:shp_upload" class="ui red button">s3 초기화</a>
+            <a class="ui red button" target="_blank" rel="noopener noreferrer"
+               href="https://ap-northeast-2.console.aws.amazon.com/dynamodb/home?region=ap-northeast-2#tables:selected=gis-datalake-shp-metadata;tab=items">shp
+                메타데이터 초기화 하기</a>
         </div>
     </form>
     {% if bucket_name %}

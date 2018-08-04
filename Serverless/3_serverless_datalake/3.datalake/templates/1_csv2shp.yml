@@ -1,0 +1,99 @@
+service: gis-datalake
+
+plugins:
+- serverless-pseudo-parameters
+- serverless-python-requirements
+- serverless-plugin-tracing
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    slim: true
+  bucketName: ${self:service}-#{AWS::AccountId}-geodata-s3
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  region: ap-northeast-2
+  profile: datalake
+  # geoserver에서 해당 스택 이름으로 버킷명을 가져옴
+  stackName: awskrug-handson-datalake
+  tracing: true # enable tracing
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+    - "s3:*"
+    - "sqs:*"
+    - "sns:*"
+    - "dynamodb:*"
+    - "xray:PutTraceSegments"
+    - "xray:PutTelemetryRecords"
+    Resource:
+    - "*"
+
+  # you can define service wide environment variables here
+  environment:
+    GeoData: ${self:custom.bucketName}
+
+# you can add packaging information here
+package:
+  include:
+  - util/**
+  exclude:
+  - data/**
+  - node_modules/**
+  - .git/**
+  - mock/**
+  - .venv/**
+  - test/**
+
+functions:
+  csv2shp:
+    handler: csv2shp.handler
+
+resources:
+  Resources:
+    # S3
+    S3BucketGeodata:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketName}
+        NotificationConfiguration:
+          TopicConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Filter:
+              S3Key:
+                Rules:
+                - Name: prefix
+                  Value: shp/
+            Topic:
+              Ref: NewShpTopic
+          LambdaConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Filter:
+              S3Key:
+                Rules:
+                - Name: prefix
+                  Value: csv/
+            Function:
+              Fn::GetAtt: [Csv2shpLambdaFunction,"Arn"]
+
+    Csv2shpLambdaPermissionGeodataS3:
+      Type: "AWS::Lambda::Permission"
+      Properties:
+        FunctionName:
+          "Fn::GetAtt":
+          - Csv2shpLambdaFunction
+          - Arn
+        Principal: "s3.amazonaws.com"
+        Action: "lambda:InvokeFunction"
+        SourceAccount:
+          Ref: AWS::AccountId
+        SourceArn: "arn:aws:s3:::${self:custom.bucketName}"
+
+  Outputs:
+    GeoData:
+      Description: "datalake geodata like csv,shp,geojson"
+      Value: ${self:custom.bucketName}
+      Export:
+        Name: gis-datalake-bucket

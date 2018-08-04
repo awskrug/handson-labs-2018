@@ -116,8 +116,9 @@ def get_tar(s3):
     return tree, point
 
 
-def handler(event, context):
-    event = EVENT_PARSER(event)
+def handler(raw_event, context):
+    print(raw_event)
+    event = EVENT_PARSER(raw_event)
 
     if event.s3:
         for s3 in event.records:
@@ -142,7 +143,7 @@ def handler(event, context):
                 for name in files:
                     file_path = os.path.join(root, name)
                     gz.add(file_path, arcname=name)
-            metadata = s3.object.get("Metadata")
+            metadata = s3.object.get()["Metadata"]
             metadata = {f"origin_{key}": value for key, value in zip(metadata.keys(), metadata.values())}
             metadata['upload_by'] = 'csv2shp'
             metadata['origin_data_bucket'] = s3.bucket_arn
@@ -152,5 +153,3 @@ def handler(event, context):
             with open(f.name, 'rb') as result:
                 s3_resource.Object(s3.bucket_name, file_name).put(Body=result.read(), ContentEncoding="gzip",
                                                                   Metadata=metadata)
-
-    return 'hellow'

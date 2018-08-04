@@ -4,6 +4,7 @@ plugins:
 - serverless-pseudo-parameters
 - serverless-python-requirements
 - serverless-plugin-tracing
+- serverless-dynamodb-autoscaling
 custom:
   pythonRequirements:
     dockerizePip: true
@@ -20,8 +21,8 @@ provider:
   name: aws
   runtime: python3.6
   stage: dev
-  profile: datalake
   region: ap-northeast-2
+  profile: datalake
   # geoserver에서 해당 스택 이름으로 버킷명을 가져옴
   stackName: awskrug-handson-datalake
   tracing: true # enable tracing

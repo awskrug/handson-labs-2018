@@ -9,11 +9,10 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.utils.http import is_safe_url
 from django.views.generic.edit import FormView
 
 from .forms import CsvUploadForm, ShpUploadForm
-from .util import get_bucket_name, make_hashid, reset_s3
+from .util import get_bucket_name, get_prefix_obj_list, make_hashid, reset_s3
 
 s3 = boto3.resource('s3')
 s3_cli = boto3.client('s3')
@@ -36,20 +35,16 @@ def upload_file(key: str, tmp_name, metadata: dict = None) -> bool:
 
 
 def get_file_list(bucket, prefix):
-    objs = s3_cli.list_objects_v2(
-        Bucket=bucket,
-        MaxKeys=20,
-        Prefix=prefix,
-    ).get('Contents')
+    objs = get_prefix_obj_list(bucket, prefix)
     result = []
     if objs:
         for obj in objs:
             obj_info = s3_cli.get_object(
                 Bucket=bucket,
-                Key=obj['Key'],
+                Key=obj,
             )
             result.append({
-                "key_name": obj['Key'].split('/')[-1],
+                "key_name": obj.split('/')[-1],
                 "timestamp": obj_info['LastModified'],
                 "metadata": obj_info['Metadata']
             })
@@ -74,7 +69,7 @@ class UploadView(FormView):
         with tarfile.open(tar_file.name, mode='w:gz') as tar:
             for name, tmp_name in zip(save_files.keys(), save_files.values()):
                 tar.add(tmp_name, arcname=name)
-        return tar_file
+        return tar
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -139,6 +134,7 @@ class ShpUploadView(UploadView):
             f"{hash_name}.shx": form.files['shx'],
             f"{hash_name}.dbf": form.files['dbf'],
             f"{hash_name}.prj": form.files['prj'],
+            f"{hash_name}.cpg": form.files['cpg'],
         })
         metadata = {
             "description": form.data['description'],
@@ -170,7 +166,7 @@ def reset_csv_s3(request):
 def reset(request):
     reset_s3()
     redirect_to = request.GET.get('next', '')
-    if redirect_to :
+    if redirect_to:
         return redirect(redirect_to)
     return redirect("ingest:home")
 

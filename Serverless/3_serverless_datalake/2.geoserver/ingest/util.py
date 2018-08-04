@@ -5,7 +5,7 @@ from django.conf import settings
 from hashids import Hashids
 
 hashid = Hashids(alphabet='abcdefghijklmnopqrstuvwxyz123456789')
-s3 = boto3.client('s3')
+s3 = boto3.resource('s3')
 
 cloudformation = boto3.resource('cloudformation')
 
@@ -31,11 +31,32 @@ def get_bucket_name():
     return None
 
 
+def get_prefix_obj_list(bucket, prefix):
+    result = []
+    bucket = s3.Bucket(bucket)
+    for obj in bucket.objects.filter(Prefix=f"{prefix}/"):
+        result.append(obj.key)
+    return result
+
+
 def reset_s3():
     """
     path의 모든 파일을 삭제 합니다
     :param path: 리셋할 s3 경로
     :return:
     """
-    pass
-    # todo : s3 파일 초기화 코드 추가 - 2018-06-06
+    bucket = get_bucket_name()
+
+    if bucket:
+        bucket = boto3.resource('s3').Bucket(bucket)
+        delete_objs = []
+        for prefix in ['csv', 'shp', 'json']:
+            for obj in bucket.objects.filter(Prefix=f'{prefix}/'):
+                delete_objs.append({"Key": obj.key})
+
+        if delete_objs:
+            bucket.delete_objects(
+                Delete={
+                    'Objects': delete_objs
+                }
+            )

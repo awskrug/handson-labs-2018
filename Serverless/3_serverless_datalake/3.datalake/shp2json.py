@@ -53,7 +53,7 @@ def transform(shp_file):
     return json_file
 
 
-def upload_s3(bucket, json_file):
+def upload_s3(bucket, json_file, metadata):
     """
     파일을 gz하여 s3로 업로드
     :param json_file: 업로드할 json 파일명
@@ -73,9 +73,7 @@ def upload_s3(bucket, json_file):
             ContentType='application/json',
             Key=obj_key,
             # todo : 메타데이터 추가 - 2018-07-28
-            # Metadata={
-            #     'string': 'string'
-            # },
+            Metadata=metadata,
         )
 
 
@@ -96,8 +94,16 @@ def shp2json(s3_obj):
     # json 파일로 변경
     shp_file = [path.join(extract_dir, name) for name in os.listdir(extract_dir) if name.split('.')[-1] == "shp"][0]
     json_file = transform(shp_file)
+
+    metadata = s3_obj.object.get()["Metadata"]
+    origin_metadata_key = [key for key in metadata if "origin" not in key]
+    for key in origin_metadata_key:
+        metadata[f"origine_{key}"] = metadata.pop(key)
+    metadata['upload_by'] = "shp2csv"
+    metadata['origin_data_bucket'] = s3_obj.bucket_name
+    metadata['origin_data_key'] = s3_obj.object_key
     # s3 업로드
-    upload_s3(s3_obj.bucket_name, json_file)
+    upload_s3(s3_obj.bucket_name, json_file, metadata)
 
 
 def process_s3(records):
@@ -121,7 +127,7 @@ def process_sqs(records):
 def handler(raw_event, context):
     # s3 -> sns -> sqs 순으로 보내진 이벤트를
     # sqs -> sns -> s3 순으로 역으로 이벤트 파싱
-    sqs_event = EVENT_PARSER(raw_event)
     print(raw_event)
+    sqs_event = EVENT_PARSER(raw_event)
     if sqs_event.sqs:
         process_sqs(sqs_event.records)
