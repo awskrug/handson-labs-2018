@@ -6,8 +6,8 @@ AWSKRUG Hands-on Lab 2018 is bi-weekly Saturday HoLs until Sep 22 (9 sessions, 7
 * 16th June – [Container #2: Amazon ECS](https://github.com/awskrug/handson-labs-2018/tree/master/Container/2_ECS)  (In Korean)
 * 30th June – [Serverless #1: Serverless Web App & Crawler](./Serverless/1_WebApp-Crawler)  (In Korean)
 * 14th July – [Container #3: Kubernates on AWS, Kops](https://github.com/awskrug/handson-labs-2018/tree/master/Container/3_Kubernetes) (In Korean)
-* 28th July – [Serverless #2:  AWS SAM & Monitoring & CI/CD](https://github.com/ChanghoonHyun/SAM-hands-on)
-* 11st August – Serverless #3:  Serverless Data lake
+* 28th July – [Serverless #2: AWS SAM & Monitoring & CI/CD](https://github.com/ChanghoonHyun/SAM-hands-on)
+* 11st August – [Serverless #3: Serverless datalake](https://github.com/awskrug/handson-labs-2018/tree/master/Serverless/3_serverless_datalake)
 * 25th August – Data Analysis #1: ETL(AWS Glue) & Data preprocessing(Amaozn EMR)
 * 8th  September – Data Analysis #2: Training a Model with Amazon SageMaker
 * 22th September – Data Analysis #3: Image classification Service with Amazon Rekognition
