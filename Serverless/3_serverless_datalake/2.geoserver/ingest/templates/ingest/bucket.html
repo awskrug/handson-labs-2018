@@ -1,0 +1,52 @@
+<div class="ui segments">
+    <div class="ui attached header">
+        <h4><i class="warehouse icon"></i> <a target="_blank" rel="noopener noreferrer"
+                      href={{ bucket_url }}>{{ bucket_name }}</a>버킷 상태</h4>
+    </div>
+    <div class="ui segment">
+        <div class="ui list divided items">
+            <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                    <div class="header"><a target="_blank" rel="noopener noreferrer"
+                                           href={{ csv_url }}>csv</a>
+                    </div>
+                    <div class="description">업로드된 csv 압축파일</div>
+                    <div class="list  divided items">
+                        {% with icon="file archive" %}
+                            {% include "ingest/bucket_files.html" with icon=icon files=csv_files dir="csv" %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                    <div class="header"><a target="_blank" rel="noopener noreferrer"
+                                           href={{ shp_url }}>shp</a>
+                    </div>
+                    <div class="description">업로했거나 csv에서 변환된 shp 압축파일들</div>
+                    <div class="list  divided items">
+                        {% with icon="archive" %}
+                            {% include "ingest/bucket_files.html" with icon=icon files=shp_files dir="shp" %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                    <div class="header"><a target="_blank" rel="noopener noreferrer"
+                                           href={{ json_url }}>json</a>
+                    </div>
+                    <div class="description">변환된 json파일 목록</div>
+                    <div class="list divided items">
+                        {% with icon="file" %}
+                            {% include "ingest/bucket_files.html" with icon=icon files=json_files dir="json" %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

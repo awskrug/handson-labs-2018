@@ -1,0 +1,198 @@
+service: gis-datalake
+
+plugins:
+- serverless-pseudo-parameters
+- serverless-python-requirements
+- serverless-plugin-tracing
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    slim: true
+  bucketName: ${self:service}-#{AWS::AccountId}-geodata-s3
+  topicName: ${self:service}-shp-topic
+  sqsName: ${self:service}-sqs
+  DDB:
+    name: ${self:service}-shp-metadata
+    read: 2
+    write: 2
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  profile: datalake
+  region: ap-northeast-2
+  # geoserver에서 해당 스택 이름으로 버킷명을 가져옴
+  stackName: awskrug-handson-datalake
+  tracing: true # enable tracing
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+    - "s3:*"
+    - "sqs:*"
+    - "sns:*"
+    - "dynamodb:*"
+    - "xray:PutTraceSegments"
+    - "xray:PutTelemetryRecords"
+    Resource:
+    - "*"
+
+
+  # you can define service wide environment variables here
+  environment:
+    GeoData: ${self:custom.bucketName}
+    MetaDataDB: ${self:custom.DDB.name}
+
+# you can add packaging information here
+package:
+  include:
+  - util/**
+  exclude:
+  - data/**
+  - node_modules/**
+  - .git/**
+  - mock/**
+  - .venv/**
+  - test/**
+
+functions:
+  csv2shp:
+    handler: csv2shp.handler
+
+  shp2metadata:
+    handler: shp2metadata.handler
+    events:
+    - sns:
+        arn:
+          Ref: NewShpTopic
+        topicName: "${self:custom.topicName}"
+
+  shp2json:
+    handler: shp2json.handler
+    events:
+    - sqs:
+        batchSize: 1
+        arn:
+          Fn::GetAtt:
+          - Shp2GeojsonQue
+          - Arn
+
+resources:
+  Resources:
+    # SQS
+    Shp2GeojsonQue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:custom.sqsName}
+
+    # SNS Topic
+    NewShpTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        DisplayName: "new shp input notice"
+        TopicName: ${self:custom.topicName}
+
+    # 토픽에 sqs 구독
+    SubscribeTopic:
+      Type: "AWS::SNS::Subscription"
+      Properties:
+        Endpoint:
+          Fn::GetAtt:
+          - Shp2GeojsonQue
+          - Arn
+        Protocol: sqs
+        TopicArn:
+          Ref: NewShpTopic
+
+    # S3
+    S3BucketGeodata:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketName}
+        NotificationConfiguration:
+          TopicConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Filter:
+              S3Key:
+                Rules:
+                - Name: prefix
+                  Value: shp/
+            Topic:
+              Ref: NewShpTopic
+          LambdaConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Filter:
+              S3Key:
+                Rules:
+                - Name: prefix
+                  Value: csv/
+            Function:
+              Fn::GetAtt: [Csv2shpLambdaFunction,"Arn"]
+    # 버킷이 토픽에 메시지를 보낼 수 있는 권한 부여
+    SNSTopicPolicy:
+      Type: AWS::SNS::TopicPolicy
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Sid: AllowBucketToPushNotificationEffect
+            Effect: Allow
+            Principal:
+              Service: s3.amazonaws.com
+            Action: sns:Publish
+            Resource: "*"
+        Topics:
+        - Ref: NewShpTopic
+    # 토픽이 큐에 메시지 보낼수 있는 권한 부여
+    SNSSQSPolicy:
+      Type: AWS::SQS::QueuePolicy
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Sid: AllowSnsToSendMessage
+            Effect: Allow
+            Principal: "*"
+            Action: "sqs:*"
+            Resource: "*"
+        Queues:
+        - Ref: Shp2GeojsonQue
+    # 버킷이 csv2shp를 호출 할 수 있는 권한 부여
+    Csv2shpLambdaPermissionGeodataS3:
+      Type: "AWS::Lambda::Permission"
+      Properties:
+        FunctionName:
+          "Fn::GetAtt":
+          - Csv2shpLambdaFunction
+          - Arn
+        Principal: "s3.amazonaws.com"
+        Action: "lambda:InvokeFunction"
+        SourceAccount:
+          Ref: AWS::AccountId
+        SourceArn: "arn:aws:s3:::${self:custom.bucketName}"
+
+    ShpMetaDB:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.DDB.name}
+        AttributeDefinitions:
+        - AttributeName: file
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+        KeySchema:
+        - AttributeName: file
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: ${self:custom.DDB.read}
+          WriteCapacityUnits: ${self:custom.DDB.write}
+
+  Outputs:
+    GeoData:
+      Description: "datalake geodata like csv,shp,geojson"
+      Value:
+        Ref: S3BucketGeodata
+      Export:
+        Name: gis-datalake-bucket

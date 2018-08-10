@@ -1,0 +1,17 @@
+{% for field in form %}
+
+    {% if field.label  == "Description" %}
+    {% elif field.label  == "Uploader" %}
+    {% elif field.label == "Research date" %}
+    {% else %}
+        <div class="ui  segment">
+            <a class="ui teal ribbon label">{{ field.help_text }}</a>
+            <span>아래에 파일을 드래그 엔 드롭 하세요</span>
+        </div>
+        {% if field.errors %}
+            <div class="ui attached negative message">{{ field.errors }}</div>
+        {% endif %}
+        <div class="ui  file_input segment">{{ field }}</div>
+    {% endif %}
+
+{% endfor %}
