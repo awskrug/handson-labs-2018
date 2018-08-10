@@ -3,6 +3,7 @@ import os
 import shutil
 import tarfile
 import tempfile
+from datetime import datetime
 
 import boto3
 from django.conf import settings
@@ -159,7 +160,6 @@ def reset_csv_s3(request):
         's3_console_url': "https:/asd.com",
         'ddb_console_url': "https:/asd.com"
     }
-    print(context)
     return TemplateResponse(request, 'ingest/csv.html', context=context)
 
 
@@ -171,12 +171,20 @@ def reset(request):
     return redirect("ingest:home")
 
 
-def download(request):
-    filename = 'upload_sample.zip'  # 파일명만 반환
-    filepath = os.path.join(settings.BASE_DIR, 'ingest', filename)
-
-    with open(filepath, 'rb') as f:
-        response = HttpResponse(f, content_type='application/zip')
-        # 필요한 응답헤더 세팅
-        response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
-        return response
+def upload_all(request):
+    reset_s3()
+    bucket = get_bucket_name()
+    if bucket:
+        for file in files:
+            with open(file, 'rb') as f:
+                s3.Object(bucket, f"shp/{file.split('/')[-1]}").put(
+                    Body=f.read(),
+                    ContentEncoding="gzip",
+                    Metadata={
+                        'upload_by': 'geoserver',
+                        'uploader': 'autoupload',
+                        "description": 'auto upload shp file',
+                        "research_date": f"{datetime.now()}"
+                    }
+                )
+    return redirect("ingest:home")

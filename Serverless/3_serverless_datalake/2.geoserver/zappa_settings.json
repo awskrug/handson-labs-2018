@@ -5,7 +5,7 @@
         "project_name": "geoserver",
         "profile_name":"datalake",
         "runtime": "python3.6",
-        "s3_bucket": "zappa-datalake-server-<accountid>",
+        "s3_bucket": "zappa-datalake-server-1df123fvadf",
         "extra_permissions": [
             {
                 // Attach any extra permissions to this policy.

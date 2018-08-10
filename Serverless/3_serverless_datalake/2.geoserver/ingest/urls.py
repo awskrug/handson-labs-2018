@@ -13,20 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-import os
 
 from django.urls import path
 from django.views.generic import TemplateView
 
-from .views import CsvUploadView, ShpUploadView, reset,download
-
-
+from .views import CsvUploadView, ShpUploadView, reset, upload_all
 
 app_name = 'ingest'
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='ingest/index.html'),name="home"),
+    path('', TemplateView.as_view(template_name='ingest/index.html'), name="home"),
     path('reset', reset, name="reset"),
+    path('upload_all', upload_all, name="upload_all"),
     path('csv/', CsvUploadView.as_view(), name="csv_upload"),
-    path('shp/', ShpUploadView.as_view(), name="shp_upload"),
-    path('sample_download',download,name="sample_download")
+    path('shp/', ShpUploadView.as_view(), name="shp_upload")
 ]
