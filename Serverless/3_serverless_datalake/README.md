@@ -530,7 +530,7 @@
 
 ## Cleanup
 
-* 지금 작성한 역순으로 리소스를 제거합니다.
+* 지금 작성한 역순으로 리소스를 제거합니다. 순서가 중요합니다!
 
 - QuickSight 삭제
   - [N.Virgina](https://us-east-1.quicksight.aws.amazon.com/sn/admin#permissions)열고,
@@ -576,6 +576,10 @@
     $ zappa undeploy -y
     ...
     ```
+
+- DynamoDB 삭제
+  - [DynamoDB Console](https://console.aws.amazon.com/dynamodb/home?region=ap-northeast-2#tables:selected=gis-datalake-shp-metadata;tab=overview) 에서 `gis-datalake-shp-metadata` 체크 후 `Delete table` 클릭
+    - 확인 대화상자에서도 `Delete` 클릭
 
 - Cloud9 삭제
   - [Cloud9 console](https://console.aws.amazon.com/cloud9/home?region=ap-southeast-1#) 에서 `awskrug` 삭제
