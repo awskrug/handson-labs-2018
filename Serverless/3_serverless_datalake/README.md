@@ -194,7 +194,7 @@
     - 좌측에서 `Stages` 클릭
     - 우측 `Stages`에서 `dev` 클릭하면 우측에 `dev Stage Editor` 가 나옵니다.
       ![](images/apigateway-stage.png)
-      `Invoke URL` 을 클릭하면 새 창이 뜹니다. 여기 주소가 `geoserver` 웹 접속 주소입니다.
+      `Invoke URL` 을 클릭하면 새 창이 뜹니다. 여기 주소가 `geoserver` 웹 접속 주소입니다. 이를 메모해 둡니다.
       
       ![](images/gis-datalake-geoserver.png)
     - 새 창에서 `1. 샘플 파일을 다운로드 받으세요`에서 `샘플파일다운로드` 클릭하면 `upload_sample.zip` 파일을 다운로드 받아 저장합니다.
@@ -206,7 +206,7 @@
 * serverless 도구 설명
 
     ```bash
-    $ cd handson-labs-2018/Serverless/3_serverless_datalake/3.datalake/
+    $ cd ~/environment/handson-labs-2018/Serverless/3_serverless_datalake/3.datalake/
 
     # serverless 및 플러그인 설치
     $ npm install -g serverless
@@ -217,7 +217,7 @@
 * serverless.yml 설명
 
     ```bash
-    $ cd handson-labs-2018/Serverless/3_serverless_datalake/3.datalake/
+    $ cd ~/environment/handson-labs-2018/Serverless/3_serverless_datalake/3.datalake/
     
     # 배포
     $ cp ./templates/1_csv2shp.yml ./serverless.yml
@@ -228,7 +228,7 @@
 * serverless.yml 설명
 
     ```bash
-    $ cd handson-labs-2018/Serverless/3_serverless_datalake/3.datalake/
+    $ cd ~/environment/handson-labs-2018/Serverless/3_serverless_datalake/3.datalake/
     
     # 배포
     $ cp ./templates/2_shp2metadata.yml ./serverless.yml
@@ -239,7 +239,7 @@
 * serverless.yml 설명
 
     ```bash
-    $ cd handson-labs-2018/Serverless/3_serverless_datalake/3.datalake/
+    $ cd ~/environment/handson-labs-2018/Serverless/3_serverless_datalake/3.datalake/
     
     # 배포
     $ cp ./templates/3_shp2json.yml ./serverless.yml
@@ -436,7 +436,8 @@
 
 ### QuickSight 연동
 
-- [QuickSight Console](https://quicksight.aws.amazon.com/)를 열거나,
+#### 계정 생성
+  [QuickSight Console](https://quicksight.aws.amazon.com/)를 열거나,
   `Service` 에서 `QuickSight` 을 입력 후 아래 목록을 클릭해도 됩니다.
 
     - `Welcome to QuickSight`를 비롯한 안내 대화상자는 `Next` 를 계속 클릭 후 사용토록 합니다.
@@ -452,77 +453,143 @@
 
         ![](images/qs-account-created.png)
 
-- QuickSight로 아래 그림과 같은 대쉬보드를 만들어 봅시다.
-  ![dasbhboard](images/dashboard.png)
-
+#### 데이터 소스 연동
   - `New analysis` 를 클릭합니다.
     - 사용할 데이터 셋을 추가합니다.
 
   - `New Dataset` 을 클릭합니다.
 
   - `Create a Data Set` 에서 datasource 로 `Athena` 를 선택합니다.
+    ![](images/qs-datasource.png)
 
-  - `Data source name` 에 `datalake` 넣고, 하단의 `Validate` 버튼을 클릭하면 `SSL is Enabled` 로 변합니다.
-   
-   - 이후 `Create data source` 를 클릭
-    ![](images/qs-athena-data-source.png)
+    - `Data source name` 에 `datalake` 넣고, 하단의 `Validate` 버튼을 클릭하면 `SSL is Enabled` 로 변합니다.
+    
+    - 이후 `Create data source` 를 클릭
+        ![](images/qs-athena-data-source.png)
 
-   
-   - `datalake` 데이터베이스를 선택하고 `moodoong` 테이블을 선택하고, `Select` 클릭
-    ![](images/qs-choose-table.png)
+    
+    - `datalake` 데이터베이스를 선택하고 `moodoong` 테이블을 선택하고, `Select` 클릭
+        ![](images/qs-choose-table.png)
 
-   - `Import to SPICE for quicker analytics` 를 선택
-     
-     만약 그림과 같에 가용 공간이 없을 경우는, `Directly query your data` 선택 후 `Visualize` 클릭
-        > 단, 엄청 느리므로, 1.0 GB 당 0.25$ 이니 일단 구입하는 것도 권장
+    - `Import to SPICE for quicker analytics` 를 선택
+        
+        만약 그림과 같에 가용 공간이 없을 경우는, `Directly query your data` 선택 후 `Visualize` 클릭
+            > 단, 엄청 느리므로, 1.0 GB 당 0.25$ 이니 일단 구입하는 것도 권장
 
-       ![](images/qs-finish-data-set-creation.png)
+        ![](images/qs-finish-data-set-creation.png)
 
-    - 좌측 상단에 `Data set` 오른쪽에 연필 아이콘을 클릭하여 데이터 소스를 수정하여 `고도등급` 필드를 추가
-       ![](images/qs-dataset-modify.png)
+#### 데이터 필드 자료형 변경 및 가상 필드 추가
 
-       ![](images/qs-new-field.png)
+  - 좌측 상단에 `Data set` 오른쪽에 연필 아이콘을 클릭하여 데이터 소스를 수정하여 `고도등급` 필드를 추가
+    ![](images/qs-dataset-modify.png)
 
-       다음과 같은 팝업 대화상자가 보이면, 대화상자 오른편에 연필 아이콘을 클릭
-       ![](images/qs-dataset-modify-2.png)
+    ![](images/qs-new-field.png)
 
-    - `경도`와 `위도`를 지형좌표 형식으로 변환합니다.
-       ![](images/longitude.png)
-       ![](images/latitude.png)
+    다음과 같은 팝업 대화상자가 보이면, 대화상자 오른편에 연필 아이콘을 클릭
+    ![](images/qs-dataset-modify-2.png)
 
-    - 이제 차트를 하나씩 만들어 봅시다.
+  - `경도`와 `위도`를 지형좌표 형식으로 변환합니다.
+    ![](images/longitude.png)
+    ![](images/latitude.png)
 
-        전체 수량(KPI)
-        - Value: 종명(Count)
+#### 차트 제작
+- QuickSight로 아래 그림과 같은 대쉬보드를 만들어 봅시다.
+  ![dasbhboard](images/dashboard.png)
 
-        고도별등급별 분포비율(PIE)
-        - GroupColor: 고도/100(고도등급 컬럼 만듬)
+차트명(차트 종류)
+- 자료 형식: 입력값
 
-        고도(LINE)
-        - X: 종명
-        - Value: 고도(avg)/고도(min)/고도(max)
+전체 수량(KPI)
+- Value: 종명(Count)
 
-        탐방로별 분포 비율(PIE)
-        - Value: 종명(Count)
-        - Group/Color: 탐방로번호
+고도별등급별 분포비율(PIE)
+- GroupColor: 고도등급
 
-        탐방로별 수량(TABLE)
-        - GroupBy: 탐방로번호
-        - Value: 종명(Count)
+고도(LINE)
+- X: 종명
+- Value: 고도(avg)/고도(min)/고도(max)
 
-        고도별 분포(HITMAP)
-        - Rows: 고도등급
-        - Columns: 종명
-        - Values: 종명(Count)
+탐방로별 분포 비율(PIE)
+- Value: 종명(Count)
+- Group/Color: 탐방로번호
 
-        지도별 분포(MAP)
-        - Geo: 경도,위도
-        - Color: 탐방로번호,고도 등급,개화,결실
+탐방로별 수량(TABLE)
+- GroupBy: 탐방로번호
+- Value: 종명(Count)
 
-    > 차트의 색은 오른쪽 상단에 Format Visual 해서 Chart Color 나오는데 수정을 할 수 있습니다.
+고도별 분포(HITMAP)
+- Rows: 고도등급
+- Columns: 종명
+- Values: 종명(Count)
+
+지도별 분포(MAP, 추가함)
+- Geo: 경도,위도
+- Color: 탐방로번호,고도등급,개화,결실
+
+  > 차트의 색은 오른쪽 상단에 Format Visual 해서 Chart Color 나오는데 수정을 할 수 있습니다.
 
 ## Cleanup
 
- 지금까지 했던 것의 역순으로 진행하면 된다.
+* 지금 작성한 역순으로 리소스를 제거합니다.
 
-- 
+- QuickSight 삭제
+  - [N.Virgina](https://us-east-1.quicksight.aws.amazon.com/sn/admin#permissions)열고,
+    Account Settings 맨 아래 `Unsubscribe` 를 클릭
+  - 확인 화면에서 한번 더 `Unsubscribe` 를 클릭
+  - 이후 QuickSight 에서 추가된 IAM role 삭제를 위해 복사하고, 이후에 모두 삭제
+
+    ![](images/qs-unsubscribe-3.png)
+
+- Athena 삭제
+  - `datalake` Database 삭제
+    - [Athena Database](https://console.aws.amazon.com/athena/catalog/home?region=ap-southeast-1)에서
+
+      `datalake` 선택 후, `Drop` 클릭
+
+       ![](images/athena-drop-databases.png)
+
+- Datalake 삭제
+  - Cloud9 에서 새 터미널을 열고,
+
+    ```bash
+    $ cd ~/environment/handson-labs-2018/Serverless/3_serverless_datalake/3.datalake/
+    
+    # 삭제
+    $ cp ./templates/3_shp2json.yml ./serverless.yml
+    $ sls remove
+
+    $ cp ./templates/2_shp2metadata.yml ./serverless.yml
+    $ sls remove
+
+    $ cp ./templates/1_csv2shp.yml ./serverless.yml
+    $ sls remove
+    ```
+
+- geoserver 삭제
+  - `geoserver` 웹을 열고, `5. 실습을 완료...` 에 `S3 초기화` 버튼을 클릭
+
+  - Cloud9 에서 새 터미널을 열고,
+
+    ```bash
+    $ cd ~/environment/handson-labs-2018/Serverless/3_serverless_datalake/2.geoserver/
+    $ . ./.venv/bin/activate
+    $ zappa undeploy -y
+    ...
+    ```
+
+- Cloud9 삭제
+  - [Cloud9 console](https://console.aws.amazon.com/cloud9/home?region=ap-southeast-1#) 에서 `awskrug` 삭제
+
+- S3 버킷 삭제
+  - [S3 console](https://console.aws.amazon.com/s3)에서
+    - Athena 쿼리 수행 중 생성된 결과 S3 버킷 삭제
+    
+      `aws-athena-query-results` 로 시작하는 버킷을 모두 삭제합니다.
+
+      ![](images/s3-athena-result-buckets.png)
+
+    - `gis-datalake-` 로 시작하는 버킷을 모두 삭제합니다.
+
+- IAM 삭제
+  - [IAM console](https://console.aws.amazon.com/iam/home#/users)에서 `awskrug` 삭제
+
