@@ -442,9 +442,13 @@
 
     - `Welcome to QuickSight`를 비롯한 안내 대화상자는 `Next` 를 계속 클릭 후 사용토록 합니다.
     - `Sign up for QuickSight` 를 클릭
+      
       ![](images/qs-signup.png)
-     - QuickSight account 를 생성 합니다.
+     
+      - QuickSight account 를 생성 합니다.
+      
         ![](images/qs-create-account.png)
+        
         - `QuickSight account name` 은 `awskrug` 로
         - `Notification email address` 는 사용하는 e-mail 을 넣습니다.
         - `QuickSight capacity region` 은 `Asia Pacific(Singapore)`로
@@ -460,6 +464,7 @@
   - `New Dataset` 을 클릭합니다.
 
   - `Create a Data Set` 에서 datasource 로 `Athena` 를 선택합니다.
+  
     ![](images/qs-datasource.png)
 
     - `Data source name` 에 `datalake` 넣고, 하단의 `Validate` 버튼을 클릭하면 `SSL is Enabled` 로 변합니다.
@@ -469,7 +474,8 @@
 
     
     - `datalake` 데이터베이스를 선택하고 `moodoong` 테이블을 선택하고, `Select` 클릭
-        ![](images/qs-choose-table.png)
+    
+      ![](images/qs-choose-table.png)
 
     - `Import to SPICE for quicker analytics` 를 선택
         
@@ -481,14 +487,17 @@
 #### 데이터 필드 자료형 변경 및 가상 필드 추가
 
   - 좌측 상단에 `Data set` 오른쪽에 연필 아이콘을 클릭하여 데이터 소스를 수정하여 `고도등급` 필드를 추가
+  
     ![](images/qs-dataset-modify.png)
 
     ![](images/qs-new-field.png)
 
     다음과 같은 팝업 대화상자가 보이면, 대화상자 오른편에 연필 아이콘을 클릭
+    
     ![](images/qs-dataset-modify-2.png)
 
   - `경도`와 `위도`를 지형좌표 형식으로 변환합니다.
+  
     ![](images/longitude.png)
     ![](images/latitude.png)
 
