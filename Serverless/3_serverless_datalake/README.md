@@ -514,7 +514,6 @@ Cloning into 'handson-labs-2018'...
     ![](images/qs-datasource-newfield.png)
 
  - `New calculated field` 대화상자에서 고도를 100m 단위로 구분짓는 `고도등급` 필드를 추가
- 
     - `Calculated field name` 에 `고도등급` 입력
     - `Formula` 에 `floor(고도/100)` 입력
     - `Apply changes` 클릭
@@ -522,13 +521,14 @@ Cloning into 'handson-labs-2018'...
     ![](images/qs-new-field.png)
 
   - `경도`와 `위도`를 지형좌표 형식으로 변환합니다.
-  
-    ![](images/longitude.png)
+    - `경도`는 `Change data type`으로 `Longitude` 로, `위도`는 `Latitude` 로 바꿈
+       아래는 `위도` 변경의 예
 
-    ![](images/latitude.png)
+      ![](images/latitude.png)
 
 #### 차트 제작
 - QuickSight로 아래 그림과 같은 대쉬보드를 만들어 봅시다.
+
   ![dasbhboard](images/dashboard.png)
 
 차트명(차트 종류)
