@@ -1,6 +1,7 @@
 # Serverless datalake : AWSKRUG Serverless hands-on #3
 
-오늘 구축할 구성
+본 핸즈온에서 만드는 구조도
+
 ![전체구조](images/mystructure.png)
 
 ## 목차
@@ -60,6 +61,7 @@
     - `User name*` 에 `datalake` 를 입력
     - `Access type*` 에 `Programmatic access` 을 체크
     - `Next Permissions` 클릭
+
       ![](images/iam-adduser-username.png)
 
 6. `Add user` 화면에서
@@ -80,6 +82,7 @@
 ### 계정 설정
 
 1. 이전에 생성한 `Cloud9` 창으로 돌아가서, 우측 상단에 있는 기어모양 아이콘을 클릭
+
     ![](images/cloud9-toggle-preferences.png)
 
 2. `Preferences` 대화상자가 나오면 좌측 메뉴에서 `AWS Settings` 클릭
@@ -113,17 +116,15 @@
 
 ### 소스 가지고 오기
 
-    ```
-    # environment 폴더에서
-    ec2-user:~/environment $ cd ~/environment
+```bash
+# environment 폴더에서
+ec2-user:~/environment $ cd ~/environment
 
-    # 소스를 가지고 옵니다. 
-    ec2-user:~/environment $ git clone https://github.com/awskrug/handson-labs-2018.git
-    Cloning into 'handson-labs-2018'...
-    ...
-    
-    ec2-user:~/environment $
-    ```
+# 소스를 가지고 옵니다. 
+ec2-user:~/environment $ git clone https://github.com/awskrug/handson-labs-2018.git
+Cloning into 'handson-labs-2018'...
+...
+```
 
 ## geoserver 배포
 * zappa, sls 설명
@@ -193,6 +194,7 @@
     - 좌측에서 `geoserver-dev` 클릭
     - 좌측에서 `Stages` 클릭
     - 우측 `Stages`에서 `dev` 클릭하면 우측에 `dev Stage Editor` 가 나옵니다.
+
       ![](images/apigateway-stage.png)
       `Invoke URL` 을 클릭하면 새 창이 뜹니다. 여기 주소가 `geoserver` 웹 접속 주소입니다. 이를 메모해 둡니다.
       
@@ -270,13 +272,14 @@
     [Athena Console](https://console.aws.amazon.com/athena/home) 열어도 됩니다.
 
 3. `Get Started` 클릭
+
    ![](images/athena-main.png)
 
 4. 콘솔이 나오면, 좌측 `Database` 패널 아래 `Create Table` 클릭
 
     검은 팝업 대화상자에서 `Manually` 클릭
      
-      ![](images/athena-addtable-0.png)
+    ![](images/athena-addtable-0.png)
 
 5. `Databases > Add table` 대화상자가 나옵니다.
     - `Step 1: Name & Location` 단계입니다.
@@ -297,12 +300,14 @@
           ![](images/geoserver-menu-2-json.png)
 
         - 모두 선택하였으면, `Next` 클릭
-        ![](images/athena-addtable-1.png)
+
+          ![](images/athena-addtable-1.png)
 
     - `Step 2: Data Format` 단계입니다.
         - `Data Format` 라디오박스에서 `JSON`을 선택
         - `Next` 클릭
-        ![](images/athena-addtable-2.png)
+
+          ![](images/athena-addtable-2.png)
 
     - `Step 3: Columns` 단계입니다.
 
@@ -320,6 +325,7 @@
             비고 string,
             고도 double
             ```
+
             ![](images/athena-addcolumns.png)
 
         - 그리고 `Add` 클릭
@@ -327,12 +333,14 @@
 
     - `Step 4: Partitions` 단계입니다.
         - 사용하지 않으므로, `Create table` 을 합니다.
-        ![](images/athena-addtable-4.png)
+
+          ![](images/athena-addtable-4.png)
 
     - 화면이 전환되고, `datalake` 데이터베이스의 `moodoong` 이라는 테이블이 생성됩니다.
       
-        - 우측 쿼리 창에는 이 테이블을 생성하는 DDL도 보입니다.
-        ![](images/athena-table-added.png)
+        - 우측 쿼리 창에는 이 테이블을 생성하는 DDL이 보입니다.
+
+          ![](images/athena-table-added.png)
 
 ### 데이터 조작
 - 이제, JSON 형식으로 변경된 관측 정보는 Athena 의 table 형식으로 접근하여 SQL형식으로 질의(query) 가능합니다.
@@ -442,18 +450,23 @@
 
   - `Welcome to QuickSight`를 비롯한 안내 대화상자는 `Next` 를 계속 클릭 후 사용토록 합니다.
   - `Sign up for QuickSight` 를 클릭
-      
+
     ![](images/qs-signup.png)
-     
-    - QuickSight account 를 생성 합니다.
-      
-      ![](images/qs-create-account.png)
-        
-      - `QuickSight account name` 은 `awskrug` 로
-      - `Notification email address` 는 사용하는 e-mail 을 넣습니다.
-      - `QuickSight capacity region` 은 `Asia Pacific(Singapore)`로
-      - `Amazon Athena` 를 체크
-      - `Finish` 클릭
+
+- QuickSight account 를 생성 합니다.
+
+    ![](images/qs-create-account.png)
+
+    - `QuickSight account name` 은 `awskrug` 로
+    - `Notification email address` 는 사용하는 e-mail 을 넣습니다.
+    - `QuickSight capacity region` 은 `Asia Pacific(Singapore)`로
+    - `Amazon Athena` 를 체크
+    - `Amazon S3` 를 체크하고, `Choose S3 Buckets` 한다.
+        - `Select Amazon S3 buckets` 팝업 대화상자가 나오고, `S3 buckets linked to QuickSight account` 를 클릭하여고, S3 버킷은 Athena 에서 사용한 것과 같은 것을 선택한다. 아래 그림에서는 예를 들어 `moodoong` 로 했다.
+
+          ![](images/qs-select-s3-buckets.png)
+
+    - `Finish` 클릭
 
       ![](images/qs-account-created.png)
 
@@ -481,25 +494,37 @@
     - `Import to SPICE for quicker analytics` 를 선택
         
         만약 그림과 같에 가용 공간이 없을 경우는, `Directly query your data` 선택 후 `Visualize` 클릭
-            > 단, 엄청 느리므로, 1.0 GB 당 0.25$ 이니 일단 구입하는 것도 권장
+
+        > 단, 엄청 느리므로, 1.0 GB 당 0.25$ 이니 일단 구입하는 것도 권장
 
         ![](images/qs-finish-data-set-creation.png)
 
 #### 데이터 필드 자료형 변경 및 가상 필드 추가
 
-  - 좌측 상단에 `Data set` 오른쪽에 연필 아이콘을 클릭하여 데이터 소스를 수정하여 `고도등급` 필드를 추가
-  
+  - 좌측 상단에 `Data set` 오른쪽에 연필 아이콘을 클릭하여 데이터 소스를 수정
+
     ![](images/qs-dataset-modify.png)
 
-    ![](images/qs-new-field.png)
+  - `Data sets in this analysis` 에서 `moodoong` 에서 우측 연필 아이콘을 클릭
 
-    다음과 같은 팝업 대화상자가 보이면, 대화상자 오른편에 연필 아이콘을 클릭
-    
-    ![](images/qs-dataset-modify-2.png)
+     ![](images/qs-dataset-modify-2.png)
+
+  - `Data source` 수정 화면에서 죄측 `Fields` 에 `New field` 클릭
+
+    ![](images/qs-datasource-newfield.png)
+
+ - `New calculated field` 대화상자에서 고도를 100m 단위로 구분짓는 `고도등급` 필드를 추가
+ 
+    - `Calculated field name` 에 `고도등급` 입력
+    - `Formula` 에 `floor(고도/100)` 입력
+    - `Apply changes` 클릭
+
+    ![](images/qs-new-field.png)
 
   - `경도`와 `위도`를 지형좌표 형식으로 변환합니다.
   
     ![](images/longitude.png)
+
     ![](images/latitude.png)
 
 #### 차트 제작
@@ -511,6 +536,7 @@
 
 전체 수량(KPI)
 - Value: 종명(Count)
+- Group/Color: 탐방로
 
 고도별등급별 분포비율(PIE)
 - GroupColor: 고도등급
