@@ -144,7 +144,7 @@
     `본인핸드폰번호`로 되어 있는 부분을 본인 것으로 변경해서 입력합니다.
     ```bash
     # 편집기를 열고 본인 핸드폰번호 부분을 변경합니다.
-    $ nano zappa-settings.json
+    $ nano zappa_settings.json
     {
         "dev": {
             "aws_region": "ap-northeast-2",
