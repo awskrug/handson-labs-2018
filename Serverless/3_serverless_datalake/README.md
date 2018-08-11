@@ -440,22 +440,22 @@
   [QuickSight Console](https://quicksight.aws.amazon.com/)를 열거나,
   `Service` 에서 `QuickSight` 을 입력 후 아래 목록을 클릭해도 됩니다.
 
-    - `Welcome to QuickSight`를 비롯한 안내 대화상자는 `Next` 를 계속 클릭 후 사용토록 합니다.
-    - `Sign up for QuickSight` 를 클릭
+  - `Welcome to QuickSight`를 비롯한 안내 대화상자는 `Next` 를 계속 클릭 후 사용토록 합니다.
+  - `Sign up for QuickSight` 를 클릭
       
-      ![](images/qs-signup.png)
+    ![](images/qs-signup.png)
      
-      - QuickSight account 를 생성 합니다.
+    - QuickSight account 를 생성 합니다.
       
-        ![](images/qs-create-account.png)
+      ![](images/qs-create-account.png)
         
-        - `QuickSight account name` 은 `awskrug` 로
-        - `Notification email address` 는 사용하는 e-mail 을 넣습니다.
-        - `QuickSight capacity region` 은 `Asia Pacific(Singapore)`로
-        - `Amazon Athena` 를 체크
-        - `Finish` 클릭
+      - `QuickSight account name` 은 `awskrug` 로
+      - `Notification email address` 는 사용하는 e-mail 을 넣습니다.
+      - `QuickSight capacity region` 은 `Asia Pacific(Singapore)`로
+      - `Amazon Athena` 를 체크
+      - `Finish` 클릭
 
-        ![](images/qs-account-created.png)
+      ![](images/qs-account-created.png)
 
 #### 데이터 소스 연동
   - `New analysis` 를 클릭합니다.
@@ -470,7 +470,8 @@
     - `Data source name` 에 `datalake` 넣고, 하단의 `Validate` 버튼을 클릭하면 `SSL is Enabled` 로 변합니다.
     
     - 이후 `Create data source` 를 클릭
-        ![](images/qs-athena-data-source.png)
+    
+      ![](images/qs-athena-data-source.png)
 
     
     - `datalake` 데이터베이스를 선택하고 `moodoong` 테이블을 선택하고, `Select` 클릭
