@@ -17,13 +17,13 @@
 
 ### Cloud9 생성
 
-1. [Web Console](https://console.aws.amazon.com)을 엽니다.
-    우측 상단에 리전을 `싱가포르(ap-southeast-1)` 으로 선택합니다.
+1. [Web Console](https://console.aws.amazon.com)을 열고,
+    우측 상단에 리전을 `싱가포르(ap-southeast-1)` 으로 선택
    
     ![싱가폴 리전](images/change-region.png)
 
-2. `Sevice` 에서 `Cloud9` 을 입력 후 아래 목록을 클릭
-    혹은 [Cloud9 Console](https://console.aws.amazon.com/cloud9/home?region=ap-southeast-1#)을 열어도 됩니다.
+2. `Service` 에서 `Cloud9` 을 입력 후 아래 목록을 클릭하거나,
+    [Cloud9 Console](https://console.aws.amazon.com/cloud9/home?region=ap-southeast-1#)을 열어도 됩니다.
    
     ![Cloud9](images/select-cloud9.png)
 
@@ -43,14 +43,14 @@
 6. `Create environment` 클릭
 
 
-> 준비되는 동안 기다리면 브라우저에서 사용할 수 있는 통합 개발 환경(IDE)가 나타납니다.
+> 준비되는 동안 기다리면 브라우저에서 사용할 수 있는 통합 개발 환경(IDE)가 보입니다.
 
 ### 계정 생성
 
 1. [Web Console](https://console.aws.amazon.com)을 엽니다.
 
-2. `Sevice` 에서 `IAM` 을 입력 후 아래 목록을 클릭
-   혹은 [IAM Console](https://console.aws.amazon.com/iam/home?#/users)을 열어도 됩니다.
+2. `Service` 에서 `IAM` 을 입력 후 아래 목록을 클릭하거나,
+   [IAM Console](https://console.aws.amazon.com/iam/home?#/users)을 열어도 됩니다.
 
 3. 좌측 메뉴에서 `Users` 클릭
 
@@ -73,7 +73,7 @@
 
 7. `Add user` 화면에서
     - `Access key ID` 를 복사한다.
-    - `Secret access key` 에 `Show` 를 클릭하여 나온 `Secrect access key`를 복사한다.
+    - `Secret access key` 에 `Show` 를 클릭하여 나온 `Secrect access key`를 복사
 
     ![](images/iam-adduser-accesskey.png)
 
@@ -122,11 +122,6 @@
     Cloning into 'handson-labs-2018'...
     ...
     
-    # develop 로 branch 를 전환합니다.
-    ec2-user:~/environment $ cd ~/environment/handson-labs-2018/
-    ec2-user:~/environment/handson-labs-2018 (master) $ git checkout develop
-    Branch develop set up to track remote branch develop from origin.
-    Switched to a new branch 'develop'
     ec2-user:~/environment $
     ```
 
@@ -146,9 +141,9 @@
     ```
 
 - zappa 설정 변경
-    본인 핸드폰 번호라고 되어 있는 부분은 변경해서 입력합니다.
+    `본인핸드폰번호`로 되어 있는 부분을 본인 것으로 변경해서 입력합니다.
     ```bash
-    # 편집기를 열고 본인핸드폰번호 부분을 진짜 핸드폰 번호로 변경하고,
+    # 편집기를 열고 본인 핸드폰번호 부분을 변경합니다.
     $ nano zappa-settings.json
     {
         "dev": {
@@ -197,7 +192,7 @@
 - [API Gateway Console](https://console.aws.amazon.com/apigateway/home?#/apis/)에 열고,
     - 좌측에서 `geoserver-dev` 클릭
     - 좌측에서 `Stages` 클릭
-    - 우측 `Stages`에서 `dev` 클릭하면 우측에 `dev Stage Editor` 가 나온다.
+    - 우측 `Stages`에서 `dev` 클릭하면 우측에 `dev Stage Editor` 가 나옵니다.
       ![](images/apigateway-stage.png)
       `Invoke URL` 을 클릭하면 새 창이 뜹니다. 여기 주소가 `geoserver` 웹 접속 주소입니다.
       
@@ -262,18 +257,24 @@
 
 ### 데이터 연동 구성
 
-1. [Web Console](https://console.aws.amazon.com)을 엽니다.
+1. [Web Console](https://console.aws.amazon.com)을 열고,
+
     우측 상단에 리전을 `싱가포르(ap-southeast-1)` 으로 선택합니다.
    
     ![싱가폴 리전](images/change-region.png)
 
-2. [Athena Console](https://console.aws.amazon.com/athena/home) 열고
+2. `Service` 에서 `Athena` 를 입력후, 아래 목록을 클릭하거나,
+    
+    ![](images/service-athena.png)
+
+    [Athena Console](https://console.aws.amazon.com/athena/home) 열어도 됩니다.
 
 3. `Get Started` 클릭
    ![](images/athena-main.png)
 
 4. 콘솔이 나오면, 좌측 `Database` 패널 아래 `Create Table` 클릭
-    - 검은 팝업 대화상자에서 `Manually` 클릭
+
+    검은 팝업 대화상자에서 `Manually` 클릭
      
       ![](images/athena-addtable-0.png)
 
@@ -282,10 +283,18 @@
         - `Database` 에 `Create a new database` 선택
         - 아래에 `MyDatabase` 입력란에 `datalake` 이름 입력
         - `Table Name` 에 `moodoong` 입력
-        - `Location of Input Data Set` 에 출력 결과물이 있는 S3 버킷 주소를 넣습니다. 꼭 `/` 로 끝나야 합니다.
+        - `Location of Input Data Set` 에 출력 결과물이 있는 S3 버킷 주소를 입력. 주소 값은 꼭 `/` 로 끝나야 합니다.
           예를 들어, `s3://datalakes3/` 와 같이 말입니다.
 
-          이 S3 버킷 주소값은 `geoserver` 에서 `2. GIS DataLake를 단계별로 구축하고 직접 파일을 업로드 하여 결과를 확인해보세요` 에 `csv 파일 업로드` 버튼을 클릭 후 나오는 화면의 맨 아래 json 의 링크입니다.
+          여기 들어갈 S3 버킷 주소값은 `geoserver` 에서 
+          
+          `2. GIS DataLake를 단계별로 구축하고 직접 파일을 업로드 하여 결과를 확인해보세요` 에서
+          
+          ![](images/geoserver-menu-2.png)
+          
+          `csv 파일 업로드` 버튼을 클릭 후 나오는 화면의 맨 아래 `json` 을 클릭하면 나오는 링크입니다.
+
+          ![](images/geoserver-menu-2-json.png)
 
         - 모두 선택하였으면, `Next` 클릭
         ![](images/athena-addtable-1.png)
@@ -314,7 +323,7 @@
             ![](images/athena-addcolumns.png)
 
         - 그리고 `Add` 클릭
-        - 대화상자가 사라지고, 입력한 컬럼들이 보입니다. 맨 아래 내려가서 `Next` 클릭
+        - 대화상자는 사라지고, 입력한 컬럼들이 보입니다. 맨 아래 내려가서 `Next` 클릭
 
     - `Step 4: Partitions` 단계입니다.
         - 사용하지 않으므로, `Create table` 을 합니다.
@@ -322,7 +331,7 @@
 
     - 화면이 전환되고, `datalake` 데이터베이스의 `moodoong` 이라는 테이블이 생성됩니다.
       
-        - 우측 쿼리 창에는 이 테이블을 생성하는 다음과 같은 DDL이 보입니다.
+        - 우측 쿼리 창에는 이 테이블을 생성하는 DDL도 보입니다.
         ![](images/athena-table-added.png)
 
 ### 데이터 조작
@@ -332,7 +341,7 @@
 - 데이터 파이프라인을 통해 처리된 결과가 다음과 같은 컬럼을 key/value 를 갖는 JSON 형식으로 저장되었습니다.
 
     필드|형식|비고
-    -|-|-
+    :-: |:-:|-
     탐방로|string|
     구간|int|
     좌우|string|왼쪽에서 볼 수 있으면 L 오른쪽이면 R(출발지 기준)
@@ -358,6 +367,7 @@
     SELECT "탐방로"
     FROM moodoong
     GROUP BY "탐방로"
+    LIMIT 10
     ```
     한글을 컬럼명으로 사용할 때에는 쌍따옴표("")로 묶어줍니다.
 
@@ -367,6 +377,7 @@
         SELECT "종명"
         FROM moodoong
         GROUP BY "종명"
+        LIMIT 10
         ```
         > "종명"으로 묶었습니다.
 
@@ -376,6 +387,7 @@
         FROM moodoong
         GROUP BY "종명"
         ORDER BY "종명"
+        LIMIT 10
         ```
         > `AS` 는 빼도 됩니다.
 
@@ -386,6 +398,7 @@
         WHERE "종명" = '단풍나무'
         GROUP BY "고도"
         ORDER BY "고도" DESC
+        LIMIT 10
         ```
         > 문자열은 작은 따옴표('')로 묶어줍니다.
 
@@ -400,6 +413,7 @@
             GROUP BY "탐방로"
         ) t
         ORDER BY "개체수" DESC
+        LIMIT 10
         ```
         > 서브 쿼리를 사용했습니다.
 
@@ -414,6 +428,7 @@
             GROUP BY "탐방로"
         ) t
         ORDER BY "개체수" DESC
+        LIMIT 10
         ```
 
     쿼리로 살펴 보았습니다만, 뭔가 허전합니다.
@@ -421,7 +436,8 @@
 
 ### QuickSight 연동
 
-- [QuickSight Console](https://quicksight.aws.amazon.com/)를 엽니다.
+- [QuickSight Console](https://quicksight.aws.amazon.com/)를 열거나,
+  `Service` 에서 `QuickSight` 을 입력 후 아래 목록을 클릭해도 됩니다.
 
     - `Welcome to QuickSight`를 비롯한 안내 대화상자는 `Next` 를 계속 클릭 후 사용토록 합니다.
     - `Sign up for QuickSight` 를 클릭
@@ -436,10 +452,11 @@
 
         ![](images/qs-account-created.png)
 
-- QuickSight로 다음의 대쉬보드를 만들어 봅시다.
+- QuickSight로 아래 그림과 같은 대쉬보드를 만들어 봅시다.
   ![dasbhboard](images/dashboard.png)
 
   - `New analysis` 를 클릭합니다.
+    - 사용할 데이터 셋을 추가합니다.
 
   - `New Dataset` 을 클릭합니다.
 
@@ -447,7 +464,7 @@
 
   - `Data source name` 에 `datalake` 넣고, 하단의 `Validate` 버튼을 클릭하면 `SSL is Enabled` 로 변합니다.
    
-   - 이후 `Create data source` 를 클릭합니다.
+   - 이후 `Create data source` 를 클릭
     ![](images/qs-athena-data-source.png)
 
    
@@ -457,12 +474,11 @@
    - `Import to SPICE for quicker analytics` 를 선택
      
      만약 그림과 같에 가용 공간이 없을 경우는, `Directly query your data` 선택 후 `Visualize` 클릭
-
-     단, 엄청 느리므로, 1.0 GB 당 0.25$ 이니 일단 구입하는 것도 권장함.
+        > 단, 엄청 느리므로, 1.0 GB 당 0.25$ 이니 일단 구입하는 것도 권장
 
        ![](images/qs-finish-data-set-creation.png)
 
-    - 좌측 상단에 `Data set` 오른쪽에 연필 아이콘을 클릭하여 데이터 소스를 수정하여 `고도등급` 필드를 추가한다.
+    - 좌측 상단에 `Data set` 오른쪽에 연필 아이콘을 클릭하여 데이터 소스를 수정하여 `고도등급` 필드를 추가
        ![](images/qs-dataset-modify.png)
 
        ![](images/qs-new-field.png)
@@ -474,33 +490,34 @@
        ![](images/longitude.png)
        ![](images/latitude.png)
 
+    - 이제 차트를 하나씩 만들어 봅시다.
 
-    전체 수량(KPI)
-    - Value: 종명(Count)
+        전체 수량(KPI)
+        - Value: 종명(Count)
 
-    고도별등급별 분포비율(PIE)
-    - GroupColor: 고도/100(고도등급 컬럼 만듬)
+        고도별등급별 분포비율(PIE)
+        - GroupColor: 고도/100(고도등급 컬럼 만듬)
 
-    고도(LINE)
-    - X: 종명
-    - Value: 고도(avg)/고도(min)/고도(max)
+        고도(LINE)
+        - X: 종명
+        - Value: 고도(avg)/고도(min)/고도(max)
 
-    탐방로별 분포 비율(PIE)
-    - Value: 종명(Count)
-    - Group/Color: 탐방로번호
+        탐방로별 분포 비율(PIE)
+        - Value: 종명(Count)
+        - Group/Color: 탐방로번호
 
-    탐방로별 수량(TABLE)
-    - GroupBy: 탐방로번호
-    - Value: 종명(Count)
+        탐방로별 수량(TABLE)
+        - GroupBy: 탐방로번호
+        - Value: 종명(Count)
 
-    고도별 분포(HITMAP)
-    - Rows: 고도등급
-    - Columns: 종명
-    - Values: 종명(Count)
+        고도별 분포(HITMAP)
+        - Rows: 고도등급
+        - Columns: 종명
+        - Values: 종명(Count)
 
-    지도별 분포(MAP)
-    - Geo: 경도,위도
-    - Color: 탐방로번호,고도 등급,개화,결실
+        지도별 분포(MAP)
+        - Geo: 경도,위도
+        - Color: 탐방로번호,고도 등급,개화,결실
 
     > 차트의 색은 오른쪽 상단에 Format Visual 해서 Chart Color 나오는데 수정을 할 수 있습니다.
 
