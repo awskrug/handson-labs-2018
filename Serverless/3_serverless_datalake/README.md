@@ -522,6 +522,7 @@ Cloning into 'handson-labs-2018'...
 
   - `경도`와 `위도`를 지형좌표 형식으로 변환합니다.
     - `경도`는 `Change data type`으로 `Longitude` 로, `위도`는 `Latitude` 로 바꿈
+       
        아래는 `위도` 변경의 예
 
       ![](images/latitude.png)
