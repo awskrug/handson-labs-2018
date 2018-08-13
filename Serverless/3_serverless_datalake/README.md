@@ -299,6 +299,9 @@ Cloning into 'handson-labs-2018'...
 
           ![](images/geoserver-menu-2-json.png)
 
+          단, 이전에 `geoserver` 를 통해 관측 데이터 파일을 입력하지 않았다면, `Athena`에서 조회를 해도 아무 것도 볼 수 없습니다.
+          그러나, 편의상 json 디렉터리에 결과 파일을 올려 놓았으니, 파일들을 이 결과 S3 버킷에 직접 업로드하여 아래 과정을 진행하셔도 되겠습니다.
+
         - 모두 선택하였으면, `Next` 클릭
 
           ![](images/athena-addtable-1.png)
