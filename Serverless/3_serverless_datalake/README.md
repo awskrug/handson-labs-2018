@@ -4,6 +4,12 @@
 
 ![전체구조](images/mystructure.png)
 
+> 본 핸즈온에서는 서울과 싱가폴 리전을 사용합니다.
+
+1. 분석(Athena, QuickSight)과 개발환경(Cloud9)은 싱가폴(ap-southeast-1) 리전을 사용합니다.
+2. 데이터레이크 파이프라인(Lambda, APIGateway, CloudWatch, XRay, DynamoDB, SNS, SQS)은 서울(ap-northeast-2) 리전을 사용합니다.
+   - S3, IAM 도 사용 중이나 아시다시피 리전에 구애받지 않습니다.
+
 ## 목차
 * 개발환경 설정(IAM, Cloud9)
 * geoserver 배포
@@ -195,6 +201,8 @@ Cloning into 'handson-labs-2018'...
     - 좌측에서 `Stages` 클릭
     - 우측 `Stages`에서 `dev` 클릭하면 우측에 `dev Stage Editor` 가 나옵니다.
 
+      혹시 안나온다면, 화면 우측 상단의 현재 사용 리전이 한국인지 확인해 주세요! 한국 리전에 생성하였습니다.
+
       ![](images/apigateway-stage.png)
       `Invoke URL` 을 클릭하면 새 창이 뜹니다. 여기 주소가 `geoserver` 웹 접속 주소입니다. 이를 메모해 둡니다.
       
@@ -251,6 +259,15 @@ Cloning into 'handson-labs-2018'...
 ## 데이터레이크 확인 및 구동
 * 구성된 데이터레이크를 확인해 봅시다.
 
+- `geoserver`에서 
+    - `1. 샘플 파일을 다운로드 받으세요.` 메뉴에서 `샘플 파일 다운로드` 버튼을 클릭합니다.
+        - 관측 데이터 파일인 `upload_sample.zip`을 다운로드 받습니다. 이 파일은 관측 데이터 파일들을 zip 형식으로 묶어 놓은 것입니다.
+        - 다운 로드 받은 `upload_sample.zip` 파일을 풀어 놓습니다.
+    - `2. GIS DataLake를 ...` 메뉴에서 에서
+        - 풀린 관측 데이터 파일의 csv 폴더에서 .csv 파일들을 `csv 파일 업로드`를 클릭해서 모두 업로드합니다.
+        - 풀린 관측 데이터 파일의 shp_all 폴더에서 .shp 파일들을 `shp 파일 업로드` 를 클릭해서 모두 업로드 합니다.
+    - 실제 데이터가 처리되는 모습은 `3. 전체 진행 상황을 확인해보세요` 에 `x-ray 보러가기`나 `shp 메타데이터 보러가기` 버튼을 클릭하여 알 수 있습니다.
+
 ## Athena 와 QuickSight 데이터 분석 맛보기
 
 ### Athena
@@ -300,7 +317,7 @@ Cloning into 'handson-labs-2018'...
           ![](images/geoserver-menu-2-json.png)
 
           단, 이전에 `geoserver` 를 통해 관측 데이터 파일을 입력하지 않았다면, `Athena`에서 조회를 해도 아무 것도 볼 수 없습니다.
-          그러나, 편의상 json 디렉터리에 결과 파일을 올려 놓았으니, 파일들을 이 결과 S3 버킷에 직접 업로드하여 아래 과정을 진행하셔도 되겠습니다.
+          그러나, 편의상 json 디렉터리에 결과 파일을 올려 놓았으니, 파일들을 이 결과 S3 버킷에 직접 업로드하여 아래 과정을 진행하셔도 되겠습니다. S3 업로드 방법 참고(https://docs.aws.amazon.com/ko_kr/AmazonS3/latest/user-guide/upload-objects.html).
 
         - 모두 선택하였으면, `Next` 클릭
 
@@ -346,7 +363,7 @@ Cloning into 'handson-labs-2018'...
           ![](images/athena-table-added.png)
 
 ### 데이터 조작
-- 이제, JSON 형식으로 변경된 관측 정보는 Athena 의 table 형식으로 접근하여 SQL형식으로 질의(query) 가능합니다.
+- 이제, JSON 형식으로 변경된 관측 정보는 Athena 의 table 형식으로 접근하여 SQL형식으로 질의(query) 가능할 수 있으며, 지리 공간 질의도 가능합니다(https://docs.aws.amazon.com/ko_kr/athena/latest/ug/geospatial-functions-list.html 참조).
 
 - 이제 사용할 형식은 이전에 `Step 3: Columns` 단계에서 지정하였습니다.
 - 데이터 파이프라인을 통해 처리된 결과가 다음과 같은 컬럼을 key/value 를 갖는 JSON 형식으로 저장되었습니다.
@@ -442,8 +459,7 @@ Cloning into 'handson-labs-2018'...
         LIMIT 10
         ```
 
-    쿼리로 살펴 보았습니다만, 뭔가 허전합니다.
-    QuickSight 에서 보여주도록 합시다.
+    이외에도 지리 공간 함수를 이용하여 특정 지역을 대상으로 산불 피해 방지 등의 대책을 세우는 용도로도 쓰일 수 있겠습니다. 아무튼 다양하게 해볼 수 있게 되었습니다. 그러나, 글자만 나오니까 뭔가 허전합니다. 이제 QuickSight 에서 보여주도록 합시다.
 
 ### QuickSight 연동
 
