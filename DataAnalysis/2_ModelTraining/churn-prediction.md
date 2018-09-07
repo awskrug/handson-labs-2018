@@ -2,8 +2,8 @@
 
 > 본 핸즈온은 아마존에 Sagemaker 샘플인 [xgboost_customer_churn/xgboost_customer_churn.ipynb](https://github.com/awslabs/amazon-sagemaker-examples/blob/master/introduction_to_applying_machine_learning/xgboost_customer_churn/xgboost_customer_churn.ipynb)을 이용합니다.
 
-왜? 이것을?
-> 팍팍 와 닿지 않을 수도 있지만, 데이터 분석, 예측, 검증, 적용의 모든 부분을 건드리고 훈련 시간이 비교적 짧아서
+왜 이것을?
+> 비주얼하지 않아 와 닿지 않을 수도 있지만(:sweat_smile:), 데이터 분석의 맛을 보여줄 수 있으면서도 훈련 시간이 비교적 짧아서 택함.
 
 ## 목표
 *Amazon Sagemaker* 를 이용한 고객 이탈 예측
@@ -11,11 +11,10 @@
 - Amazon Sagemaker 를 어떻게 사용하는지?
 - 상기 사항에 대한 간략한(!) 실습
 
-
   Q. 프로그래밍 언어(여기선 파이썬) 몰라도 되요? 
   A. 아시면 더 많이 보인다?!
   Q. 그래도 몰랐으면 더 좋겠는데?
-  A. 프로그래밍 언어를 사용하지 않는 서비스(*Amazon Machine Learning*나 *Amazon Sagemaker"를 웹 콘솔로 동작)도 있습니다만, 지금은 *Amazon Sagemaker* 를 프로그램적으로 쓰기로 했으니...
+  A. 프로그래밍 언어를 사용하지 않는 서비스(*Amazon Machine Learning*나 *Amazon Sagemaker"를 웹콘솔로 운영?)도 있습니다만, 지금은 *Amazon Sagemaker* 를 프로그램적으로 써 봅시다.
 
 ## 고객 이탈?
 - 고객의 서비스 해지를 방어하기 위한 비용이 해지한 고객을 돌아오게 하는 비용보다 이득입니다. 그렇다면 
@@ -73,20 +72,18 @@
   
     [![sm-4](imgs/6.create-sm-notebook.png)]()
 
-  - 그러면, 인스턴스를 생성하는 동안에는 상태는 `Pending` 이고, 조금 기다리면 `In service`로 변합니다. 이제 생성된 노트북을 열어 보겠습니다. 그럼 오른편에 `열기` 클릭
+  - 그러면, 인스턴스를 생성하는 동안에는 상태는 `Pending` 이고, 조금 기다리면 `In service`로 변경됩니다. 이제 오른편에 `열기` 클릭
   
     [![sm-6](imgs/7.create-sm-notebook.png)]()
   
-  - 열심히 사용할 새 노트북 화면이 나옵니다.
+  - 노트북 화면이 나옵니다.
   
     [![sm-7](imgs/8.created-notebook.png)]()
-
-이상으로 `Sagemaker`를 사용할 준비가 되었습니다.
 
 ## 노트북 사용하기
 
 1. 노트북 써보기
-  > 여기서는 노트북에 대해 간략히 추가 설명은 [Jupyter notebook 이해하기](https://www.slideshare.net/dahlmoon/jupyter-notebok-20160815)를 참고해 주십시요.
+  > 노트북 및 파이선 패키지에 대한 설명은 [Jupyter notebook 이해하기](https://www.slideshare.net/dahlmoon/jupyter-notebok-20160815)을 보시면 될 것 같습니다.
 
   - 조작법
     - 화면 구성
@@ -99,8 +96,7 @@
 
     - 셀
       - MS Excel 처럼 화면을 셀(cell)이라고 합니다. 컬럼이 1개라는 것이 다릅니다.
-      - 셀은 Code(파이썬 코드), Markdown(주석), Raw NBConvert 로 나뉩니다.
-        > 마크다운 셀은 주석이니까 실행은 안됩니다.
+      - 셀은 Code(파이썬 코드), [Markdown](https://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/Working%20With%20Markdown%20Cells.html), Raw NBConvert(별도 렌더링없이) 로 나뉩니다.
       - 셀 좌측에 파란색이 보이는 것이 현재 선택된 셀, 셀 편집 시에는 녹색으로 바뀝니다.
 
     - 셀 이동
@@ -149,9 +145,9 @@
 
     [![o-2](imgs/13.notebook-s3-bucket.png)]()
 
-  - 코드 실행에서는 행번호로 보는 것이 편하므로 명령 상태에서 Shift+L 키를 누릅니다. 그럼 모든 셀에 코드에 행번호가 보입니다. 또 누르면 사라집니다.
+  - 코드 실행에서는 행번호로 보는 것이 편하므로 명령 상태에서 Shift+L 키를 누릅니다. 그럼 모든 셀에 코드에 행번호가 보입니다.
 
-  - 맨 첫 셀을 선택합니다.
+  - 맨 첫 셀을 선택합니다. 셀을 선택하면 좌측에 파란색으로 표시 됩니다.
     보인다고 선택 셀이 아닙니다. 클릭하셔야 합니다.
 
   - `▶| Run` 을 클릭해서 한줄만 실행해 봅니다. 혹은 첫 셀에서 Shift+Enter 키를 눌러도 되겠습니다.
@@ -159,7 +155,7 @@
 
     첫 셀부터 순서대로 실행하지 않았다면, 제대로 동작하지 않습니다. 이 경우에는 툴바에서 재시작 버튼(`restart the kernel (with dialog)`)를 클릭하시고 첫 셀부터 실행하시면 됩니다.
 
-  - 실행이 되면, In [ ] 에서 In [*] 으로 변경됨을 확인할 수 있습니다.
+  - 실행이 되면, In [ ] 에서 In [\*] 으로 변경됨을 확인할 수 있습니다.
 
 
 ## 코드 진행
@@ -276,19 +272,20 @@
 
     파라미터명|값|내용
     :-|:-:|-
-    max_depth| 5 | X는 알고리즘 내의 각 트리를 작성할 수있는 깊이를 제어합니다. 나무가 깊어 질수록 더 잘 맞을 수 있지만 계산상 많은 비용이 들고 과도한 결과를 초래할 수 있습니다. 일반적으로 절충이 필요합니다.
-    subsample| 0.8 | 훈련 데이터의 샘플링을 제어합니다. 이 기법은 초과 맞춤을 줄이는 데 도움이되지만 너무 낮게 설정하면 안됩니다.
-    num_round| 100 | 부스트 라운드 횟수를 제어합니다. 반복 회수 제어 입니다. 더 많은 라운드가 훈련 데이터에 더 잘 맞아야 할 것 같지만, 되려 계산양만 많거나 과적합(overfit)으로 이어질 수 있습니다.
-    eta| 0.2 | 각 부스트 공격이 얼마나 공격적인지를 제어합니다. 값이 클수록 보수적으로 증폭됩니다.
-    gamma| 4 | 얼마나 공격적으로 나무가 성장하는지 제어합니다. 값이 클수록 더 보수적인 모델이 됩니다.
+    max_depth| 5 | 트리의 최대 깊이. 이 값이 증가하면 모델이 더욱 복잡해지고 과적합의 가능성이 높습니다. 
+    subsample| 0.8 | 교육 인스턴스의 하위 샘플 비율.
+    num_round| 100 | 교육을 실행할 라운드의 수.
+    eta| 0.2 | 과적합 방지 업데이트에 사용되는 단계 크기 축소입니다. 각 부스팅 단계 이후 직접 새 특징의 가중치를 직접 가져옵니다. eta 파라미터는 실제로 특징 가중치를 축소하여 부스팅 프로세스를 더욱 보수적으로 만듭니다.
+    gamma| 4 | 트리의 리프 노드에 추가 파티션을 생성하는 데 필요한 최소 손실 감소. 값이 클수록 알고리즘이 더욱 보수적입니다.
 
-    깃헙(https://github.com/dmlc/xgboost/blob/master/doc/parameter.rst) 혹은 AWS 도움말(https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/xgboost_hyperparameters.html)에 나옵니다.
+    깃헙(https://github.com/dmlc/xgboost/blob/master/doc/parameter.rst) 혹은 AWS 도움말(https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/xgboost_hyperparameters.html) 에 설명되어 있습니다.
 
-  - 16줄 - 호스팅, 엔드 포인트 생성
+### 예측 모델 평가
+  - 16줄 - 예측 모델 엔드 포인트 생성
     ml.m4.xlarge 으로 내부 컨테이너를 생성한다!
 
   - 17줄 - 평가 시작
-    18줄 - 평가 함수 만들고
+    18줄 - 평가 함수
 
     평가 방법은 간단하게
       1. 데이터 셋 중에서, 미니 배치를 운영하기 위해 적당한 크기로 행별로 쪼개서
@@ -296,16 +293,15 @@
       3. 그 모델 데이터로 XGBoost 엔드포인트를 호출해서
       4. CSV 형식의 예측 결과를 받아서, 그것을 NumPy 의 배열로 변경한다.
 
-### 예측 모델 평가
   - 19줄 - 예측 모델 평가
     
     [![l-19](imgs/l19.png)]()
 
-    결과에 나온 표는 다음을 뜻한다.
+    결과로 나온 표의 값은 다음을 뜻합니다.
     
     [![l-19-1](imgs/l19-evaluation-table.png)]()
 
-    주의! 임의로 데이터를 추출했기 떄문에, 매번 결과가 다를 수 있습니다.
+    이 값은 모델링 데이터를 샘플링할 때에 임의로 데이터를 추출했기 떄문에, 이 값과는 다를 수 있습니다.
 
     대략 48 명의 이탈자가 생겼는데, 39명을 옳게 예측했고(TP), 4명은 이탈할 것이라 했는데 유지했고(FP), 9명은 유지할 것이라 했는데 이탈했다(FN).
 
