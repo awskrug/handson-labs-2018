@@ -3,7 +3,7 @@
 > 본 핸즈온은 아마존에 Sagemaker 샘플인 [xgboost_customer_churn/xgboost_customer_churn.ipynb](https://github.com/awslabs/amazon-sagemaker-examples/blob/master/introduction_to_applying_machine_learning/xgboost_customer_churn/xgboost_customer_churn.ipynb)을 이용합니다.
 
 왜 이것을?
-> 비주얼하지 않아 와 닿지 않을 수도 있지만(:sweat_smile:), 데이터 분석의 맛을 보여줄 수 있으면서도 훈련 시간이 비교적 짧아서 택함.
+> 비주얼하지 않아 와 닿지 않을 수도 있지만(:sweat_smile:), 데이터 분석의 맛을 보여줄 수 있으면서도 훈련 시간이 비교적 짧아서
 
 ## 목표
 *Amazon Sagemaker* 를 이용한 고객 이탈 예측
@@ -25,16 +25,15 @@
 
 ## 그런데 대체 어디서부터 시작하나?
 
-데이터가 어떻게 되어 있는지 알아야 분석도 할 수 있습니다만, 실제로 보는 것은 주피터 노트북(이하 노트북)에서 보도록 합니다.
-사이킷런()에서 제공하는 알고리즘 치트시트를 보며 어떻게 풀어가는 것이 좋은지 알아보도록 하겠습니다.
+데이터가 어떻게 되어 있는지 알아야 분석도 할 수 있습니다만, 알고리즘 치트시트를 보며 어떻게 풀어가는 것이 좋은지 가늠해 보도록 합시다.
 
-참고로, 사용하는 데이터는 다니엘 T라로즈 `Discovering Knowledge in Data`에서 언급된 것으로, 미국 모바일 회사의 이탈을 포함한 일부 기록(약 3333건)입니다.
+참고로 사용할 데이터 셋은 다니엘 T라로즈 `Discovering Knowledge in Data`에서 언급된 것으로, 미국 모바일 회사의 고객 이탈과 관련된 일부 기록(약 3333건)입니다.
 
 [![scikit-learn algorithm cheat-sheet](http://scikit-learn.org/stable/_static/ml_map.png)]()
 
 물론 실제 데이터를 보면 다를 수도 있지만, 본 예측은 고객이 `이탈`할지 말지에 대한 **분류**이며 데이터량이 적으니, *SVC(Support Vector Machine Classification)* 와 비슷한 방법에서 `ensemble` 해서 사용하는 방법을 쓰는 것이 대체로 좋다 합니다.
 
-그러나 AWS 문서(https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/algos.html)를 살펴보면 어떤 것을 선택하실까요?
+우리가 사용할 것은 AWS 이니 제공하는 문서(https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/algos.html) 를 살펴보면 어떤 것을 선택하실까요?
 
 [![which-algo](imgs/which-algo.png)]()
 
@@ -367,3 +366,6 @@
   - [CloudWatch 콘솔](https://console.aws.amazon.com/cloudwatch/home?region=ap-northeast-2)에서 이름이 /aws/sagemaker/로 시작하는 모든 로그 그룹을 삭제
 
   - 필요하다면, [IAM 콘솔](https://console.aws.amazon.com/iam/)에서 AmazonSageMaker-* 역할을 삭제합니다.
+
+
+## 참고 링크
