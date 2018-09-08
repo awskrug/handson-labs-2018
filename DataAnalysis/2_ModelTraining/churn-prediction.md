@@ -358,7 +358,8 @@
 ## 정리
   - [Sagemaker 콘솔](https://console.aws.amazon.com/sagemaker/home?region=ap-northeast-2)에서 다음 리소스를 삭제
     - 모델
-    - 노트북 인스턴스.
+    - 훈련 작업
+    - 노트북 인스턴스
         
     삭제하기 전에 인스턴스를 중지해야 합니다.
 
