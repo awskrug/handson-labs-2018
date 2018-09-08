@@ -1,4 +1,4 @@
-# Customer churn prediction via Amazon Sagemaker
+﻿# 고객 이탈 예측 하기
 
 > 본 핸즈온은 아마존에 Sagemaker 샘플인 [xgboost_customer_churn/xgboost_customer_churn.ipynb](https://github.com/awslabs/amazon-sagemaker-examples/blob/master/introduction_to_applying_machine_learning/xgboost_customer_churn/xgboost_customer_churn.ipynb)을 이용합니다.
 
