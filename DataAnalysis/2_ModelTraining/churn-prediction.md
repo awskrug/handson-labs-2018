@@ -140,7 +140,7 @@
 2. 노트북 코드 실행
 
   - 코드 실행에 앞서, `Sagemaker`에서 이용할 S3 버킷 이름을 입력해야 합니다.
-    아래 그림에서 `<your_s3_bucket_name_here>` 부분에 전에 생성한 S3 버킷 이름을 넣습니다. `awskurg핸드폰번호` 형식으로 명명했었지요?
+    아래 그림에서 `<your_s3_bucket_name_here>` 부분에 전에 생성한 S3 버킷 이름을 넣습니다. `awskrug핸드폰번호` 형식으로 명명했었지요?
 
     [![o-2](imgs/13.notebook-s3-bucket.png)]()
 
