@@ -1,4 +1,4 @@
-# Training a Model with Amazon SageMaker : AWSKRUG Data Analysis hands-on #2
+# Training a Model with Amazon SageMaker : AWSKRUG Data Analysis hands-on #1
 
 ## Part 1. [고객 이탈 예측](churn-prediction.md)
 
