@@ -122,7 +122,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 	    }
     ```
 	
-1. [이것](https://jsonformatter.curiousconcept.com/)과 같은 JSON 유효성 검사기와 포맷터를 사용하여 JSON 형식이 올바른지 확인하세요.
+1. [JSON Formatter](https://jsonformatter.curiousconcept.com/)과 같은 JSON 유효성 검사기와 포맷터를 사용하여 JSON 형식이 올바른지 확인하세요.
 
 
 ### 2B 단계 : AWS 스텝 함수 상태 머신 업데이트

@@ -35,7 +35,7 @@ Region| Code | Launch
 
 1. `sfn-workshop-setup-webapp` 스택이 `CREATE_COMPLETE`의 상태에 도달 할 때까지 기다리세요.
 
-	스택을 완료하는 데 1분 정도 걸립니다. 그것의 일부로, 웹 애플리케이션 소스를 대상 버킷으로 복사하고 이것이 배달 pipleline을 트리거합니다.
+	스택을 완료하는 데 1분 정도 걸립니다. 그것의 일부로, 웹 애플리케이션 소스를 대상 버킷으로 복사하고 pipleline을 트리거합니다.
 
 1. [AWS CodePipeline 관리 콘솔](http://console.aws.amazon.com/codepipeline/home)로 이동하세요. `sfn-workshop-pipeline`으로 식별 된 파이프 라인을 클릭하고 성공적으로 완료되었는지 확인하세요.
 
@@ -70,7 +70,7 @@ Region| Code | Launch
 1. AWS Step Function 실행이 시작됩니다. 실행 ARN은 UI에 제공되므로 단계 기능 [콘솔](https://console.aws.amazon.com/states/home) 에서 세부 정보를 쉽게 찾을 수 있습니다.
 1. AWS Step Function 실행이 완료되었습니다.
 
-단계 함수 실행에서 생성 된 축소판과 함께 추출 된 이미지 메타 데이터 및 인식 된 태그의 샘플 세트가 업로드 된 각 이미지에 대해 표시됩니다.
+Step Functions 실행에서 생성 된 축소판과 함께 추출 된 이미지 메타 데이터 및 인식 된 태그의 샘플 세트가 업로드 된 각 이미지에 대해 표시됩니다.
 
 <img alt="파이프 라인 스크린 샷" src="./images/web-app-screenshot.png" width="90%">
 

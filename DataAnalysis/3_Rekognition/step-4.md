@@ -21,7 +21,7 @@
 1. 생성 된 JSON을 복사하세요. 문제가 발생하면 이 페이지 하단에서 JSON을 찾으세요.
 
 
-### 4 단계 : 결과를 테스트하기 위해 AWS 단계 함수 상태 머신 만들기
+### 4 단계 : 결과를 테스트하기 위해 AWS Step Functions 상태 머신 만들기
 
 1. [AWS Step Functions 관리 콘솔](http://console.aws.amazon.com/states/home)로 이동하세요.
 

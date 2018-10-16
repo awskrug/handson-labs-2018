@@ -2,7 +2,7 @@
 
 AWS Step Functions 상태 머신을 작성하여 처리 단계를 조정하려면 단일 단계가 포함된 머신부터 시작합니다.
 
-단계 함수 상태 머신은 [Amazon States Language](https://states-language.net/spec.html)를 사용하여 JSON에 정의됩니다. 단일 단계로 상태 머신을 정의하는 아래의 JSON을 살펴보세요.
+Step Functions 상태 머신은 [Amazon States Language](https://states-language.net/spec.html)를 사용하여 JSON에 정의됩니다. 단일 단계로 상태 머신을 정의하는 아래의 JSON을 살펴보세요.
 
 ```javascript
 {
