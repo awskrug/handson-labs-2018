@@ -10,7 +10,6 @@ AWSKRUG Hands-on Lab 2018 is bi-weekly Saturday HoLs until Oct 20 (9 sessions, 7
 * 11st August – [Serverless #3: Serverless datalake](Serverless/3_serverless_datalake)  (In Korean)
 * 8th September – [Data Analysis #1: Training a Model with Amazon SageMaker](DataAnalysis/2_ModelTraining)  (In Korean)
 * 29th September – [Data Analysis #2: ETL(AWS Glue) & Data preprocessing(Amazon EMR)](http://bit.ly/awskrug핸즈온2018-DA2)  (In Korean)
-* 20th October – Data Analysis #3: Image classification Service with Amazon Rekognition
-
+* 20th October – [Data Analysis #3: Image classification Service with Amazon Rekognition](DataAnalysis/3_Rekognition)  (In Korean)
 
 ![AWSKRUG Hands-on Labs on 2nd June, 2018](https://github.com/awskrug/handson-labs-2018/blob/master/awskrug-hols-2018.jpg)
