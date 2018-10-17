@@ -1,6 +1,6 @@
 ## 4 단계 : 레이블 및 이미지 메타 데이터 생성
 
-이제 상태 머신을 통해 이미지의 섬네일과 메타 데이터 생성 뿐 아니라 이미지 분석(태깅)이 가능하게 되었습니다.
+이제 상태 머신을 통해 이미지의 섬네일과 메타 데이터 생성뿐 아니라 이미지 분석(태깅)이 가능하게 되었습니다.
 
 
 ### 4A 단계 : DynamoDB에 메타 데이터를 저장하는 단계 추가
@@ -27,7 +27,7 @@
 
 1. 'ImageProcessing'상태 머신을 선택하세요. **상태 시스템 편집**을 클릭하세요.
 
-1. 4A 단계에서 생성한 편집기에서 JSON에 붙여 넣기하세요.
+1. 4A 단계에서 생성한 편집기에서 JSON에 붙여 넣기 하세요.
 
 1. **Visual Workflow**옆의 &#x21ba; 아이콘을 클릭하여 상태 시스템의 시각적 표현을 새로 고칩니다.
 
@@ -52,12 +52,12 @@
 
  	<img src="images/4c-test-choice-test-succeeded.png" width="50%">
 
-1. DynamoDB 테이블과 그 안에 저장된 항목이 어떤 것인지 확인할 수 있습니다. [Amazon DynamoDB 관리 콘솔](https://console.aws.amazon.com/dynamodb/home?#tables:)으로 이동하세요. 다음 테이블과 비슷한 이름의 테이블이 두 개 있어야합니다.
+1. DynamoDB 테이블과 그 안에 저장된 항목이 어떤 것인지 확인할 수 있습니다. [Amazon DynamoDB 관리 콘솔](https://console.aws.amazon.com/dynamodb/home?#tables:)로 이동하세요. 다음 테이블과 비슷한 이름의 테이블이 두 개 있어야합니다.
 
     - `sfn-workshop-setup-AlbumMetadataDDBTable`
  	- `sfn-workshop-setup-ImageMetadataDDBTable`
 
-1. 'sfn-workshop-setup-ImageMetadataDDBTable`을 클릭하고 **Items**폴더를 클릭하세요. 성공적으로 처리된 각 이미지에 대해 하나의 항목이 있는지 확인하세요.
+1. 'sfn-workshop-setup-ImageMetadataDDBTable`을 클릭하고 **Items** 폴더를 클릭하세요. 성공적으로 처리된 각 이미지에 대해 하나의 항목이 있는지 확인하세요.
 
  	<img src="images/4c-ddb-imagemetadata.png" width="90%">
 

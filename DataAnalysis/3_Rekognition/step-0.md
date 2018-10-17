@@ -32,7 +32,7 @@ Region| Code | Launch
 1. **옵션** 페이지에서 모두 기본값 그대로 두고 **다음**을 클릭하세요.
 
 1. **검토** 페이지에서 CloudFormation이 IAM 리소스를 생성 확인란을 선택하고 **변경 세트 만들기**를 클릭하세요.
-	![IAM 스크린 샷 승인](./images/0a-cfn-create-change-set.png)
+	![IAM 스크린샷 승인](./images/0a-cfn-create-change-set.png)
 
 	>이 템플릿은 람다가 처리해야 하는 리소스에 대한 적절한 사용 권한을 부여하는 많은 IAM 역할을 작성합니다.
 

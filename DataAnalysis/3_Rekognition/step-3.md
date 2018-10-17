@@ -1,12 +1,12 @@
 ## 3 단계 : 워크 플로우에 병렬 처리 추가
 
-메타 데이터를 추출하고 확인한 후 이제 상태 머신에 몇 가지 단계를 추가할 준비가 되었습니다. 섬네일 이미지 만들기, 이미지 인식 및 메타 데이터 저장/인덱싱을 합니다. 섬네일 생성 및 이미지 인식은 서로 의존하지 않기 때문에 [병렬 상태](https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-parallel-state.html)를 활용해서 동시에 실행 시킬 수 있습니다.
+메타 데이터를 추출하고 확인한 후 이제 상태 머신에 몇 가지 단계를 추가할 준비가 되었습니다. 섬네일 이미지 만들기, 이미지 인식 및 메타 데이터 저장/인덱싱을 합니다. 섬네일 생성 및 이미지 인식은 서로 의존하지 않기 때문에 [병렬 상태](https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-parallel-state.html)를 활용해서 동시에 실행시킬 수 있습니다.
 
 <img src="images/3-state-machine-parallel.png" width="60%">
 
 ### 3A 단계 : 상태 머신 정의 업데이트
 
-이제 상태 머신에 단계를 점진적으로 추가, 배포 및 테스트하고 상태 머신에 병렬 단계를 추가하는 몇가지 경험을 얻었습니다. (마지막 상태의 최종 JSON에서 내보내거나 가져 오는 것을 잊지 마세요.) 상태 머신을 사용하여 섬네일 이미지와 이미지 인식을 동시에 수행할 수 있습니다.
+이제 상태 머신에 단계를 점진적으로 추가, 배포 및 테스트하고 상태 머신에 병렬 단계를 추가하는 몇 가지 경험을 얻었습니다. (마지막 상태의 최종 JSON에서 내보내거나 가져오는 것을 잊지 마세요.) 상태 머신을 사용하여 섬네일 이미지와 이미지 인식을 동시에 수행할 수 있습니다.
 
 구문에 대한 도움이 필요하면 다음 설명서를 살펴보세요.
 
@@ -39,7 +39,7 @@
 
 </details>
 
-이제 단계 1D를 기억해 두었습니다. 상태 입력을 출력과 병합하는 방법을 배웠으므로 [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/awl-ref-paths.html) 기능을 사용하여 두 줄을 모두 사용할 수 있게되었습니다.
+이제 단계 1D를 기억해 두었습니다. 상태 입력을 출력과 병합하는 방법을 배웠으므로 [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/awl-ref-paths.html) 기능을 사용하여 두 줄을 모두 사용할 수 있게 되었습니다.
 
 특히 *Parallel State* 에서 **ResultPath**를 사용하여 병렬 상태 머신 출력의 배열을 다운 스트림 상태에서 사용할 수 있게하세요. `parallelResults` 속성을 사용하세요.
 

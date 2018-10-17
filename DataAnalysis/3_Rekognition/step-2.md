@@ -1,8 +1,8 @@
 ## 2 단계 : 상태 머신에 분기 로직 추가
 
-Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었습니다. 이 정보를 바탕으로 어떤 추가작업을 진행할지 결정할 수 있습니다. 예를 들어, 입력된 파일이 예제에서 지원하지 않는 포멧일 경우, 포멧변환 Lambda Function으로 보내거나 혹은 에러메시지를 보내고 작업을 종료할 수 있습니다.
+Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었습니다. 이 정보를 바탕으로 어떤 추가작업을 진행할지 결정할 수 있습니다. 예를 들어, 입력된 파일이 예제에서 지원하지 않는 포맷일 경우, 포변환 Lambda Function으로 보내거나 혹은 에러 메시지를 보내고 작업을 종료할 수 있습니다.
 
-분기를 가능하게하는 AWS Step Functions에는 [Choice State](https://docs.aws.amazon.com/step-functions/latest/dg/awl-ref-states-choice.html)와 [Error Try/Catches](https://docs.aws.amazon.com/step-functions/latest/dg/awl-ref-errors.html)를 참조하세요. Choice State는 if/else 또는 case/switch 조건에 기반하여 다음 상태를 선택할 수 있습니다 (And, Or, Not, =>, <)연산자 조합을 지원합니다. Error Try/Catch를 사용하면 현재 실행에 의해 발생된 오류 유형에 따라 다음 상태를 선택할 수 있습니다.
+분기를 가능하게하는 AWS Step Functions에는 [Choice State](https://docs.aws.amazon.com/step-functions/latest/dg/awl-ref-states-choice.html)와 [Error Try/Catches](https://docs.aws.amazon.com/step-functions/latest/dg/awl-ref-errors.html)를 참조하세요. Choice State는 if/else 또는 case/switch 조건에 기반하여 다음 상태를 선택할 수 있습니다 (And, Or, Not, =>, <)연산자 조합을 지원합니다. Error Try/Catch를 사용하면 현재 실행에 의해 발생 오류 유형에 따라 다음 상태를 선택할 수 있습니다.
 
 이 단계에서는 Error Try/Catches 및 Choice State를 모두 사용하여 상태 확인 기능을 상태 머신에 추가합니다. 이 단계가 끝나면 상태 머신은 다음과 같이 보입니다.
 
@@ -42,7 +42,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 	    },
 	```
 
-1. 다음으로, 오류 상태를 가리키는 **ExtractImageMetadata** 단계에 Error Try/Catch 를 추가합니다. 람다 함수는 이미지로 파싱할 수 없는 파일 유형 (예 : txt)을 만나면 `ImageIdentifyError` 유형의 오류를 발생 시키도록 작성되었습니다. Step Functions의 Error Try/Catch 기능을 사용하여 오류가 발생할 때 **NotSupportedImageType** Fail 상태로 전환하도록 상태 머신을 구성할 수 있습니다.
+1. 다음으로, 오류 상태를 가리키는 **ExtractImageMetadata** 단계에 Error Try/Catch 를 추가합니다. 람다 함수는 이미지로 파싱할 수 없는 파일 유형 (예 : txt)을 만나면 `ImageIdentifyError` 유형의 오류를 발생시키도록 작성되었습니다. Step Functions의 Error Try/Catch 기능을 사용하여 오류가 발생할 때 **NotSupportedImageType** Fail 상태로 전환하도록 상태 머신을 구성할 수 있습니다.
 
 	**ExtractImageMetadata** 단계에 **Catch** 블록을 추가하세요.
 	
@@ -64,7 +64,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 
 	> Lambda 함수에서 사용자 정의 오류 코드를 정의하는 방법은 [블로그 게시물](https://aws.amazon.com/blogs/compute/automating-aws-lambda-function-error-handling-with-aws-step-functions/)을 참조하세요.
 
-1. JPEG 및 PNG 이미지만 추가로 처리할 수 있도록하려면 이미지 형식이 JPEG 또는 PNG가 아닌 경우 *NotSupportedImageType* Fail 상태로 지정하는 선택 상태를 만듭니다.
+1. JPEG 및 PNG 이미지만 추가로 처리할 수 있도록 하려면 이미지 형식이 JPEG 또는 PNG가 아닌 경우 *NotSupportedImageType* Fail 상태로 지정하는 선택 상태를 만듭니다.
 
 	**NotSupportedImageType** 실패 상태 다음에 **Choices** 상태를 추가하세요.
 
@@ -87,7 +87,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 	  },
 	```
 	
-	또한 **Choices** 상태는 **ExtractImageMetadata** 상태를 따라야하므로 첫번째 상태를 업데이트하고 다음 단계로 선택 상태에 대한 포인터로 "End": true를 대체하세요. "ImageTypeCheck"`:
+	또한 **Choices** 상태는 **ExtractImageMetadata** 상태를 따라야 하므로 첫번째 상태를 업데이트하고 다음 단계로 선택 상태에 대한 포인터로 "End": true를 대체하세요. "ImageTypeCheck"`:
 
 	<pre>
 		"ExtractImageMetadata":{  
@@ -110,7 +110,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 
 	
 	
-1. 선택 사항 상태는 단계 기능 상태 시스템의 종료 상태가 아니어야합니다. 따라서 우리는 선택 상태 다음 상태를 가져야합니다. 지금은 자리 표시 자 **패스** 상태를 만들어 병렬 처리 단계로 바꿉니다. (**ImageTypeCheck** 상태에서 이 상태에 대한 '다음' 포인터가 이미 있음).
+1. 선택 사항 상태는 단계 기능 상태 시스템의 종료 상태가 아니어야 합니다. 따라서 우리는 선택 상태 다음 상태를 가져야 합니다. 지금은 타입을 **Pass** 상태로 만들어 병렬 처리 단계로 바꿉니다. (**ImageTypeCheck** 상태에서 이 상태에 대한 '다음' 포인터가 이미 있음).
 	
 	``````JSON
 	    "Parallel": {
@@ -131,18 +131,18 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 
 1. `ImageProcessing` 상태 머신을 선택하세요. **상태 머신 편집**을 클릭하세요.
 
-1. 아래로 스크롤하여 2A 단계에서 생성된 JSON에 붙여 넣습니다.
+1. 아래로 스크롤 하여 2A 단계에서 생성된 JSON에 붙여넣습니다.
 
 1. &#x21ba; **Visual Workflow** 옆의 아이콘을 클릭하여 상태 시스템의 시각적 표현을 새로 고칩니다.
 
 	<img src="images/2b-step-console-update-preview.png" width="90%">
 
-1. **저장**를 클릭하고 **실행 시작**을 클릭하세요.
+1. **저장**을 클릭하고 **실행 시작**을 클릭하세요.
 
 
 ### 2C 단계 : 상태 머신 실행 테스트
 
-1. **1C 단계**에서 했던 것과 동일한 입력으로이 새로운 상태 머신을 테스트하세요.
+1. **1C 단계**에서 했던 것과 같은 입력으로 상태 머신을 테스트하세요.
 
 	```JSON
 	{
@@ -200,7 +200,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 
 도중에 문제가 발생하여 상태 머신이 예상대로 작동하지 않으면 JSON 정의가 아래 내용과 일치하는지 다시 확인하세요.
 <details>
-<summary><strong> Expand to see JSON definition</strong></summary><p>
+<summary><strong>JSON 정의를 확장합니다.</strong></summary><p>
 
 ```JSON
 {  
