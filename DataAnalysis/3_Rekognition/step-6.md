@@ -33,11 +33,11 @@ Region| Code | Launch
 
 	![변경 세트 실행 스크린 샷](./images/0b-cfn-execute-change-set.png)
 
-1. `sfn-workshop-setup-webapp` 스택이 `CREATE_COMPLETE`의 상태에 도달 할 때까지 기다리세요.
+1. `sfn-workshop-setup-webapp` 스택이 `CREATE_COMPLETE`의 상태에 도달할 때까지 기다리세요.
 
 	스택을 완료하는 데 1분 정도 걸립니다. 그것의 일부로, 웹 애플리케이션 소스를 대상 버킷으로 복사하고 pipleline을 트리거합니다.
 
-1. [AWS CodePipeline 관리 콘솔](http://console.aws.amazon.com/codepipeline/home)로 이동하세요. `sfn-workshop-pipeline`으로 식별 된 파이프 라인을 클릭하고 성공적으로 완료되었는지 확인하세요.
+1. [AWS CodePipeline 관리 콘솔](http://console.aws.amazon.com/codepipeline/home)로 이동하세요. `sfn-workshop-pipeline`으로 식별된 파이프 라인을 클릭하고 성공적으로 완료되었는지 확인하세요.
 
 	<img alt="파이프 라인 스크린 샷" src="./images/0b-code-pipeline.png" width="50%">
 
@@ -56,9 +56,9 @@ Region| Code | Launch
 
 ### 6B 단계 : 샘플 웹 사이트를 사용하여 종단 간 워크 플로 테스트
 ##### 로그인
-로그인 할 사용자 이름 선택 (실제 사용자 인증을 사용하지 않도록 백엔드를 보여주는 테스트 응용 프로그램입니다. 실제 응용 프로그램에서는 Amazon Cognito를 사용하여 사용자 등록 및 로그인을 관리할 수 있습니다.)
+로그인할 사용자 이름 선택 (실제 사용자 인증을 사용하지 않도록 백엔드를 보여주는 테스트 응용 프로그램입니다. 실제 응용 프로그램에서는 Amazon Cognito를 사용하여 사용자 등록 및 로그인을 관리할 수 있습니다.)
 
-사용자 이름은 업로드 된 이미지의 소유권 메타 데이터를 저장하는데 사용됩니다.
+사용자 이름은 업로드된 이미지의 소유권 메타 데이터를 저장하는데 사용됩니다.
 
 ##### 앨범 목록
 새 앨범을 만들거나 기존 앨범을 선택하여 이미지를 업로드하세요.
@@ -70,7 +70,7 @@ Region| Code | Launch
 1. AWS Step Function 실행이 시작됩니다. 실행 ARN은 UI에 제공되므로 단계 기능 [콘솔](https://console.aws.amazon.com/states/home) 에서 세부 정보를 쉽게 찾을 수 있습니다.
 1. AWS Step Function 실행이 완료되었습니다.
 
-Step Functions 실행에서 생성 된 축소판과 함께 추출 된 이미지 메타 데이터 및 인식 된 태그의 샘플 세트가 업로드 된 각 이미지에 대해 표시됩니다.
+Step Functions 실행에서 생성된 축소판과 함께 추출된 이미지 메타 데이터 및 인식된 태그의 샘플 세트가 업로드된 각 이미지에 대해 표시됩니다.
 
 <img alt="파이프 라인 스크린 샷" src="./images/web-app-screenshot.png" width="90%">
 

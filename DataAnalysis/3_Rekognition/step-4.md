@@ -5,7 +5,7 @@
 
 ### 4A 단계 : DynamoDB에 메타 데이터를 저장하는 단계 추가
 
-이 부분에서는 다시 JSON을 수동으로 편집 할 것입니다. 이전에 3 단계에서 작성한 JSON으로 이동하여 추가합니다. 여기에서 DynamoDB에 모든 것을 저장하는 람다 함수 `sfn-workshop-setup-PersistDDB`를 실행하기 위해 상태 시스템에 한 단계 더 추가하십시오.
+이 부분에서는 다시 JSON을 수동으로 편집할 것입니다. 이전에 3 단계에서 작성한 JSON으로 이동하여 추가합니다. 여기에서 DynamoDB에 모든 것을 저장하는 람다 함수 `sfn-workshop-setup-PersistDDB`를 실행하기 위해 상태 시스템에 한 단계 더 추가하십시오.
 
 구문에 대한 도움이 필요한 경우 이 설명서를 살펴보세요.
 
@@ -16,9 +16,9 @@
 	>
 	>`arn:aws:lambda:us-west-2:<YOUR-ACCOUNT-ID>:function:sfn-workshop-setup-PersistDDB`와 같이 보일 것입니다.
 
-1. 방금 추가 한 새로운 단계를 Parallel 단계 다음 단계로 만듭니다.
+1. 방금 추가한 새로운 단계를 Parallel 단계 다음 단계로 만듭니다.
 
-1. 생성 된 JSON을 복사하세요. 문제가 발생하면 이 페이지 하단에서 JSON을 찾으세요.
+1. 생성된 JSON을 복사하세요. 문제가 발생하면 이 페이지 하단에서 JSON을 찾으세요.
 
 
 ### 4 단계 : 결과를 테스트하기 위해 AWS Step Functions 상태 머신 만들기
@@ -27,7 +27,7 @@
 
 1. 'ImageProcessing'상태 머신을 선택하세요. **상태 시스템 편집**을 클릭하세요.
 
-1. 4A 단계에서 생성 한 편집기에서 JSON에 붙여 넣기하세요.
+1. 4A 단계에서 생성한 편집기에서 JSON에 붙여 넣기하세요.
 
 1. **Visual Workflow**옆의 &#x21ba; 아이콘을 클릭하여 상태 시스템의 시각적 표현을 새로 고칩니다.
 
@@ -57,7 +57,7 @@
     - `sfn-workshop-setup-AlbumMetadataDDBTable`
  	- `sfn-workshop-setup-ImageMetadataDDBTable`
 
-1. 'sfn-workshop-setup-ImageMetadataDDBTable`을 클릭하고 **Items**폴더를 클릭하세요. 성공적으로 처리 된 각 이미지에 대해 하나의 항목이 있는지 확인하세요.
+1. 'sfn-workshop-setup-ImageMetadataDDBTable`을 클릭하고 **Items**폴더를 클릭하세요. 성공적으로 처리된 각 이미지에 대해 하나의 항목이 있는지 확인하세요.
 
  	<img src="images/4c-ddb-imagemetadata.png" width="90%">
 

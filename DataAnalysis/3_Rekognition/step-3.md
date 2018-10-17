@@ -6,7 +6,7 @@
 
 ### 3A 단계 : 상태 머신 정의 업데이트
 
-이제 상태 머신에 단계를 점진적으로 추가, 배포 및 테스트하고 상태 머신에 병렬 단계를 추가하는 몇가지 경험을 얻었습니다. (마지막 상태의 최종 JSON에서 내보내거나 가져 오는 것을 잊지 마세요.) 상태 머신을 사용하여 섬네일 이미지와 이미지 인식을 동시에 수행 할 수 있습니다.
+이제 상태 머신에 단계를 점진적으로 추가, 배포 및 테스트하고 상태 머신에 병렬 단계를 추가하는 몇가지 경험을 얻었습니다. (마지막 상태의 최종 JSON에서 내보내거나 가져 오는 것을 잊지 마세요.) 상태 머신을 사용하여 섬네일 이미지와 이미지 인식을 동시에 수행할 수 있습니다.
 
 구문에 대한 도움이 필요하면 다음 설명서를 살펴보세요.
 
@@ -14,7 +14,7 @@
 - [작업 상태](https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-task-state.html)
 - [Amazon States Language Spec](https://states-language.net/spec.html)
 
-위에서 언급 한 문서에 대한 링크를 쉽게 따라갈 수 있도록 JSON을 직접 편집하는 것이 좋습니다.
+위에서 언급한 문서에 대한 링크를 쉽게 따라갈 수 있도록 JSON을 직접 편집하는 것이 좋습니다.
 
 <details>
 <summary><strong> 힌트를 얻기 위해 확장 </strong></summary><p>
@@ -33,7 +33,7 @@
 
 - 각 분기에 대해 해당 람다 함수를 트리거하는 **Task** 상태가 있는 상태 머신 개체를 만드세요.
 
-	- ``sfn-workshop-setup-DetectLabel``은 딥러닝 기반 이미지 분석 [Amazon Rekognition](https://aws.amazon.com/rekognition/) 서비스 및 특히 [DetectLabels API](http://docs.aws.amazon.com/rekognition/latest/dg/API_DetectLabels.html)를 활용하여 처리 된 이미지에 어떤 개체와 개념이 표시되는지에 대한 메타 데이터를 얻습니다.
+	- ``sfn-workshop-setup-DetectLabel``은 딥러닝 기반 이미지 분석 [Amazon Rekognition](https://aws.amazon.com/rekognition/) 서비스 및 특히 [DetectLabels API](http://docs.aws.amazon.com/rekognition/latest/dg/API_DetectLabels.html)를 활용하여 처리된 이미지에 어떤 개체와 개념이 표시되는지에 대한 메타 데이터를 얻습니다.
 
     - ``sfn-workshop-setup-Thumbnail``은 섬네일 이미지를 생성을 위해 [GraphicsMagick for node.js](http://aheckmann.github.io/gm/docs.html) 라이브러리를 사용합니다.
 

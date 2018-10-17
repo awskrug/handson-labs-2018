@@ -39,7 +39,7 @@ Region| Code | Launch
 1. 변경 세트 만들기가 완료되면 **실행**을 클릭하세요.
 	![Change Change Set Screenshot](./images/0a-cfn-execute-change-set.png)
 
-1. `sfn-workshop-setup` 스택이 `CREATE_COMPLETE`의 상태에 도달할 때까지 기다리세요. (새로 생성된 스택을 보려면 새로고침 버튼을 클릭해야 할 수도 있습니다).
+1. `sfn-workshop-setup` 스택이 `CREATE_COMPLETE`의 상태에 도달할 때까지 기다리세요. (새로 생성된 스택을 보려면 새로고침 버튼을 클릭해야할 수도 있습니다).
 </details>
 
 	
