@@ -4,7 +4,7 @@ AWS Step Functions 상태 머신을 작성하여 처리 단계를 조정하려�
 
 Step Functions 상태 머신은 [Amazon States Language](https://states-language.net/spec.html)를 사용하여 JSON에 정의됩니다. 단일 단계로 상태 머신을 정의하는 아래의 JSON을 살펴보세요.
 
-```javascript
+```JSON
 {
   "StartAt": "ExtractImageMetadata",
   "Comment": "Imgage Processing State Machine",
@@ -49,7 +49,7 @@ JSON을 직접 작성하여 상태 머신 정의를 구성하는 경우 [stateli
 
 1. 아래의 JSON을 상태 머신 정의에 복사 및 붙여넣기 하세요.
 
-	```javascript
+	```JSON
 	{
 	  "StartAt": "ExtractImageMetadata",
 	  "Comment": "Image Processing State Machine",
@@ -135,7 +135,7 @@ JSON을 직접 작성하여 상태 머신 정의를 구성하는 경우 [stateli
 
 1. 상태 머신 정의에 `"ResultPath": "$.extractedMetadata"`를 추가하세요. 마지막 JSON은 다음과 같아야 합니다.
 
-	```javascript
+	```JSON
 	{
 	  "StartAt": "ExtractImageMetadata",
 	  "Comment": "Image Processing State Machine",
@@ -152,7 +152,7 @@ JSON을 직접 작성하여 상태 머신 정의를 구성하는 경우 [stateli
 
 1. **저장**를 클릭하고 **실행 시작**을 클릭하세요.
 
-1. 1C-2 단계에서 사용한 것과 같은 JSON 입력을 입력하세요. (`ImageProcessing`의 실행 기록으로 이동하여 세부 정보> 입력에서 JSON을 복사하여 찾을 수 있습니다.) **실행 시작**을 클릭하세요.
+1. 1C-2 단계에서 사용한 것과 같은 JSON 입력을 입력하세요. (`ImageProcessing`의 실행 기록으로 이동하여 세부 정보 입력에서 JSON을 복사하여 찾을 수 있습니다.) **실행 시작**을 클릭하세요.
 
 	<img src="images/1d-updated-new-execution.png" width="90%">
 

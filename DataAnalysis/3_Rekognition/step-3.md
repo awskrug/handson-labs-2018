@@ -33,7 +33,7 @@
 
 - 각 분기에 대해 해당 람다 함수를 트리거하는 **Task** 상태가 있는 상태 머신 개체를 만드세요.
 
-	- ``sfn-workshop-setup-DetectLabel``은 딥러닝 기반 이미지 분석 [Amazon Rekognition](https://aws.amazon.com/rekognition/) 서비스 및 특히 [DetectLabels API](http://docs.aws.amazon.com/rekognition/latest/dg/API_DetectLabels.html)를 활용하여 처리된 이미지에 어떤 개체와 개념이 표시되는지에 대한 메타 데이터를 얻습니다.
+	- ``sfn-workshop-setup-DetectLabel``은 딥 러닝 기술을 기반으로 만들어진 [Amazon Rekognition](https://aws.amazon.com/rekognition/) 서비스에 [DetectLabels API](http://docs.aws.amazon.com/rekognition/latest/dg/API_DetectLabels.html)를 활용하여 처리된 이미지에 어떤 개체와 개념이 표시되는지에 대한 메타 데이터를 얻습니다.
 
     - ``sfn-workshop-setup-Thumbnail``은 섬네일 이미지를 생성을 위해 [GraphicsMagick for node.js](http://aheckmann.github.io/gm/docs.html) 라이브러리를 사용합니다.
 
@@ -77,7 +77,7 @@
   "States": {
     "ExtractImageMetadata": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-west-2:012345678901:function:sfn-workshop-setup-ExtractMetadata",
+      "Resource": "arn:aws:lambda:ap-northeast-2:012345678901:function:sfn-workshop-setup-ExtractMetadata",
       "Catch": [
         {
           "ErrorEquals": [
@@ -122,7 +122,7 @@
           "States": {
             "DetectLabelsRekognition": {
               "Type": "Task",
-              "Resource": "arn:aws:lambda:us-west-2:012345678901:function:sfn-workshop-setup-DetectLabel",
+              "Resource": "arn:aws:lambda:ap-northeast-2:012345678901:function:sfn-workshop-setup-DetectLabel",
               "End": true
             }
           }
@@ -132,7 +132,7 @@
           "States": {
             "Thumbnail": {
               "Type": "Task",
-              "Resource": "arn:aws:lambda:us-west-2:012345678901:function:sfn-workshop-setup-Thumbnail",
+              "Resource": "arn:aws:lambda:ap-northeast-2:012345678901:function:sfn-workshop-setup-Thumbnail",
               "End": true
             }
           }

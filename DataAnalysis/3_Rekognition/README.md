@@ -4,14 +4,14 @@
 
 아래 구성도에서 볼 수 있듯이 작업 흐름은 Amazon S3에 업로드된 사진을 처리하여 위치 정보, 크기/형식, 시간 등과 같은 메타 데이터를 이미지에서 추출합니다. 그런 다음 Amazon Rekognition을 사용하여 사진의 객체에 태그를 지정합니다. 동시에, 웹앱에서 사용할 섬네일 이미지를 생성합니다. AWS Step Functions는 다양한 단계를 조정하기 위해 오케스트레이션 역할을 합니다.
 
-![상태 시스템에 대한 IAM 역할 선택](./images/photo-processing-backend-diagram.png)
+![상태 머신에 대한 IAM 역할 선택](./images/photo-processing-backend-diagram.png)
 
 > 2018년 08월 09일부로 Amazon Rekognition 서울 리전에 출시하였습니다.:clap::clap: 이 [블로그](https://aws.amazon.com/ko/blogs/korea/amazon-rekognition-now-available-in-seoul-region/)에서 자세한 내용을 참고하세요. 
 
 ## 준비물
 
 - AWS 계정에 대한 관리 액세스
-- 자신 손에 익은 코드 편집기 (예 : WebStorm, Sublime Text 등)
+- 자신 손에 익은 코드 편집기 (예 : WebStorm, Sublime Text 등) [JSON Formatter](https://jsonformatter.curiousconcept.com/)
 
 ## 지침
 

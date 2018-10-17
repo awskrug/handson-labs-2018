@@ -13,7 +13,7 @@
 
 첫번째 단계는 CloudTrail을 활성화해야하기 때문에 몇 가지 추가 구성이 필요합니다. 간결성을 위해 옵션 2를 사용할 것입니다.
 
-### 5A 단계 : StartExecution Lambda 함수는 어떤 상태 머신을 실행할지 결정
+### 5A 단계 : StartExecution 람다 함수는 어떤 상태 머신을 실행할지 결정
 
 1. [AWS Step Functions 관리 콘솔](http://console.aws.amazon.com/states/home)로 이동하세요. AWS Region 선택이 지금까지 작업한 AWS Region 선택과 일치하는지 확인하세요.
 
@@ -23,7 +23,7 @@
 
 	<img src="images/5a-state-machine-arn-newer.png" width="90%">
 
-1. [AWS Lambda 관리 콘솔](https://console.aws.amazon.com/lambda/home)로 이동하여 이름이 `StartExecution` 으로 끝나는 람다 함수를 찾으세요. 상태 머신을 트리거하는 것입니다. 해당 이름의 링크를 클릭하여 선택하세요.
+1. [AWS 람다 관리 콘솔](https://console.aws.amazon.com/lambda/home)로 이동하여 이름이 `StartExecution` 으로 끝나는 람다 함수를 찾으세요. 상태 머신을 트리거하는 것입니다. 해당 이름의 링크를 클릭하여 선택하세요.
 
 1. 실행되는 특정 AWS Step Function 상태 머신은 구성 가능한 환경 변수로 람다 함수에 전달됩니다. **환경 변수** 섹션으로 스크롤 하여 `STATE_MACHINE_ARN`의 키값을 찾아 `FILL_WITH_YOUR_VALUE`을 상태 머신의 ARN으로 변경하세요.
 

@@ -1,6 +1,6 @@
 ## 2 단계 : 상태 머신에 분기 로직 추가
 
-Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었습니다. 이 정보를 바탕으로 어떤 추가작업을 진행할지 결정할 수 있습니다. 예를 들어, 입력된 파일이 예제에서 지원하지 않는 포맷일 경우, 포변환 Lambda Function으로 보내거나 혹은 에러 메시지를 보내고 작업을 종료할 수 있습니다.
+Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었습니다. 이 정보를 바탕으로 어떤 추가작업을 진행할지 결정할 수 있습니다. 예를 들어, 입력된 파일이 예제에서 지원하지 않는 포맷일 경우, 포변환 람다 함수로 보내거나 혹은 에러 메시지를 보내고 작업을 종료할 수 있습니다.
 
 분기를 가능하게하는 AWS Step Functions에는 [Choice State](https://docs.aws.amazon.com/step-functions/latest/dg/awl-ref-states-choice.html)와 [Error Try/Catches](https://docs.aws.amazon.com/step-functions/latest/dg/awl-ref-errors.html)를 참조하세요. Choice State는 if/else 또는 case/switch 조건에 기반하여 다음 상태를 선택할 수 있습니다 (And, Or, Not, =>, <)연산자 조합을 지원합니다. Error Try/Catch를 사용하면 현재 실행에 의해 발생 오류 유형에 따라 다음 상태를 선택할 수 있습니다.
 
@@ -12,7 +12,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 
 시나리오에서는 JPEG 및 PNG 형식만 지원합니다. 이미지 분석 람다 함수는 이미지 포맷을 감지할 수 있으므로 첫번째 단계 이후에 선택 상태를 사용하여 메타 데이터 추출의 결과를 평가하고 분기 결정을 내릴 수 있습니다. 이미지 처리 라이브러리에는 분석기가 없는 다른 파일 유형의 경우 람다 함수에서 예외가 발생합니다. 이제 Choice State와 Error Try/Catch를 사용하여 결합할 수 있습니다.
 
-1. 상태 머신 정의가 있는 텍스트 편집기로 돌아가세요. 다음과 같이 표시되어야 합니다.
+1. 상태 머신 정의로 돌아가세요. 다음과 같이 표시되어야 합니다.
 	
 	```JSON
 	{
@@ -62,7 +62,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 	    }
 	</pre>
 
-	> Lambda 함수에서 사용자 정의 오류 코드를 정의하는 방법은 [블로그 게시물](https://aws.amazon.com/blogs/compute/automating-aws-lambda-function-error-handling-with-aws-step-functions/)을 참조하세요.
+	> 람다 함수에서 사용자 정의 오류 코드를 정의하는 방법은 [블로그 게시물](https://aws.amazon.com/blogs/compute/automating-aws-lambda-function-error-handling-with-aws-step-functions/)을 참조하세요.
 
 1. JPEG 및 PNG 이미지만 추가로 처리할 수 있도록 하려면 이미지 형식이 JPEG 또는 PNG가 아닌 경우 *NotSupportedImageType* Fail 상태로 지정하는 선택 상태를 만듭니다.
 
@@ -110,9 +110,9 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 
 	
 	
-1. 선택 사항 상태는 단계 기능 상태 시스템의 종료 상태가 아니어야 합니다. 따라서 우리는 선택 상태 다음 상태를 가져야 합니다. 지금은 타입을 **Pass** 상태로 만들어 병렬 처리 단계로 바꿉니다. (**ImageTypeCheck** 상태에서 이 상태에 대한 '다음' 포인터가 이미 있음).
+1. 선택 사항 상태는 단계 기능 상태 머신의 종료 상태가 아니어야 합니다. 따라서 우리는 선택 상태 다음 상태를 가져야 합니다. 지금은 타입을 **Pass** 상태로 만들어 병렬 처리 단계로 바꿉니다. (**ImageTypeCheck** 상태에서 이 상태에 대한 '다음' 포인터가 이미 있음).
 	
-	``````JSON
+	```JSON
 	    "Parallel": {
 	      "Type": "Pass",
 	      "Result": {
@@ -133,7 +133,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 
 1. 아래로 스크롤 하여 2A 단계에서 생성된 JSON에 붙여넣습니다.
 
-1. &#x21ba; **Visual Workflow** 옆의 아이콘을 클릭하여 상태 시스템의 시각적 표현을 새로 고칩니다.
+1. &#x21ba; **Visual Workflow** 옆의 아이콘을 클릭하여 상태 머신의 시각적 표현을 새로 고칩니다.
 
 	<img src="images/2b-step-console-update-preview.png" width="90%">
 
@@ -191,7 +191,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
 	}
 	```
 	
-	우리는 *ExtractImageMetadata* lambda 함수가 `ImageIdentifyError`를 던져 버릴 것을 기대합니다. ImageIdentifyError는 **Choices** 상태를 거치지 않고 플로우를 실패 상태로 유도합니다
+	우리는 *ExtractImageMetadata* 람다 함수가 `ImageIdentifyError`를 던져 버릴 것을 기대합니다. ImageIdentifyError는 **Choices** 상태를 거치지 않고 플로우를 실패 상태로 유도합니다
 	
 	<img src="images/2c-test-catch-failed.png" width="50%">
 	
@@ -209,7 +209,7 @@ Step Functions 의 첫 단계에서 이미지에 대한 상세 정보를 얻었�
    "States":{  
       "ExtractImageMetadata":{  
          "Type":"Task",
-         "Resource":"arn:aws:lambda:us-west-2:012345678901:function:sfn-workshop-setup-ExtractMetadata",
+         "Resource":"arn:aws:lambda:ap-northeast-2:012345678901:function:sfn-workshop-setup-ExtractMetadata",
          "Catch":[  
             {  
                "ErrorEquals":[  

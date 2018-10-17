@@ -67,8 +67,8 @@ Region| Code | Launch
 다음과 같은 경우 이미지 업로드 및 상태 업데이트 보기 :
 
 1. S3 버킷에 업로드가 성공합니다.
-1. AWS Step Function 실행이 시작됩니다. 실행 ARN은 UI에 제공되므로 단계 기능 [콘솔](https://console.aws.amazon.com/states/home) 에서 세부 정보를 쉽게 찾을 수 있습니다.
-1. AWS Step Function 실행이 완료되었습니다.
+1. AWS Step Functions 실행이 시작됩니다. 실행 ARN은 UI에 제공되므로 단계 기능 [콘솔](https://console.aws.amazon.com/states/home) 에서 세부 정보를 쉽게 찾을 수 있습니다.
+1. AWS Step Functions 실행이 완료되었습니다.
 
 Step Functions 실행에서 생성된 축소판과 함께 추출된 이미지 메타 데이터 및 인식된 태그의 샘플 세트가 업로드된 각 이미지에 대해 표시됩니다.
 
