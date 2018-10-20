@@ -23,13 +23,35 @@
 
 - **Parallel State** 내의 병렬 작업은 상태 머신 객체의 배열로 입력됩니다.
 
-	```JSON
-	"Parallel": {
-	  "Type": "Parallel",
-	  "Branches": [<STATE_MACHINE_OBJECT>, ..., <STATE_MACHINE_OBJECT>],
-	  "End": true
-	}
-	```
+```JSON
+    "Parallel": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "DetectLabelsRekognition",
+          "States": {
+            "DetectLabelsRekognition": {
+              "Type": "Task",
+              "Resource": "arn:aws:lambda:us-west-2:012345678901:function:sfn-workshop-setup-DetectLabel",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Thumbnail",
+          "States": {
+            "Thumbnail": {
+              "Type": "Task",
+              "Resource": "arn:aws:lambda:us-west-2:012345678901:function:sfn-workshop-setup-Thumbnail",
+              "End": true
+            }
+          }
+        }
+      ],
+      "ResultPath": "$.parallelResults",
+      "End": true
+    }
+```
 
 - 각 분기에 대해 해당 람다 함수를 트리거하는 **Task** 상태가 있는 상태 머신 개체를 만드세요.
 
