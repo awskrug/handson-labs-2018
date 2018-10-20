@@ -48,7 +48,6 @@
           }
         }
       ],
-      "ResultPath": "$.parallelResults",
       "End": true
     }
 ```
