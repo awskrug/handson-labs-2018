@@ -78,7 +78,7 @@ Note:
 
 * 좌측 메뉴에서 `AMIs` 를 선택합니다.
 * `Owned by me` 를 `Public images` 로 변경합니다.
-* Add filter 에서 `AMI ID:` 를 선택 하고 `ami-0fade7d6d32c285f4` 를 입력합니다.
+* Add filter 에서 `AMI ID:` 를 선택 하고 `ami-0c5f492d14b590d42` 를 입력합니다.
 * 검색된 이미지로 `Launch` 를 선택 합니다.
 * 기본 값인 `t2.micro` 를 사용 하겠습니다.
 * `Next`와 `Review and Launch` 버튼을 눌러 다음 화면으로 이동합니다.
@@ -89,7 +89,7 @@ Note:
 Note:
 
 * 쉽게 찾는 링크
-  * <https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Images:visibility=public-images;imageId=ami-0fade7d6d32c285f4>
+  * <https://ap-northeast-2.console.aws.amazon.com/ec2/v2/home?region=ap-northeast-2#Images:visibility=public-images;imageId=ami-0c5f492d14b590d42>
 * AMI 에 설치된 서비스
   * awscli, kops, kubectl, helm, docker, jenkins-x, openjdk8, maven, nodejs
 * CentOS 혹은 Amazon Linux 에서 다음 쉘로 설치 가능 합니다.
