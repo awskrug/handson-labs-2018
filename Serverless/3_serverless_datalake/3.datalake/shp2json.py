@@ -89,7 +89,26 @@ def shp2json(s3_obj):
     extract_dir = path.join(tmp, file_name)
     make_dir(extract_dir)
     with tarfile.open(tmp_file) as tar:
-        tar.extractall(extract_dir)
+        def is_within_directory(directory, target):
+            
+            abs_directory = os.path.abspath(directory)
+            abs_target = os.path.abspath(target)
+        
+            prefix = os.path.commonprefix([abs_directory, abs_target])
+            
+            return prefix == abs_directory
+        
+        def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+        
+            for member in tar.getmembers():
+                member_path = os.path.join(path, member.name)
+                if not is_within_directory(path, member_path):
+                    raise Exception("Attempted Path Traversal in Tar File")
+        
+            tar.extractall(path, members, numeric_owner=numeric_owner) 
+            
+        
+        safe_extract(tar, extract_dir)
 
     # json 파일로 변경
     shp_file = [path.join(extract_dir, name) for name in os.listdir(extract_dir) if name.split('.')[-1] == "shp"][0]
